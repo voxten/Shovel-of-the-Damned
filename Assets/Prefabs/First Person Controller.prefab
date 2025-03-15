@@ -1712,6 +1712,7 @@ GameObject:
   - component: {fileID: 7843140591876733971}
   - component: {fileID: 5062750256258807650}
   - component: {fileID: 9030751921918768219}
+  - component: {fileID: 9189528149447985238}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Untagged
@@ -1792,6 +1793,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultCamera: {fileID: 6331543460559650179}
   cinemachineBrain: {fileID: 7438480980387230288}
+--- !u!114 &9189528149447985238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411381123255043943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02263a01a236dcd4082a7adbf68be0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!1 &8804650552330610372
 GameObject:
   m_ObjectHideFlags: 0
