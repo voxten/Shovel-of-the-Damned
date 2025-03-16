@@ -202,11 +202,6 @@ namespace StarterAssets
 			}
 		}
 
-		private void Test(bool state)
-		{
-			_isTurned = state;
-		}
-
 		private void Move()
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
