@@ -3,6 +3,7 @@ using UnityEngine;
 public class ItemCamera : MonoBehaviour
 {
     [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject nightVision;
     
     void Start()
     {
@@ -16,10 +17,19 @@ public class ItemCamera : MonoBehaviour
         {
             ChangeCameraEnable();
         }
+        if (Input.GetKeyDown(KeyCode.Y) && camera.activeSelf)
+        {
+            ChangeNightVisionEnable();
+        }
     }
 
     private void ChangeCameraEnable()
     {
         camera.SetActive(!camera.activeSelf);
+    }
+
+    private void ChangeNightVisionEnable()
+    {
+        nightVision.SetActive(!nightVision.activeSelf);
     }
 }
