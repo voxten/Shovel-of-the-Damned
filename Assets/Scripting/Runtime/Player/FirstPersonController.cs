@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -60,6 +61,12 @@ namespace StarterAssets
 		public float TopClamp = 90.0f;
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
+
+		[SerializeField] private Animator mainAnimator;
+		[SerializeField] private Animator shadowAnimator;
+		[SerializeField] private GameObject playerModel;
+
+		private bool _isTurned;
 		
 		// cinemachine
 		private float _cinemachineTargetPitch;
@@ -180,7 +187,24 @@ namespace StarterAssets
 
 				// rotate the player left and right
 				transform.Rotate(Vector3.up * _rotationVelocity);
+
+				/*TODO: Zrobić ten turn postaci
+				switch (_rotationVelocity)
+				{
+					case > 0.0f:
+						mainAnimator.SetTrigger("RightTurn");
+						break;
+					case < 0.0f:
+						mainAnimator.SetTrigger("LeftTurn");
+						break;
+				}
+				*/
 			}
+		}
+
+		private void Test(bool state)
+		{
+			_isTurned = state;
 		}
 
 		private void Move()
@@ -239,7 +263,10 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-			
+			mainAnimator.SetBool("Walk", _input.move != Vector2.zero);
+			mainAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
+			mainAnimator.SetBool("WalkRight", _input.move.x > 0.0f);
+			mainAnimator.SetBool("WalkBack", _input.move.y < 0.0f);
 		}
 
 		private void JumpAndGravity()

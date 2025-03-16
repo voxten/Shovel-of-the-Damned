@@ -4,31 +4,37 @@ using DG.Tweening;
 using System;
 using System.Collections;
 
-public class Narration : MonoBehaviour {
+public class Narration : MonoBehaviour 
+{
     [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private CanvasGroup displayGroup;
     [SerializeField] private float typingSpeed = 0.05f;
     [SerializeField] private CanvasGroup fade;
     public static Action<string> DisplayText;
 
-    private void OnEnable() {
+    private void OnEnable() 
+    {
         DisplayText += UpdateText;
     }
 
-    private void OnDisable() {
+    private void OnDisable() 
+    {
         DisplayText -= UpdateText;
     }
 
-    private void Start() {
+    private void Start() 
+    {
         Invoke(nameof(StartDialog), 2);
         fade.DOFade(0, 1).SetEase(Ease.OutExpo).SetDelay(.5f);
     }
 
-    private void StartDialog() {
-        DisplayText?.Invoke("I have to make it in time before the storm....");
+    private void StartDialog() 
+    {
+        DisplayText?.Invoke("I have to make it in time...");
     }
 
-    private void UpdateText(string _content) {
+    private void UpdateText(string _content) 
+    {
         StopAllCoroutines();
         if (label != null) {
             label.text = string.Empty;
@@ -38,10 +44,13 @@ public class Narration : MonoBehaviour {
         }
     }
 
-    private IEnumerator TypewriterEffect(string content) {
-        if (label != null) {
+    private IEnumerator TypewriterEffect(string content) 
+    {
+        if (label != null) 
+        {
             label.text = string.Empty;
-            foreach (char letter in content) {
+            foreach (char letter in content) 
+            {
                 label.text += letter;
                 yield return new WaitForSeconds(typingSpeed);
             }
@@ -49,5 +58,4 @@ public class Narration : MonoBehaviour {
             displayGroup.DOFade(0, .2f).SetEase(Ease.OutExpo);
         }
     }
-
 }
