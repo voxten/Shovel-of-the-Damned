@@ -10,7 +10,7 @@ public class CheckCablesButton : InteractableObject
     [SerializeField] private List<NewCable> cables;
     [SerializeField] private GameObject fuseBoxDoor;
     
-    [SerializeField] private Tool fuse;
+    [SerializeField] private GameObject fuse;
     private Rigidbody _fuseRigibody;
     private Collider _fuseCollider;
     

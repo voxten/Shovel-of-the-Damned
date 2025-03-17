@@ -12,8 +12,8 @@ public class PuzzleInteraction : InteractableObject
     public CinemachineCamera virtualCamera;
 
     [Header("Tool")]
-    [SerializeField] private bool _requireTool;
-    [SerializeField, ShowIf("_requireTool"), Required] private ToolType _requiredToolType;
+    [SerializeField] private bool requireItem;
+    [SerializeField, ShowIf("requireItem"), Required] private Item requiredItem;
     
     private void Awake()
     {
@@ -22,31 +22,25 @@ public class PuzzleInteraction : InteractableObject
 
     public override bool Interact()
     {
-        if (!_requireTool)
+        if (!requiredItem)
         {
-            // if tool is not required, open a puzzle
+            // if item is not required, open a puzzle
             puzzleObject.OpenPuzzle();
             return true;
         }
-        /*
-        
-        if (ToolManager.Instance.CurrentTool is null) 
+
+        if (!Inventory.InventoryEvents.FindItem(requiredItem))
         {
-            Narration.DisplayText?.Invoke("I need some kind of tool to do this...");
+            Narration.DisplayText?.Invoke("I don't have required item...");
             return false;
         }
-
-        if (!ToolManager.Instance.CompareToolType(_requiredToolType))
-        {
-            Narration.DisplayText?.Invoke("It's not gonna work...");
-            return false;
-        }*/
         
         puzzleObject.OpenPuzzle();
         return true;
     }
 
-    public override void EndInteract() {
+    public override void EndInteract() 
+    {
         puzzleObject.QuitPuzzle();
     }
 }

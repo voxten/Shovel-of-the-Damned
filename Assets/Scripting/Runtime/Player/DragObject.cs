@@ -83,9 +83,9 @@ public class DragObject : MonoBehaviour
         if (Physics.Raycast(ray, out hit, pickupRange, interactableLayer))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-
             if (rb != null)
             {
+                InteractionSystem.InteractionEvents.DisableInteractionIcon();
                 _pickedObject = rb;
                 _pickedObject.useGravity = false;
                 _pickedObject.maxLinearVelocity = 3;
@@ -128,6 +128,7 @@ public class DragObject : MonoBehaviour
 
     private void MoveObject()
     {
+        InteractionSystem.InteractionEvents.DisableInteractionIcon();
         Vector3 targetPosition = _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
         Vector3 forceDirection = targetPosition - _pickedObject.position;
 

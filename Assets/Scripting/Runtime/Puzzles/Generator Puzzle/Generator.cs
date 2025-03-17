@@ -26,7 +26,7 @@ public class Generator : PuzzleObject
     [SerializeField] private GameObject fuseBoxDoor;
     
     [Header("Fuse")]
-    [SerializeField] private Tool fuse;
+    [SerializeField] private GameObject fuse;
     [SerializeField] private Sound fuseBoxSound;
     private Rigidbody _fuseRigibody;
     private Collider _fuseCollider;
