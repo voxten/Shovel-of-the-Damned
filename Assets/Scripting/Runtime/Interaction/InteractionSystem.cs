@@ -14,7 +14,6 @@ public class InteractionSystem : MonoBehaviour
     
     [Header("Moveable Objects")]
     [SerializeField] private LayerMask moveableLayerMask;
-    private bool _moveableState;
 
     private Camera _playerCamera;
 
@@ -57,7 +56,6 @@ public class InteractionSystem : MonoBehaviour
         if (Physics.Raycast(ray, out var hit, interactionRange, interactionLayerMask))
         {
             var interactable = hit.collider.GetComponent<InteractableObject>();
-            
             if (interactable != null)
             {
                 if (_currentInteractable != interactable)
@@ -69,21 +67,6 @@ public class InteractionSystem : MonoBehaviour
                         {
                             _isInRange = true;
                             EnableInteractionIcon();
-                        }
-                        
-                    }
-                    else if (_currentInteractable is InputInteraction inputInteraction)
-                    {
-                        if (!inputInteraction.interactableInputObject.isFinished)
-                        {
-                            if (ToolManager.Instance.CurrentTool is not null)
-                            {
-                                EnableInteractionIcon();
-                            }
-                            else
-                            {
-                                DisableInteractionIcon();
-                            }
                         }
                     }
                     else if (_currentInteractable is NewCableEndPoint cableEndPoint)
@@ -108,24 +91,20 @@ public class InteractionSystem : MonoBehaviour
                 DisableInteractionIcon();
             }
         }
-
-        if (DragObject.DragEvents.GetDragging())
+        else
+        {
+            _isInRange = false;
+        }
+        
+        if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
+        {
+            EnableInteractionIcon();
+        }
+        else if(_currentInteractable && !_isInRange || !_isInRange)
         {
             DisableInteractionIcon();
         }
-        else
-        {
-            if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask))
-            {
-                _moveableState = true;
-                EnableInteractionIcon();
-            }
-            else
-            {
-                DisableInteractionIcon();
-            }
-        }
-        
+    
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
@@ -149,27 +128,10 @@ public class InteractionSystem : MonoBehaviour
             {
                 if (_currentInteractable is PuzzleInteraction puzzleInteraction)
                 {
-                    if (puzzleInteraction.puzzleObject is KeyPanelPuzzle)
-                    {
-                        if (FusePuzzle.FuseEvents.GetFinished())
-                        {
-                            _puzzleInteraction = puzzleInteraction;
-                            if (_puzzleInteraction.puzzleObject.isFinished) return;
-                            TogglePuzzleCollider();
-                            SetInteractionView(true);
-                        }
-                        else
-                        {
-                            Narration.DisplayText?.Invoke("There's no power...");
-                        }
-                    }
-                    else
-                    {
-                        _puzzleInteraction = puzzleInteraction;
-                        if (_puzzleInteraction.puzzleObject.isFinished) return;
-                        TogglePuzzleCollider();
-                        SetInteractionView(true);
-                    }
+                    _puzzleInteraction = puzzleInteraction;
+                    if (_puzzleInteraction.puzzleObject.isFinished) return;
+                    TogglePuzzleCollider();
+                    SetInteractionView(true);
                 }
             }
         }
@@ -187,7 +149,6 @@ public class InteractionSystem : MonoBehaviour
         _isInteractingPuzzle = state;
         Utilitis.SetCursorState(!state);
         SwitchCamera(state);
-        ToolManager.Instance.ToggleTool();
     }
     
     private void SwitchCamera(bool state)
@@ -210,17 +171,8 @@ public class InteractionSystem : MonoBehaviour
 
     private void DisableInteractionIcon()
     {
-        if (_currentInteractable != null)
-        {
-            _isInRange = false;
-            _currentInteractable = null;
-        }
-
-        if (_moveableState)
-        {
-            _moveableState = false;
-        }
-        
+        _isInRange = false;
+        _currentInteractable = null;
         interactionIcon.DOFade(0f, 0.5f);
     }
     

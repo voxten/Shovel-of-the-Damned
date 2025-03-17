@@ -2,8 +2,11 @@ using UnityEngine;
 
 public abstract class InteractableObject : MonoBehaviour
 {
-    public float iconHeight;
-    public abstract bool Interact();
+    public virtual bool Interact()
+    {
+        InteractionSystem.InteractionEvents.DisableInteractionIcon();
+        return true;
+    }
 
     public virtual void EndInteract() {
         

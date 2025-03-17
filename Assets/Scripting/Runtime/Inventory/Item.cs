@@ -16,4 +16,6 @@ public enum ItemType
     test,
     test2,
     test3,
+    keyItem,
+    Personal
 }
