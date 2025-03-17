@@ -28,16 +28,18 @@ public class InventoryUI : MonoBehaviour
     {
         Utilitis.SetCursorState(false);
         GenerateButtons();
-        InventoryUIEvents.SetInventoryPanel += SetInventoryPanel;
         FirstPersonController.PlayerEvents.ToggleMove();
         Time.timeScale = 0;
+        
+        itemNameText.enabled = false;
+        itemDescText.enabled = false;
+        inventoryViewer.gameObject.SetActive(false);
     }
     
     private void OnDisable()
     {
         Utilitis.SetCursorState(true);
         DeleteButtons();
-        InventoryUIEvents.SetInventoryPanel -= SetInventoryPanel;
         FirstPersonController.PlayerEvents.ToggleMove();
         Time.timeScale = 1;
     }
@@ -68,21 +70,29 @@ public class InventoryUI : MonoBehaviour
 
     private void SetInventoryPanel(ItemType itemType)
     {
-        foreach (Transform child in inventoryViewer)
+        if (inventoryViewer.childCount != 0)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in inventoryViewer)
+            {
+                Destroy(child.gameObject);
+            }
         }
         
         _itemList = Inventory.InventoryEvents.GetItemsByType(itemType);
-        _displayedItems.Clear();
-
-        var displayCount = Mathf.Min(_itemList.Count, VisibleItemsCount);
-        for (var i = 0; i < displayCount; i++)
+        if (_itemList.Count != 0)
         {
-            var itemTemp = Instantiate(inventoryItemPrefab, inventoryViewer);
-            _displayedItems.Add(itemTemp);
+            itemNameText.enabled = true;
+            itemDescText.enabled = true;
+            inventoryViewer.gameObject.SetActive(true);
+            
+            _displayedItems.Clear();
+            var displayCount = Mathf.Min(_itemList.Count, VisibleItemsCount);
+            for (var i = 0; i < displayCount; i++)
+            {
+                var itemTemp = Instantiate(inventoryItemPrefab, inventoryViewer);
+                _displayedItems.Add(itemTemp);
+            }
         }
-
         UpdateInventoryDisplay();
     }
 
@@ -135,7 +145,7 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                int itemIndex = (_selectedIndex + i - 1 + _itemList.Count) % _itemList.Count;
+                var itemIndex = (_selectedIndex + i - 1 + _itemList.Count) % _itemList.Count;
                 itemTransform.DOLocalMoveX((i - 1) * 200, 0.3f).SetEase(Ease.OutQuad);
                 itemTransform.DOScale((i == 1) ? Vector3.one * 1.2f : Vector3.one, 0.3f);
                 itemTransform.GetComponent<Image>().sprite = _itemList[itemIndex].itemIcon;
@@ -163,10 +173,5 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-    }
-    
-    public static class InventoryUIEvents
-    {
-        public static Action<ItemType> SetInventoryPanel;
     }
 }
