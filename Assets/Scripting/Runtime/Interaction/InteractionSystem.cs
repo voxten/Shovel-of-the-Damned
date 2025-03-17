@@ -1,16 +1,20 @@
 using UnityEngine;
 using System;
-using System.Collections;
-
 using StarterAssets;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class InteractionSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject interactionIconPrefab;
-    private GameObject _interactionIconInstance;
+    [SerializeField] private Image interactionIcon;
 
+    [Header("Interactable Objects")]
     [SerializeField] private float interactionRange;
     [SerializeField] private LayerMask interactionLayerMask;
+    
+    [Header("Moveable Objects")]
+    [SerializeField] private LayerMask moveableLayerMask;
+    private bool _moveableState;
 
     private Camera _playerCamera;
 
@@ -24,15 +28,7 @@ public class InteractionSystem : MonoBehaviour
     {
         _playerCamera = Camera.main;
     }
-
-    private void Start()
-    {
-        if (_interactionIconInstance != null)
-        {
-            _interactionIconInstance.SetActive(false);
-        }
-    }
-
+    
     private void OnEnable()
     {
         InteractionEvents.GetInteraction += GetInteraction;
@@ -72,7 +68,7 @@ public class InteractionSystem : MonoBehaviour
                         if (!puzzleInteraction.puzzleObject.isFinished)
                         {
                             _isInRange = true;
-                            EnableInteractionIcon(hit.transform);
+                            EnableInteractionIcon();
                         }
                         
                     }
@@ -82,7 +78,7 @@ public class InteractionSystem : MonoBehaviour
                         {
                             if (ToolManager.Instance.CurrentTool is not null)
                             {
-                                EnableInteractionIcon(hit.transform);
+                                EnableInteractionIcon();
                             }
                             else
                             {
@@ -98,12 +94,12 @@ public class InteractionSystem : MonoBehaviour
                         }
                         else
                         {
-                            EnableInteractionIcon(hit.transform);
+                            EnableInteractionIcon();
                         }
                     }
                     else
                     {
-                        EnableInteractionIcon(hit.transform);
+                        EnableInteractionIcon();
                     }
                 }
             }
@@ -112,11 +108,24 @@ public class InteractionSystem : MonoBehaviour
                 DisableInteractionIcon();
             }
         }
-        else
+
+        if (DragObject.DragEvents.GetDragging())
         {
             DisableInteractionIcon();
         }
-
+        else
+        {
+            if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask))
+            {
+                _moveableState = true;
+                EnableInteractionIcon();
+            }
+            else
+            {
+                DisableInteractionIcon();
+            }
+        }
+        
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
@@ -129,12 +138,6 @@ public class InteractionSystem : MonoBehaviour
             SetInteractionView(false);
             DisableInteractionIcon();
             _puzzleInteraction = null;
-        }
-
-        if (_interactionIconInstance != null)
-        {
-            _interactionIconInstance.transform.LookAt(_playerCamera.transform);
-            _interactionIconInstance.transform.rotation = Quaternion.LookRotation(_playerCamera.transform.forward);
         }
     }
     
@@ -211,28 +214,22 @@ public class InteractionSystem : MonoBehaviour
         {
             _isInRange = false;
             _currentInteractable = null;
-
-            if (_interactionIconInstance != null)
-            {
-                _interactionIconInstance.SetActive(false);
-            }
         }
-    }
 
-    private void EnableInteractionIcon(Transform interactableTransform)
-    {
-        if (interactionIconPrefab != null)
+        if (_moveableState)
         {
-            _isInRange = true;
-            if (_interactionIconInstance == null)
-            {
-                _interactionIconInstance = Instantiate(interactionIconPrefab);
-            }
-            _interactionIconInstance.transform.position = interactableTransform.position + Vector3.up * _currentInteractable.iconHeight;
-            _interactionIconInstance.SetActive(true);
+            _moveableState = false;
         }
+        
+        interactionIcon.DOFade(0f, 0.5f);
     }
-
+    
+    private void EnableInteractionIcon()
+    {
+        _isInRange = true;
+        interactionIcon.DOFade(1f, 0.5f);
+    }
+    
     private bool GetInteraction()
     {
         return _isInteractingPuzzle;
