@@ -156,17 +156,22 @@ public class InventoryUI : MonoBehaviour
 
     private void GenerateButtons()
     {
-        var itemTypes = Enum.GetValues(typeof(ItemType));
-        
-        foreach (ItemType itemType in itemTypes)
+        var tempList = Inventory.InventoryEvents.GetAllItems();
+        if (tempList == null || tempList.Count == 0)
+            return;
+        var uniqueItemTypes = new HashSet<ItemType>();
+        foreach (var item in tempList)
         {
+            if (!uniqueItemTypes.Add(item.itemType)) 
+                continue;
+
             var buttonObject = Instantiate(buttonPrefab, buttonParent);
             var button = buttonObject.GetComponent<Button>();
-            button.GetComponentInChildren<TextMeshProUGUI>().text = itemType.ToString().ToUpper();
-            button.onClick.AddListener(() => SetInventoryPanel(itemType));
+            button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemType.ToString().ToUpper();
+            button.onClick.AddListener(() => SetInventoryPanel(item.itemType));
         }
     }
-
+    
     private void DeleteButtons()
     {
         foreach (Transform child in buttonParent)

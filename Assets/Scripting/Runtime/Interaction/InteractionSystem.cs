@@ -26,6 +26,7 @@ public class InteractionSystem : MonoBehaviour
     private void Awake()
     {
         _playerCamera = Camera.main;
+        interactionIcon.DOFade(0f, 0f);
     }
     
     private void OnEnable()
@@ -96,6 +97,7 @@ public class InteractionSystem : MonoBehaviour
             _isInRange = false;
         }
         
+        // Moveable objects
         if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
         {
             EnableInteractionIcon();
@@ -105,11 +107,13 @@ public class InteractionSystem : MonoBehaviour
             DisableInteractionIcon();
         }
     
+        // Interaction
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
         }
 
+        // Exit from puzzle
         if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && !_puzzleInteraction.puzzleObject.isFinished)
         {
             _puzzleInteraction.EndInteract();
@@ -141,6 +145,7 @@ public class InteractionSystem : MonoBehaviour
     {
         _puzzleInteraction.puzzleCollider.enabled = !_puzzleInteraction.puzzleCollider.enabled;
         FirstPersonController.PlayerEvents.ToggleCapsule();
+        ToggleIcon();
         FirstPersonController.PlayerEvents.ToggleController();
     }
 
@@ -180,6 +185,11 @@ public class InteractionSystem : MonoBehaviour
     {
         _isInRange = true;
         interactionIcon.DOFade(1f, 0.5f);
+    }
+
+    private void ToggleIcon()
+    {
+        interactionIcon.gameObject.SetActive(!interactionIcon.gameObject.activeSelf);
     }
     
     private bool GetInteraction()

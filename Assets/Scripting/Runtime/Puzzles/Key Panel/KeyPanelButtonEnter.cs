@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class KeyPanelButtonEnter : MonoBehaviour
 {
-    private const float StandardButton = -0.24f;  
+    private const float StandardButton = -0.30f;  
     private const float PressedButton = -0.25f;
     
     private void OnMouseOver()
