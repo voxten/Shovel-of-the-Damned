@@ -258,10 +258,20 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			SetAnimations();
+		}
+
+		private void SetAnimations()
+		{
 			mainAnimator.SetBool("Walk", _input.move != Vector2.zero);
 			mainAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
 			mainAnimator.SetBool("WalkRight", _input.move.x > 0.0f);
 			mainAnimator.SetBool("WalkBack", _input.move.y < 0.0f);
+			
+			shadowAnimator.SetBool("Walk", _input.move != Vector2.zero);
+			shadowAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
+			shadowAnimator.SetBool("WalkRight", _input.move.x > 0.0f);
+			shadowAnimator.SetBool("WalkBack", _input.move.y < 0.0f);
 		}
 
 		private void JumpAndGravity()

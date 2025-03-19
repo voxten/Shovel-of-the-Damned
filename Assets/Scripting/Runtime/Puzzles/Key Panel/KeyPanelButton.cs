@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 using DG.Tweening;
 
 public class KeyPanelButton : MonoBehaviour
 {
     [SerializeField] private int number;
-    private const float StandardButton = -0.24f;  
+    private const float StandardButton = -0.30f;  
     private const float PressedButton = -0.25f;
 
     private void OnMouseOver()

@@ -1,16 +1,19 @@
 using UnityEngine;
 using System;
-using System.Collections;
-
 using StarterAssets;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class InteractionSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject interactionIconPrefab;
-    private GameObject _interactionIconInstance;
+    [SerializeField] private Image interactionIcon;
 
+    [Header("Interactable Objects")]
     [SerializeField] private float interactionRange;
     [SerializeField] private LayerMask interactionLayerMask;
+    
+    [Header("Moveable Objects")]
+    [SerializeField] private LayerMask moveableLayerMask;
 
     private Camera _playerCamera;
 
@@ -23,16 +26,9 @@ public class InteractionSystem : MonoBehaviour
     private void Awake()
     {
         _playerCamera = Camera.main;
+        interactionIcon.DOFade(0f, 0f);
     }
-
-    private void Start()
-    {
-        if (_interactionIconInstance != null)
-        {
-            _interactionIconInstance.SetActive(false);
-        }
-    }
-
+    
     private void OnEnable()
     {
         InteractionEvents.GetInteraction += GetInteraction;
@@ -61,7 +57,6 @@ public class InteractionSystem : MonoBehaviour
         if (Physics.Raycast(ray, out var hit, interactionRange, interactionLayerMask))
         {
             var interactable = hit.collider.GetComponent<InteractableObject>();
-            
             if (interactable != null)
             {
                 if (_currentInteractable != interactable)
@@ -72,22 +67,7 @@ public class InteractionSystem : MonoBehaviour
                         if (!puzzleInteraction.puzzleObject.isFinished)
                         {
                             _isInRange = true;
-                            EnableInteractionIcon(hit.transform);
-                        }
-                        
-                    }
-                    else if (_currentInteractable is InputInteraction inputInteraction)
-                    {
-                        if (!inputInteraction.interactableInputObject.isFinished)
-                        {
-                            if (ToolManager.Instance.CurrentTool is not null)
-                            {
-                                EnableInteractionIcon(hit.transform);
-                            }
-                            else
-                            {
-                                DisableInteractionIcon();
-                            }
+                            EnableInteractionIcon();
                         }
                     }
                     else if (_currentInteractable is NewCableEndPoint cableEndPoint)
@@ -98,12 +78,12 @@ public class InteractionSystem : MonoBehaviour
                         }
                         else
                         {
-                            EnableInteractionIcon(hit.transform);
+                            EnableInteractionIcon();
                         }
                     }
                     else
                     {
-                        EnableInteractionIcon(hit.transform);
+                        EnableInteractionIcon();
                     }
                 }
             }
@@ -114,14 +94,26 @@ public class InteractionSystem : MonoBehaviour
         }
         else
         {
+            _isInRange = false;
+        }
+        
+        // Moveable objects
+        if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
+        {
+            EnableInteractionIcon();
+        }
+        else if(_currentInteractable && !_isInRange || !_isInRange)
+        {
             DisableInteractionIcon();
         }
-
+    
+        // Interaction
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
         }
 
+        // Exit from puzzle
         if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && !_puzzleInteraction.puzzleObject.isFinished)
         {
             _puzzleInteraction.EndInteract();
@@ -129,12 +121,6 @@ public class InteractionSystem : MonoBehaviour
             SetInteractionView(false);
             DisableInteractionIcon();
             _puzzleInteraction = null;
-        }
-
-        if (_interactionIconInstance != null)
-        {
-            _interactionIconInstance.transform.LookAt(_playerCamera.transform);
-            _interactionIconInstance.transform.rotation = Quaternion.LookRotation(_playerCamera.transform.forward);
         }
     }
     
@@ -146,27 +132,10 @@ public class InteractionSystem : MonoBehaviour
             {
                 if (_currentInteractable is PuzzleInteraction puzzleInteraction)
                 {
-                    if (puzzleInteraction.puzzleObject is KeyPanelPuzzle)
-                    {
-                        if (FusePuzzle.FuseEvents.GetFinished())
-                        {
-                            _puzzleInteraction = puzzleInteraction;
-                            if (_puzzleInteraction.puzzleObject.isFinished) return;
-                            TogglePuzzleCollider();
-                            SetInteractionView(true);
-                        }
-                        else
-                        {
-                            Narration.DisplayText?.Invoke("There's no power...");
-                        }
-                    }
-                    else
-                    {
-                        _puzzleInteraction = puzzleInteraction;
-                        if (_puzzleInteraction.puzzleObject.isFinished) return;
-                        TogglePuzzleCollider();
-                        SetInteractionView(true);
-                    }
+                    _puzzleInteraction = puzzleInteraction;
+                    if (_puzzleInteraction.puzzleObject.isFinished) return;
+                    TogglePuzzleCollider();
+                    SetInteractionView(true);
                 }
             }
         }
@@ -176,6 +145,7 @@ public class InteractionSystem : MonoBehaviour
     {
         _puzzleInteraction.puzzleCollider.enabled = !_puzzleInteraction.puzzleCollider.enabled;
         FirstPersonController.PlayerEvents.ToggleCapsule();
+        ToggleIcon();
         FirstPersonController.PlayerEvents.ToggleController();
     }
 
@@ -184,7 +154,6 @@ public class InteractionSystem : MonoBehaviour
         _isInteractingPuzzle = state;
         Utilitis.SetCursorState(!state);
         SwitchCamera(state);
-        ToolManager.Instance.ToggleTool();
     }
     
     private void SwitchCamera(bool state)
@@ -207,32 +176,22 @@ public class InteractionSystem : MonoBehaviour
 
     private void DisableInteractionIcon()
     {
-        if (_currentInteractable != null)
-        {
-            _isInRange = false;
-            _currentInteractable = null;
-
-            if (_interactionIconInstance != null)
-            {
-                _interactionIconInstance.SetActive(false);
-            }
-        }
+        _isInRange = false;
+        _currentInteractable = null;
+        interactionIcon.DOFade(0f, 0.5f);
     }
-
-    private void EnableInteractionIcon(Transform interactableTransform)
+    
+    private void EnableInteractionIcon()
     {
-        if (interactionIconPrefab != null)
-        {
-            _isInRange = true;
-            if (_interactionIconInstance == null)
-            {
-                _interactionIconInstance = Instantiate(interactionIconPrefab);
-            }
-            _interactionIconInstance.transform.position = interactableTransform.position + Vector3.up * _currentInteractable.iconHeight;
-            _interactionIconInstance.SetActive(true);
-        }
+        _isInRange = true;
+        interactionIcon.DOFade(1f, 0.5f);
     }
 
+    private void ToggleIcon()
+    {
+        interactionIcon.gameObject.SetActive(!interactionIcon.gameObject.activeSelf);
+    }
+    
     private bool GetInteraction()
     {
         return _isInteractingPuzzle;

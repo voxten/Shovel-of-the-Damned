@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
     private void OnEnable()
     {
         InventoryEvents.GetItemsByType += GetItemsByType;
+        InventoryEvents.GetAllItems += GetAllItems;
         InventoryEvents.RemoveItem += RemoveItem;
         InventoryEvents.RemoveItems += RemoveItems;
         InventoryEvents.AddItem += AddItem;
@@ -19,6 +20,7 @@ public class Inventory : MonoBehaviour
     private void OnDisable()
     {
         InventoryEvents.GetItemsByType -= GetItemsByType;
+        InventoryEvents.GetAllItems -= GetAllItems;
         InventoryEvents.RemoveItem -= RemoveItem;
         InventoryEvents.RemoveItems -= RemoveItems;
         InventoryEvents.AddItem -= AddItem;
@@ -98,10 +100,16 @@ public class Inventory : MonoBehaviour
         return itemsTemp;
     }
 
+    private List<Item> GetAllItems()
+    {
+        return items;
+    }
+
     public static class InventoryEvents
     {
         public static Action<Item> AddItem;
         public static Func<ItemType, List<Item>> GetItemsByType;
+        public static Func<List<Item>> GetAllItems;
         public static Func<Item, bool> RemoveItem;
         public static Func<Item, int, bool> RemoveItems;
         public static Func<Item, bool> FindItem;

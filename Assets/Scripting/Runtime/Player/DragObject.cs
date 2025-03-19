@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DragObject : MonoBehaviour
@@ -7,144 +8,157 @@ public class DragObject : MonoBehaviour
     public float rotationSpeed = 100.0f; // Speed for rotating the object
     public float throwForceMultiplier = 10.0f; // Multiplier for the throw force
     public float rotationThrowForce = 10.0f; // Multiplier for the rotational throw force
-    public float distanceChangeSpeed = 2.0f; // Speed at which the distance changes
     public LayerMask interactableLayer; // Layer for interactable objects
 
-    private Camera playerCamera;
-    private Rigidbody pickedObject;
-    private bool isDragging = false;
-    private float rotationX;
-    private float rotationY;
-    private float currentDistance;
+    private Camera _playerCamera;
+    private Rigidbody _pickedObject;
+    private bool _isDragging;
+    private float _rotationX;
+    private float _rotationY;
 
-    private Vector3 lastMousePosition;
-    private Vector3 mouseDelta;
+    private Vector3 _lastMousePosition;
+    private Vector3 _mouseDelta;
+    
+    private bool _firstTime;
 
-    void Start()
+    private void Start()
     {
-        playerCamera = Camera.main;
-        currentDistance = pickupRange; // Set initial distance
+        _playerCamera = Camera.main;
     }
 
-    private bool firstTime;
-    
-    void Update()
+    private void OnEnable()
+    {
+        DragEvents.GetDragging += GetDragging;
+    }
+
+    private void OnDisable()
+    {
+        DragEvents.GetDragging -= GetDragging;
+    }
+
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             TryPickObject();
         }
 
-        if (Input.GetMouseButton(0) && isDragging)
+        if (Input.GetMouseButton(0) && _isDragging)
         {
-            //UpdateRotation();
+            UpdateRotation();
             //UpdateDistance();
         }
 
-        if (Input.GetMouseButtonUp(0) && isDragging)
+        if (Input.GetMouseButtonUp(0) && _isDragging)
         {
             DropObject();
         }
 
         // Calculate mouse delta
-        if (isDragging)
+        if (_isDragging)
         {
-            mouseDelta = Input.mousePosition - lastMousePosition;
-            lastMousePosition = Input.mousePosition;
+            _mouseDelta = Input.mousePosition - _lastMousePosition;
+            _lastMousePosition = Input.mousePosition;
         }
         else
         {
-            lastMousePosition = Input.mousePosition;
-            mouseDelta = Vector3.zero;
+            _lastMousePosition = Input.mousePosition;
+            _mouseDelta = Vector3.zero;
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (isDragging)
+        if (_isDragging)
         {
             MoveObject();
         }
     }
 
-    void TryPickObject()
+    private void TryPickObject()
     {
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, pickupRange, interactableLayer))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-
             if (rb != null)
             {
-                pickedObject = rb;
-                pickedObject.useGravity = false;
-                pickedObject.maxLinearVelocity = 3;
-                isDragging = true;
+                InteractionSystem.InteractionEvents.DisableInteractionIcon();
+                _pickedObject = rb;
+                _pickedObject.useGravity = false;
+                _pickedObject.maxLinearVelocity = 3;
+                _isDragging = true;
 
                 // Capture initial rotation
-                Vector3 initialRotation = pickedObject.rotation.eulerAngles;
-                rotationX = initialRotation.y;
-                rotationY = initialRotation.x;
+                Vector3 initialRotation = _pickedObject.rotation.eulerAngles;
+                _rotationX = initialRotation.y;
+                _rotationY = initialRotation.x;
 
-                lastMousePosition = Input.mousePosition; // Initialize last mouse position
+                _lastMousePosition = Input.mousePosition; // Initialize last mouse position
                 
-                if (!firstTime) {
+                if (!_firstTime) 
+                {
                     Narration.DisplayText?.Invoke("What order was it?");
-                    firstTime = true;
+                    _firstTime = true;
                 }
             }
         }
     }
 
-    void DropObject()
+    private void DropObject()
     {
-        if (pickedObject != null)
+        if (_pickedObject != null)
         {
             // Apply throw force
-            Vector3 throwForce = mouseDelta * throwForceMultiplier;
+            Vector3 throwForce = _mouseDelta * throwForceMultiplier;
             //pickedObject.linearVelocity = playerCamera.transform.forward * throwForce.z;
 
-            pickedObject.AddTorque(playerCamera.transform.right * -mouseDelta.y * rotationThrowForce);
-            pickedObject.AddTorque(playerCamera.transform.up * -mouseDelta.x * rotationThrowForce);
+            _pickedObject.AddTorque(_playerCamera.transform.right * -_mouseDelta.y * rotationThrowForce);
+            _pickedObject.AddTorque(_playerCamera.transform.up * -_mouseDelta.x * rotationThrowForce);
 
-            pickedObject.useGravity = true;
-            pickedObject.maxLinearVelocity = 0.7f;
-            pickedObject = null;
+            _pickedObject.useGravity = true;
+            _pickedObject.maxLinearVelocity = 0.7f;
+            _pickedObject = null;
         }
 
-        isDragging = false;
+        _isDragging = false;
     }
 
-    void MoveObject()
+    private void MoveObject()
     {
-        Vector3 targetPosition = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
-        Vector3 forceDirection = targetPosition - pickedObject.position;
+        InteractionSystem.InteractionEvents.DisableInteractionIcon();
+        Vector3 targetPosition = _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
+        Vector3 forceDirection = targetPosition - _pickedObject.position;
 
-        pickedObject.linearVelocity = forceDirection * moveForce * Time.fixedDeltaTime;
+        _pickedObject.linearVelocity = forceDirection * moveForce * Time.fixedDeltaTime;
     }
 
-    void UpdateRotation()
-    {
-        rotationX += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-        rotationY -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+    private float _rotationZ; // Store cumulative Z-axis rotation
+    
 
-        Quaternion targetRotation = Quaternion.Euler(rotationY, rotationX, 0);
-        pickedObject.MoveRotation(targetRotation);
+    private void UpdateRotation()
+    {
+        // Rotate with mouse movement (X and Y axes)
+        _rotationX += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+        _rotationY -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+
+        // Rotate with scroll wheel (Z-axis rotation)
+        _rotationZ += Input.GetAxis("Mouse ScrollWheel") * rotationSpeed * 1000 * Time.deltaTime;
+
+        // Apply the new rotation
+        Quaternion targetRotation = Quaternion.Euler(_rotationY, _rotationX, _rotationZ);
+        _pickedObject.MoveRotation(targetRotation);
     }
 
-    void UpdateDistance()
+    private bool GetDragging()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            currentDistance += distanceChangeSpeed * Time.deltaTime;
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            currentDistance -= distanceChangeSpeed * Time.deltaTime;
-        }
+        return _isDragging;
+    }
 
-        currentDistance = Mathf.Clamp(currentDistance, 1.0f, pickupRange);
+    public static class DragEvents
+    {
+        public static Func<bool> GetDragging;
     }
 }
