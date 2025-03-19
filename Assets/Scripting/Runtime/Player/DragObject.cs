@@ -29,11 +29,13 @@ public class DragObject : MonoBehaviour
     private void OnEnable()
     {
         DragEvents.GetDragging += GetDragging;
+        DragEvents.DropObject += DropObject;
     }
 
     private void OnDisable()
     {
         DragEvents.GetDragging -= GetDragging;
+        DragEvents.DropObject -= DropObject;
     }
 
     private void Update()
@@ -160,5 +162,6 @@ public class DragObject : MonoBehaviour
     public static class DragEvents
     {
         public static Func<bool> GetDragging;
+        public static Action DropObject;
     }
 }

@@ -144,7 +144,7 @@ public class InteractionSystem : MonoBehaviour
     private void TogglePuzzleCollider()
     {
         _puzzleInteraction.puzzleCollider.enabled = !_puzzleInteraction.puzzleCollider.enabled;
-        FirstPersonController.PlayerEvents.ToggleCapsule();
+        FirstPersonController.PlayerEvents.TogglePlayerModel();
         ToggleIcon();
         FirstPersonController.PlayerEvents.ToggleController();
     }
