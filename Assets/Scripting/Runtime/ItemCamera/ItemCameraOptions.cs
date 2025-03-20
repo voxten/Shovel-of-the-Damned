@@ -5,20 +5,21 @@ public class ItemCameraOptions : MonoBehaviour
 {
     [SerializeField] private GameObject nightVision;
     [SerializeField] private TextMeshProUGUI showedBateryLevel;
-    private double batterryLevel = 100.00;
-    void Start()
+    [SerializeField] private Material screen;
+    private float _batterryLevel = 100.00f;
+    private void Start()
     {
-        
+        screen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
 
     
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
             ChangeNightVisionEnable();
         }
-        lowerBateryState();
+        LowerBateryState(); //Tymczasowe oparte na frame'ach
     }
 
     private void ChangeNightVisionEnable()
@@ -26,17 +27,21 @@ public class ItemCameraOptions : MonoBehaviour
         nightVision.SetActive(!nightVision.activeSelf);
     }
 
-    private void lowerBateryState()
+    private void LowerBateryState()
     {
         if (nightVision.activeSelf)
         {
-            batterryLevel -= 0.01;
+            _batterryLevel -= 0.01f;
         }
         else
         {
-            batterryLevel -= 0.001;
+            _batterryLevel -= 0.001f;
         }
-        int toShow = System.Convert.ToInt32(System.Math.Floor(batterryLevel));
+        int toShow = System.Convert.ToInt32(System.Math.Floor(_batterryLevel));
         showedBateryLevel.text = toShow + "%";
+        if(_batterryLevel < 0.0)
+        {
+            screen.color = Color.black;
+        }
     }
 }
