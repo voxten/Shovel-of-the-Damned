@@ -85,6 +85,7 @@ namespace StarterAssets
 		private bool _locationStop;
 		private Transform _destination;
 		private bool _canMove = true;
+		private bool _canMoveCamera = true;
 		
 		private bool IsCurrentDeviceMouse
 		{
@@ -103,20 +104,24 @@ namespace StarterAssets
 			}
 		}
 
-		private void OnEnable() {
+		private void OnEnable() 
+		{
 			PlayerEvents.SetLocation += SetLocation;
 			PlayerEvents.StopLocationChange += StopLocationChange;
 			PlayerEvents.TogglePlayerModel += TogglePlayerModel;
 			PlayerEvents.ToggleController += ToggleController;
 			PlayerEvents.ToggleMove += ToggleMovement;
+			PlayerEvents.ToggleMoveCamera += ToggleMoveCamera;
 		}
 
-		private void OnDisable() {
+		private void OnDisable() 
+		{
 			PlayerEvents.SetLocation -= SetLocation;
 			PlayerEvents.StopLocationChange -= StopLocationChange;
 			PlayerEvents.TogglePlayerModel -= TogglePlayerModel;
 			PlayerEvents.ToggleController -= ToggleController;
 			PlayerEvents.ToggleMove -= ToggleMovement;
+			PlayerEvents.ToggleMoveCamera -= ToggleMoveCamera;
 		}
 
 		private void Start()
@@ -150,6 +155,7 @@ namespace StarterAssets
 				_controller.enabled = true;
 			}
 			if(!_canMove) return;
+			if (!_canMoveCamera) return;
 			CameraRotation();
 		}
 
@@ -345,8 +351,15 @@ namespace StarterAssets
 			_controller.enabled = !_controller.enabled;
 		}
 
-		private void ToggleMovement() {
+		private void ToggleMovement() 
+		{
 			_canMove = !_canMove;
+		}
+
+		private void ToggleMoveCamera(bool state)
+		{
+			_canMoveCamera = state;
+			_canMove = state;
 		}
 		
 		private void OnDrawGizmosSelected()
@@ -368,6 +381,7 @@ namespace StarterAssets
 			public static Action TogglePlayerModel;
 			public static Action ToggleController;
 			public static Action ToggleMove;
+			public static Action<bool> ToggleMoveCamera;
 		}
 	}
 }

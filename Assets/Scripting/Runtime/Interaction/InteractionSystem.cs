@@ -31,7 +31,7 @@ public class InteractionSystem : MonoBehaviour
     
     private void OnEnable()
     {
-        InteractionEvents.GetInteraction += GetInteraction;
+        InteractionEvents.ExitPuzzleInteraction += ExitPuzzleInteraction;
         InteractionEvents.SetInteractionView += SetInteractionView;
         InteractionEvents.TogglePuzzleCollider += TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon += DisableInteractionIcon;
@@ -39,7 +39,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        InteractionEvents.GetInteraction -= GetInteraction;
+        InteractionEvents.ExitPuzzleInteraction -= ExitPuzzleInteraction;
         InteractionEvents.SetInteractionView -= SetInteractionView;
         InteractionEvents.TogglePuzzleCollider -= TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon -= DisableInteractionIcon;
@@ -116,12 +116,17 @@ public class InteractionSystem : MonoBehaviour
         // Exit from puzzle
         if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && !_puzzleInteraction.puzzleObject.isFinished)
         {
-            _puzzleInteraction.EndInteract();
-            TogglePuzzleCollider();
-            SetInteractionView(false);
-            DisableInteractionIcon();
-            _puzzleInteraction = null;
+            ExitPuzzleInteraction();
         }
+    }
+
+    private void ExitPuzzleInteraction()
+    {
+        _puzzleInteraction.EndInteract();
+        TogglePuzzleCollider();
+        SetInteractionView(false);
+        DisableInteractionIcon();
+        _puzzleInteraction = null;
     }
     
     private void TryInteract()
@@ -199,7 +204,7 @@ public class InteractionSystem : MonoBehaviour
     
     public static class InteractionEvents 
     {
-        public static Func<bool> GetInteraction;
+        public static Action ExitPuzzleInteraction;
         public static Action<bool> SetInteractionView;
         public static Action TogglePuzzleCollider;
         public static Action DisableInteractionIcon;
