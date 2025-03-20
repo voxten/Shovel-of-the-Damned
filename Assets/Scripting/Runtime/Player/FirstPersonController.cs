@@ -9,14 +9,6 @@ namespace StarterAssets
 	[RequireComponent(typeof(PlayerInput))]
 	public class FirstPersonController : MonoBehaviour
 	{
-		public static class PlayerEvents {
-			public static Action<Transform> SetLocation;
-			public static Action StopLocationChange;
-			public static Action ToggleCapsule;
-			public static Action ToggleController;
-			public static Action ToggleMove;
-		}
-		
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
 		public float MoveSpeed = 4.0f;
@@ -27,8 +19,8 @@ namespace StarterAssets
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 		public float decelerationRate = .4f;
-		[Tooltip("CapsuleCollider for player")] 
-		public CapsuleCollider collider;
+		[Tooltip("Model for player")] 
+		[SerializeField] private GameObject playerModel;
 		
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
@@ -64,7 +56,7 @@ namespace StarterAssets
 
 		[SerializeField] private Animator mainAnimator;
 		[SerializeField] private Animator shadowAnimator;
-		[SerializeField] private GameObject playerModel;
+		
 
 		private bool _isTurned;
 		
@@ -93,6 +85,7 @@ namespace StarterAssets
 		private bool _locationStop;
 		private Transform _destination;
 		private bool _canMove = true;
+		private bool _canMoveCamera = true;
 		
 		private bool IsCurrentDeviceMouse
 		{
@@ -111,20 +104,24 @@ namespace StarterAssets
 			}
 		}
 
-		private void OnEnable() {
+		private void OnEnable() 
+		{
 			PlayerEvents.SetLocation += SetLocation;
 			PlayerEvents.StopLocationChange += StopLocationChange;
-			PlayerEvents.ToggleCapsule += ToggleCapsule;
+			PlayerEvents.TogglePlayerModel += TogglePlayerModel;
 			PlayerEvents.ToggleController += ToggleController;
 			PlayerEvents.ToggleMove += ToggleMovement;
+			PlayerEvents.ToggleMoveCamera += ToggleMoveCamera;
 		}
 
-		private void OnDisable() {
+		private void OnDisable() 
+		{
 			PlayerEvents.SetLocation -= SetLocation;
 			PlayerEvents.StopLocationChange -= StopLocationChange;
-			PlayerEvents.ToggleCapsule -= ToggleCapsule;
+			PlayerEvents.TogglePlayerModel -= TogglePlayerModel;
 			PlayerEvents.ToggleController -= ToggleController;
 			PlayerEvents.ToggleMove -= ToggleMovement;
+			PlayerEvents.ToggleMoveCamera -= ToggleMoveCamera;
 		}
 
 		private void Start()
@@ -158,6 +155,7 @@ namespace StarterAssets
 				_controller.enabled = true;
 			}
 			if(!_canMove) return;
+			if (!_canMoveCamera) return;
 			CameraRotation();
 		}
 
@@ -343,19 +341,25 @@ namespace StarterAssets
 			_locationStop = true;
 		}
 		
-		private void ToggleCapsule()
+		private void TogglePlayerModel()
 		{
-			collider.enabled = !collider.enabled;
+			playerModel.SetActive(!playerModel.activeSelf);
 		}
 
 		private void ToggleController()
 		{
 			_controller.enabled = !_controller.enabled;
 		}
-		
 
-		private void ToggleMovement() {
+		private void ToggleMovement() 
+		{
 			_canMove = !_canMove;
+		}
+
+		private void ToggleMoveCamera(bool state)
+		{
+			_canMoveCamera = state;
+			_canMove = state;
 		}
 		
 		private void OnDrawGizmosSelected()
@@ -368,6 +372,16 @@ namespace StarterAssets
 
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+		}
+		
+		public static class PlayerEvents 
+		{
+			public static Action<Transform> SetLocation;
+			public static Action StopLocationChange;
+			public static Action TogglePlayerModel;
+			public static Action ToggleController;
+			public static Action ToggleMove;
+			public static Action<bool> ToggleMoveCamera;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using StarterAssets;
 using UnityEngine;
 
 public class DragObject : MonoBehaviour
@@ -20,6 +21,7 @@ public class DragObject : MonoBehaviour
     private Vector3 _mouseDelta;
     
     private bool _firstTime;
+    private bool _isObjectMoving;
 
     private void Start()
     {
@@ -29,11 +31,13 @@ public class DragObject : MonoBehaviour
     private void OnEnable()
     {
         DragEvents.GetDragging += GetDragging;
+        DragEvents.DropObject += DropObject;
     }
 
     private void OnDisable()
     {
         DragEvents.GetDragging -= GetDragging;
+        DragEvents.DropObject -= DropObject;
     }
 
     private void Update()
@@ -45,8 +49,24 @@ public class DragObject : MonoBehaviour
 
         if (Input.GetMouseButton(0) && _isDragging)
         {
-            UpdateRotation();
-            //UpdateDistance();
+            // Check if object is still moving
+            _isObjectMoving = Vector3.Distance(_pickedObject.position,
+                _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2))) > 0.1f;
+
+            if (Input.GetMouseButton(1) && !_isObjectMoving)
+            {
+                // Right-click for rotation (only if the object is not moving)
+                FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
+                _pickedObject.isKinematic = true;
+                UpdateRotation();
+            }
+            else
+            {
+                // Allow normal dragging movement
+                FirstPersonController.PlayerEvents.ToggleMoveCamera(true);
+                _pickedObject.isKinematic = false;
+                MoveObject();
+            }
         }
 
         if (Input.GetMouseButtonUp(0) && _isDragging)
@@ -54,7 +74,7 @@ public class DragObject : MonoBehaviour
             DropObject();
         }
 
-        // Calculate mouse delta
+        // Calculate mouse delta for throw force
         if (_isDragging)
         {
             _mouseDelta = Input.mousePosition - _lastMousePosition;
@@ -119,6 +139,8 @@ public class DragObject : MonoBehaviour
             _pickedObject.AddTorque(_playerCamera.transform.up * -_mouseDelta.x * rotationThrowForce);
 
             _pickedObject.useGravity = true;
+            _pickedObject.isKinematic = false; // Ensure physics interactions are restored
+            FirstPersonController.PlayerEvents.ToggleMoveCamera(true);
             _pickedObject.maxLinearVelocity = 0.7f;
             _pickedObject = null;
         }
@@ -132,8 +154,17 @@ public class DragObject : MonoBehaviour
         Vector3 targetPosition = _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
         Vector3 forceDirection = targetPosition - _pickedObject.position;
 
+        // If the object is far from the target, it's still moving
+        _isObjectMoving = forceDirection.magnitude > 0.1f;
+
+        if (_isObjectMoving)
+        {
+            _pickedObject.isKinematic = false; // Ensure physics is enabled while moving
+        }
+
         _pickedObject.linearVelocity = forceDirection * moveForce * Time.fixedDeltaTime;
     }
+
 
     private float _rotationZ; // Store cumulative Z-axis rotation
     
@@ -160,5 +191,6 @@ public class DragObject : MonoBehaviour
     public static class DragEvents
     {
         public static Func<bool> GetDragging;
+        public static Action DropObject;
     }
 }
