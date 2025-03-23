@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 namespace StarterAssets
 {
@@ -10,6 +11,9 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool crouch;
+		[Tooltip("Camera for crouch movement")]
+		public CinemachineCamera crouchCamera;
 		public bool interaction;
 
 		[Header("Movement Settings")]
@@ -47,6 +51,11 @@ namespace StarterAssets
 			InteractionInput(value.isPressed);
 		}
 
+		public void OnCrouch(InputValue value)
+		{
+			CrouchInput(value.isPressed);
+		}
+
 		public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
@@ -70,6 +79,23 @@ namespace StarterAssets
 		public void InteractionInput(bool newInteractionState)
 		{
 			interaction = newInteractionState;
+		}
+
+		public void CrouchInput(bool newCrouchState)
+		{
+			if (crouch)
+			{
+				Debug.Log("wychodzeeeee");
+				CameraSwitch.CameraEvents.SwitchCameraToDefaultWithTime(0.75f);
+				crouch = !newCrouchState;
+			}
+			else
+			{
+				crouch = newCrouchState;
+				Debug.Log("Wchodze w inputa");
+
+				CameraSwitch.CameraEvents.SwitchCamera(crouchCamera);
+			}
 		}
 
 		private void OnApplicationFocus(bool hasFocus)

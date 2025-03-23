@@ -50,7 +50,10 @@ public class AudioRepeat : MonoBehaviour {
 
             if (_input.sprint)
             {
-                yield return new WaitForSeconds(sprintDelay);
+                if(_input.move.y < 0.0f)
+                    yield return new WaitForSeconds(walkDelay);
+                else
+                    yield return new WaitForSeconds(sprintDelay);
             }
             else if(_input.didAwake)
             {
@@ -64,7 +67,11 @@ public class AudioRepeat : MonoBehaviour {
 
             if (_input.sprint)
             {
-                yield return new WaitForSeconds(sprintDelay);
+                if(_input.move.y < 0.0f)
+                    yield return new WaitForSeconds(walkDelay);
+                else
+                    yield return new WaitForSeconds(sprintDelay);
+                
             }
             else if(_input.didAwake)
             {
