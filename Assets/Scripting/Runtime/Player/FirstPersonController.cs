@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,10 @@ namespace StarterAssets
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
+		[Tooltip("Crouch speed of the character in m/s")]
+		public float CrouchSpeed = 2.0f;
+
+		private float targetSpeed;
 		[Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
@@ -202,9 +207,29 @@ namespace StarterAssets
 
 		private void Move()
 		{
-			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-
+			mainAnimator.SetBool("Crouch", _input.crouch);
+			shadowAnimator.SetBool("Crouch", _input.crouch);
+			// set target speed based on move speed, sprint speed and if sprint is pressed or if player is crouching
+			if (_input.crouch)
+			{
+				targetSpeed = CrouchSpeed;
+			}
+			else
+			{
+				if (_input.move.y < 0.0f)
+				{
+					mainAnimator.SetBool("Sprint", false);
+					shadowAnimator.SetBool("Sprint", false);
+					targetSpeed = MoveSpeed;
+				}
+				else
+				{
+					targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+					mainAnimator.SetBool("Sprint", _input.sprint);
+					shadowAnimator.SetBool("Sprint", _input.sprint);
+				}
+			}
+			
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
@@ -240,6 +265,7 @@ namespace StarterAssets
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
+			
 			
 			if (_input.move != Vector2.zero)
 			{

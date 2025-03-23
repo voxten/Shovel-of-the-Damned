@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System;
+using System.Collections;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class CameraSwitch : MonoBehaviour
     {
         CameraEvents.SwitchCamera += SwitchCamera;
         CameraEvents.SwitchToDefault += SwitchToDefault;
+        CameraEvents.SwitchCameraToDefaultWithTime += SwitchCameraToDefaultWithTime;
         _activeCamera = defaultCamera;
     }
 
@@ -20,6 +22,7 @@ public class CameraSwitch : MonoBehaviour
     {
         CameraEvents.SwitchCamera -= SwitchCamera;
         CameraEvents.SwitchToDefault -= SwitchToDefault;
+        CameraEvents.SwitchCameraToDefaultWithTime -= SwitchCameraToDefaultWithTime;
         _activeCamera = null;
     }
 
@@ -36,14 +39,26 @@ public class CameraSwitch : MonoBehaviour
         _activeCamera = virtualCamera;
     }
 
+    private void SwitchCameraToDefaultWithTime(float time)
+    {
+        StartCoroutine(WaitForCameraSwitch(time));
+    }
+
     private void SwitchToDefault()
     {
         SwitchCamera(defaultCamera);
+    }
+
+    private IEnumerator WaitForCameraSwitch(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SwitchToDefault();
     }
     
     public static class CameraEvents
     {
         public static Action<CinemachineCamera> SwitchCamera;
         public static Action SwitchToDefault;
+        public static Action<float> SwitchCameraToDefaultWithTime;
     }
 }
