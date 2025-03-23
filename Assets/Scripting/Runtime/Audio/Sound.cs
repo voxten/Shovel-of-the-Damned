@@ -1,19 +1,12 @@
-﻿public enum Sound {
+﻿public enum Sound 
+{
     None,
     PlugInCable,
     PlugOutCable,
-    PipeRotate,
-    WaterFilling,
-    FuseBoxDoor,
-    WelderInsert,
-    WelderRemove,
     ButtonClick,
     CodeApprove,
     CodeDenied,
     CodeInput,
-    HardMarsAmbient,
-    SoftMarsAmbient,
-    FuseFinish,
     CablesPuzzleLight,
     CablePuzzleStart,
     CablePuzzleEndLoop,
@@ -23,8 +16,10 @@
     Manometr,
     DoorOpen,
     DoorClose,
+    CanisterPour,
+    GeneratorPull,
+    GeneratorBatteryInsert,
     GeneratorPuzzleStart,
     GeneratorPuzzleLoop,
-    PadlockCut,
     EmergencyBeep,
 }
