@@ -712,7 +712,7 @@ MonoBehaviour:
   RotationSpeed: 1
   SpeedChangeRate: 5
   decelerationRate: 0.4
-  collider: {fileID: 0}
+  playerModel: {fileID: 7134362570111946921}
   JumpHeight: 0
   Gravity: -15
   EnableJump: 1
@@ -729,7 +729,6 @@ MonoBehaviour:
   BottomClamp: -90
   mainAnimator: {fileID: 2591627493079020748}
   shadowAnimator: {fileID: 7442474590510442413}
-  playerModel: {fileID: 7134362570111946921}
 --- !u!114 &2015071691680737317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,7 +996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8114808034777129862
 RectTransform:
   m_ObjectHideFlags: 0
