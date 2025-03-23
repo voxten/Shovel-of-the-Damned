@@ -2,71 +2,81 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SoundManager : MonoBehaviour {
+public class SoundManager : MonoBehaviour 
+{
     [SerializeField] private AudioSource mainAudio;
     [SerializeField] private AudioSource musicAudio;
 
     [SerializeField] private AudioLibraryData audioLibrary;
 
-    private static Action<Sound, Vector2?, Vector2?> onPlaySound;
-    private static Action<Sound, Transform, Vector2?, Vector2?> onPlaySound3D;
+    private static Action<Sound, Vector2?, Vector2?> _onPlaySound;
+    private static Action<Sound, Transform, Vector2?, Vector2?> _onPlaySound3D;
 
-    private void OnEnable() {
-        onPlaySound += PlayAudioShot;
-        onPlaySound3D += Play3DAudioShot;
+    private void OnEnable() 
+    {
+        _onPlaySound += PlayAudioShot;
+        _onPlaySound3D += Play3DAudioShot;
     }
 
-    private void OnDisable() {
-        onPlaySound -= PlayAudioShot;
-        onPlaySound3D -= Play3DAudioShot;
+    private void OnDisable() 
+    {
+        _onPlaySound -= PlayAudioShot;
+        _onPlaySound3D -= Play3DAudioShot;
     }
 
-    public static void PlaySound(Sound _type, Vector2? _pitchRange = null, Vector2? _volumeRange = null) {
-        if (onPlaySound == null) Debug.LogError("There is no SoundManager in the scene");
+    public static void PlaySound(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 
+    {
+        if (_onPlaySound == null) Debug.LogError("There is no SoundManager in the scene");
 
-        onPlaySound?.Invoke(_type, _pitchRange, _volumeRange);
+        _onPlaySound?.Invoke(type, pitchRange, volumeRange);
     }
 
-    public static void PlaySound3D(Sound _type, Transform _transform, Vector2? _pitchRange = null,
-        Vector2? _volumeRange = null) {
-        if (onPlaySound3D == null) Debug.LogError("There is no SoundManager in the scene");
+    public static void PlaySound3D(Sound type, Transform objTransform, Vector2? pitchRange = null, Vector2? volumeRange = null) 
+    {
+        if (_onPlaySound3D == null) Debug.LogError("There is no SoundManager in the scene");
 
-        onPlaySound3D?.Invoke(_type, _transform, _pitchRange, _volumeRange);
+        _onPlaySound3D?.Invoke(type, objTransform, pitchRange, volumeRange);
     }
 
-    private void Play3DAudioShot(Sound _type, Transform _transform, Vector2? _pitchRange = null,
-        Vector2? _volumeRange = null) {
-        HandleAudioPitch(_pitchRange);
-        HandleAudioVolume(_volumeRange);
+    private void Play3DAudioShot(Sound type, Transform objTransform, Vector2? pitchRange = null, Vector2? volumeRange = null) 
+    {
+        HandleAudioPitch(pitchRange);
+        HandleAudioVolume(volumeRange);
 
-        var sfx = audioLibrary.GetAudioClip(_type);
-        if(_volumeRange != null)
-            AudioSource.PlayClipAtPoint(sfx, _transform.position, Random.Range(_volumeRange.Value.x, _volumeRange.Value.y));
+        if (type == Sound.None) 
+            return;
+        
+        var sfx = audioLibrary.GetAudioClip(type);
+        if(volumeRange != null)
+            AudioSource.PlayClipAtPoint(sfx, objTransform.position, Random.Range(volumeRange.Value.x, volumeRange.Value.y));
         else
-            AudioSource.PlayClipAtPoint(sfx, _transform.position);
+            AudioSource.PlayClipAtPoint(sfx, objTransform.position);
     }
 
-    private void PlayAudioShot(Sound _type, Vector2? _pitchRange = null, Vector2? _volumeRange = null) {
-        HandleAudioPitch(_pitchRange);
-        HandleAudioVolume(_volumeRange);
+    private void PlayAudioShot(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 
+    {
+        HandleAudioPitch(pitchRange);
+        HandleAudioVolume(volumeRange);
 
-        var sfx = audioLibrary.GetAudioClip(_type);
-        if(_volumeRange != null)
-            mainAudio.PlayOneShot(sfx, Random.Range(_volumeRange.Value.x, _volumeRange.Value.y));
+        var sfx = audioLibrary.GetAudioClip(type);
+        if(volumeRange != null)
+            mainAudio.PlayOneShot(sfx, Random.Range(volumeRange.Value.x, volumeRange.Value.y));
         else
             mainAudio.PlayOneShot(sfx);
     }
 
-    private void HandleAudioVolume(Vector2? _volumeRange) {
-        if (_volumeRange != null)
-            mainAudio.volume = Random.Range(_volumeRange.Value.x, _volumeRange.Value.y);
+    private void HandleAudioVolume(Vector2? volumeRange) 
+    {
+        if (volumeRange != null)
+            mainAudio.volume = Random.Range(volumeRange.Value.x, volumeRange.Value.y);
         else
             mainAudio.volume = 1;
     }
 
-    private void HandleAudioPitch(Vector2? _pitchRange) {
-        if (_pitchRange != null)
-            mainAudio.pitch = Random.Range(_pitchRange.Value.x, _pitchRange.Value.y);
+    private void HandleAudioPitch(Vector2? pitchRange) 
+    {
+        if (pitchRange != null)
+            mainAudio.pitch = Random.Range(pitchRange.Value.x, pitchRange.Value.y);
         else
             mainAudio.pitch = 1.5f;
     }

@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Battery
+  - Canister
   layers:
   - Default
   - TransparentFX
@@ -15,6 +17,8 @@ TagManager:
   - Ground
   - NightVision
   - Testing
+  - Drawer
+  - 
   - 
   - 
   - 

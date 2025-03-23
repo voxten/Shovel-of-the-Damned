@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,26 +10,22 @@ namespace StarterAssets
 	[RequireComponent(typeof(PlayerInput))]
 	public class FirstPersonController : MonoBehaviour
 	{
-		public static class PlayerEvents {
-			public static Action<Transform> SetLocation;
-			public static Action StopLocationChange;
-			public static Action ToggleCapsule;
-			public static Action ToggleController;
-			public static Action ToggleMove;
-		}
-		
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
+		[Tooltip("Crouch speed of the character in m/s")]
+		public float CrouchSpeed = 2.0f;
+
+		private float targetSpeed;
 		[Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 		public float decelerationRate = .4f;
-		[Tooltip("CapsuleCollider for player")] 
-		public CapsuleCollider collider;
+		[Tooltip("Model for player")] 
+		[SerializeField] private GameObject playerModel;
 		
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
@@ -64,7 +61,7 @@ namespace StarterAssets
 
 		[SerializeField] private Animator mainAnimator;
 		[SerializeField] private Animator shadowAnimator;
-		[SerializeField] private GameObject playerModel;
+		
 
 		private bool _isTurned;
 		
@@ -93,6 +90,7 @@ namespace StarterAssets
 		private bool _locationStop;
 		private Transform _destination;
 		private bool _canMove = true;
+		private bool _canMoveCamera = true;
 		
 		private bool IsCurrentDeviceMouse
 		{
@@ -111,20 +109,24 @@ namespace StarterAssets
 			}
 		}
 
-		private void OnEnable() {
+		private void OnEnable() 
+		{
 			PlayerEvents.SetLocation += SetLocation;
 			PlayerEvents.StopLocationChange += StopLocationChange;
-			PlayerEvents.ToggleCapsule += ToggleCapsule;
+			PlayerEvents.TogglePlayerModel += TogglePlayerModel;
 			PlayerEvents.ToggleController += ToggleController;
 			PlayerEvents.ToggleMove += ToggleMovement;
+			PlayerEvents.ToggleMoveCamera += ToggleMoveCamera;
 		}
 
-		private void OnDisable() {
+		private void OnDisable() 
+		{
 			PlayerEvents.SetLocation -= SetLocation;
 			PlayerEvents.StopLocationChange -= StopLocationChange;
-			PlayerEvents.ToggleCapsule -= ToggleCapsule;
+			PlayerEvents.TogglePlayerModel -= TogglePlayerModel;
 			PlayerEvents.ToggleController -= ToggleController;
 			PlayerEvents.ToggleMove -= ToggleMovement;
+			PlayerEvents.ToggleMoveCamera -= ToggleMoveCamera;
 		}
 
 		private void Start()
@@ -158,6 +160,7 @@ namespace StarterAssets
 				_controller.enabled = true;
 			}
 			if(!_canMove) return;
+			if (!_canMoveCamera) return;
 			CameraRotation();
 		}
 
@@ -204,9 +207,29 @@ namespace StarterAssets
 
 		private void Move()
 		{
-			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-
+			mainAnimator.SetBool("Crouch", _input.crouch);
+			shadowAnimator.SetBool("Crouch", _input.crouch);
+			// set target speed based on move speed, sprint speed and if sprint is pressed or if player is crouching
+			if (_input.crouch)
+			{
+				targetSpeed = CrouchSpeed;
+			}
+			else
+			{
+				if (_input.move.y < 0.0f)
+				{
+					mainAnimator.SetBool("Sprint", false);
+					shadowAnimator.SetBool("Sprint", false);
+					targetSpeed = MoveSpeed;
+				}
+				else
+				{
+					targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+					mainAnimator.SetBool("Sprint", _input.sprint);
+					shadowAnimator.SetBool("Sprint", _input.sprint);
+				}
+			}
+			
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
@@ -242,6 +265,7 @@ namespace StarterAssets
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
+			
 			
 			if (_input.move != Vector2.zero)
 			{
@@ -343,19 +367,25 @@ namespace StarterAssets
 			_locationStop = true;
 		}
 		
-		private void ToggleCapsule()
+		private void TogglePlayerModel()
 		{
-			collider.enabled = !collider.enabled;
+			playerModel.SetActive(!playerModel.activeSelf);
 		}
 
 		private void ToggleController()
 		{
 			_controller.enabled = !_controller.enabled;
 		}
-		
 
-		private void ToggleMovement() {
+		private void ToggleMovement() 
+		{
 			_canMove = !_canMove;
+		}
+
+		private void ToggleMoveCamera(bool state)
+		{
+			_canMoveCamera = state;
+			_canMove = state;
 		}
 		
 		private void OnDrawGizmosSelected()
@@ -368,6 +398,16 @@ namespace StarterAssets
 
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+		}
+		
+		public static class PlayerEvents 
+		{
+			public static Action<Transform> SetLocation;
+			public static Action StopLocationChange;
+			public static Action TogglePlayerModel;
+			public static Action ToggleController;
+			public static Action ToggleMove;
+			public static Action<bool> ToggleMoveCamera;
 		}
 	}
 }
