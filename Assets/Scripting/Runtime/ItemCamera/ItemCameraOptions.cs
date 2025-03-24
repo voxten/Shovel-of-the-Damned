@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemCameraOptions : MonoBehaviour
 {
     [SerializeField] private GameObject nightVision;
-    [SerializeField] private TextMeshProUGUI showedBateryLevel;
+    [SerializeField] private TextMeshPro showedBateryLevel;
     [SerializeField] private Material screen;
     [SerializeField] private Item itemBattery;
     private float _batterryLevel = 2.00f;
@@ -49,6 +49,7 @@ public class ItemCameraOptions : MonoBehaviour
         if(_batterryLevel < 0.0)
         {
             screen.color = Color.black;
+            showedBateryLevel.text = "";
             if (Inventory.InventoryEvents.FindItem(itemBattery))
             {
                 Inventory.InventoryEvents.RemoveItem(itemBattery);
