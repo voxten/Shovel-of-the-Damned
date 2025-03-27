@@ -33,13 +33,13 @@ public class Narration : MonoBehaviour
         DisplayText?.Invoke("I have to make it in time...");
     }
 
-    private void UpdateText(string _content) 
+    private void UpdateText(string content) 
     {
         StopAllCoroutines();
         if (label != null) {
             label.text = string.Empty;
             displayGroup.DOFade(1, .2f).SetEase(Ease.OutExpo).OnComplete(() => {
-                StartCoroutine(TypewriterEffect(_content));
+                StartCoroutine(TypewriterEffect(content));
             });
         }
     }

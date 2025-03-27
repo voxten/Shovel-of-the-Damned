@@ -37,7 +37,7 @@ public class Inventory : MonoBehaviour
     {
         foreach (var item in items)
         {
-            if (item.id == itemToRemove.id)
+            if (item.Id == itemToRemove.Id)
             {
                 items.Remove(item);
                 return true;
@@ -52,7 +52,7 @@ public class Inventory : MonoBehaviour
         {
             foreach (var item in items)
             {
-                if (item.id == itemToRemove.id)
+                if (item.Id == itemToRemove.Id)
                 {
                     items.Remove(item);
                 }
@@ -66,7 +66,7 @@ public class Inventory : MonoBehaviour
     {
         foreach (var item in items)
         {
-            if (item.id == itemToFind.id)
+            if (item.Id == itemToFind.Id)
             {
                 return true;
             }
@@ -79,7 +79,7 @@ public class Inventory : MonoBehaviour
         var currentCount = 0;
         foreach (var item in items)
         {
-            if (item.id == itemToFind.id)
+            if (item.Id == itemToFind.Id)
             {
                 currentCount++;
             }

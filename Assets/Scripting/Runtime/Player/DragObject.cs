@@ -14,13 +14,14 @@ public class DragObject : MonoBehaviour
     private Camera _playerCamera;
     private Rigidbody _pickedObject;
     private bool _isDragging;
+    
     private float _rotationX;
     private float _rotationY;
+    private float _rotationZ;
 
     private Vector3 _lastMousePosition;
     private Vector3 _mouseDelta;
     
-    private bool _firstTime;
     private bool _isObjectMoving;
 
     private void Start()
@@ -117,12 +118,6 @@ public class DragObject : MonoBehaviour
                 _rotationY = initialRotation.x;
 
                 _lastMousePosition = Input.mousePosition; // Initialize last mouse position
-                
-                if (!_firstTime) 
-                {
-                    Narration.DisplayText?.Invoke("What order was it?");
-                    _firstTime = true;
-                }
             }
         }
     }
@@ -151,24 +146,22 @@ public class DragObject : MonoBehaviour
     private void MoveObject()
     {
         InteractionSystem.InteractionEvents.DisableInteractionIcon();
+
+        // Get the custom interaction point if available
+        Vector3 point = _pickedObject.GetComponent<CustomObjectPoint>()?.GetCustomPoint() ?? _pickedObject.position;
+
         Vector3 targetPosition = _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
-        Vector3 forceDirection = targetPosition - _pickedObject.position;
+        Vector3 forceDirection = targetPosition - point;
 
-        // If the object is far from the target, it's still moving
         _isObjectMoving = forceDirection.magnitude > 0.1f;
-
         if (_isObjectMoving)
         {
-            _pickedObject.isKinematic = false; // Ensure physics is enabled while moving
+            _pickedObject.isKinematic = false;
         }
 
         _pickedObject.linearVelocity = forceDirection * moveForce * Time.fixedDeltaTime;
     }
-
-
-    private float _rotationZ; // Store cumulative Z-axis rotation
     
-
     private void UpdateRotation()
     {
         // Rotate with mouse movement (X and Y axes)
