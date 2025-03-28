@@ -46,11 +46,11 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && _displayedItems.Count != 0)
         {
             MoveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && _displayedItems.Count != 0)
         {
             MoveRight();
         }
