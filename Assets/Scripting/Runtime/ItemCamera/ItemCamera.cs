@@ -5,10 +5,15 @@ using UnityEngine.Animations.Rigging;
 public class ItemCamera : MonoBehaviour
 {
     [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject cameraMonitor;
     [SerializeField] private Item itemCamera;
-    [SerializeField] private RigBuilder RigBuilder;
-    [SerializeField] private Rig handMover;
+    [SerializeField] private TwoBoneIKConstraint handMover;
     private float _handMoverWeightHelp = 0.0f;
+    private int _r = 0;
+    private bool _active = false;
+    private bool _toOpen = false;
+    private bool _toClose = false;
+    private bool _isOpened = false;
     void Start()
     {
 
@@ -21,12 +26,12 @@ public class ItemCamera : MonoBehaviour
         {
             ChangeCameraEnable();
         }
-        if (camera.activeSelf && handMover.weight != 1.0f)
+        if (_active && handMover.weight != 1.0f)
         {
             _handMoverWeightHelp += 0.02f;
             handMover.weight = _handMoverWeightHelp;
         }
-        else if(!camera.activeSelf && handMover.weight != 0.0f)
+        else if(!_active && handMover.weight != 0.0f)
         {
             _handMoverWeightHelp -= 0.02f;
             handMover.weight = _handMoverWeightHelp;
@@ -34,20 +39,49 @@ public class ItemCamera : MonoBehaviour
         else if(_handMoverWeightHelp <= 0.0f)
         {
             _handMoverWeightHelp = -0.02f;
-            //RigBuilder.enabled = false;
+            _isOpened = false;
+            camera.SetActive(false);
         }
-        else if (_handMoverWeightHelp >= 1.0f)
+        else if (_handMoverWeightHelp >= 1.0f && !_isOpened)
         {
-            
+            _toOpen = true;
             _handMoverWeightHelp = 1.02f;
+        }
+        if(_toOpen)
+        {
+            if (_r < 45)
+            {
+                _r += 1;
+                cameraMonitor.transform.Rotate(0.0f, 0.0f, 2.0f, Space.Self);
+            }
+            else _isOpened = true;
+        }
+        else if(_toClose)
+        {
+            if (_r > 0)
+            {
+                _r -= 1;
+                cameraMonitor.transform.Rotate(0.0f, 0.0f, -2.0f, Space.Self);
+            }
+            else
+            {
+                _toClose = false;
+                _active = false;
+            }
         }
     }
 
     private void ChangeCameraEnable()
     {
-        //RigBuilder.enabled = true;
-        camera.SetActive(!camera.activeSelf);
+        if (!camera.activeSelf)
+        {
+            camera.SetActive(true);
+            _active = true;
+        }
+        else
+        {
+            _toOpen = false;
+            _toClose = true;
+        }
     }
-
-    
 }
