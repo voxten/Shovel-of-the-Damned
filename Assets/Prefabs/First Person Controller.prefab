@@ -771,6 +771,9 @@ MonoBehaviour:
   moveableLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  doorLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1708301584631956409
 GameObject:
   m_ObjectHideFlags: 0
@@ -3019,11 +3022,15 @@ MonoBehaviour:
   pickupRange: 5
   moveForce: 4000
   rotationSpeed: 300
+  doorRotationSpeed: 50
   throwForceMultiplier: 10
   rotationThrowForce: 10
-  interactableLayer:
+  moveableLayer:
     serializedVersion: 2
     m_Bits: 8
+  doorLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &5062750256258807650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3163,7 +3170,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 511
+    m_Bits: 1007
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
