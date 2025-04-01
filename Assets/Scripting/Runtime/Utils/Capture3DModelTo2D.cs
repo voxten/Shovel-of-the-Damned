@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using Sirenix.OdinInspector;
+using System.Collections;
 
 public class Capture3DModelTo2D : MonoBehaviour
 {
@@ -10,6 +11,31 @@ public class Capture3DModelTo2D : MonoBehaviour
     [SerializeField] private int imageHeight = 512;
     [SerializeField] private bool transparentBackground = true; // Enable transparency
     private Camera _renderCamera;
+    private RenderTexture _renderTexture;
+
+    private void Awake()
+    {
+        SetupCamera();
+    }
+
+    private void SetupCamera()
+    {
+        if (_renderCamera == null)
+        {
+            GameObject camObj = new GameObject("RenderCamera");
+            _renderCamera = camObj.AddComponent<Camera>();
+            _renderCamera.transform.SetParent(transform); // Keep it in the hierarchy
+        }
+
+        _renderCamera.clearFlags = transparentBackground ? CameraClearFlags.SolidColor : CameraClearFlags.Skybox;
+        _renderCamera.backgroundColor = transparentBackground ? new Color(0, 0, 0, 0) : Color.white;
+        _renderCamera.orthographic = false;
+        _renderCamera.fieldOfView = 60;
+        _renderCamera.enabled = false; // Disable until capture
+
+        _renderTexture = new RenderTexture(imageWidth, imageHeight, 32);
+        _renderCamera.targetTexture = _renderTexture;
+    }
 
     [Button]
     private void Capture()
@@ -20,56 +46,46 @@ public class Capture3DModelTo2D : MonoBehaviour
             return;
         }
 
-        // Create a new Camera
-        GameObject camObj = new GameObject("RenderCamera");
-        _renderCamera = camObj.AddComponent<Camera>();
-
-        // Camera Settings
-        _renderCamera.clearFlags = transparentBackground ? CameraClearFlags.SolidColor : CameraClearFlags.Skybox;
-        _renderCamera.backgroundColor = transparentBackground ? new Color(0, 0, 0, 0) : Color.white;
-        _renderCamera.orthographic = false;
-        _renderCamera.fieldOfView = 60;
-
-        // Position Camera at the set distance
+        // Get model bounds
         Bounds modelBounds = GetModelBounds(model);
         Vector3 modelCenter = modelBounds.center;
         float adjustedDistance = modelBounds.extents.magnitude + cameraDistance;
+
+        // Position camera
         _renderCamera.transform.position = modelCenter + new Vector3(0, 0, -adjustedDistance);
         _renderCamera.transform.LookAt(modelCenter);
 
-        // Create a RenderTexture
-        RenderTexture renderTex = new RenderTexture(imageWidth, imageHeight, 32);
-        _renderCamera.targetTexture = renderTex;
-
-        // Capture and save
-        StartCoroutine(CaptureImage(renderTex));
+        // Capture and save image
+        StartCoroutine(CaptureImage());
     }
 
-    private System.Collections.IEnumerator CaptureImage(RenderTexture renderTex)
+    private IEnumerator CaptureImage()
     {
         yield return new WaitForEndOfFrame();
 
         // Set active RenderTexture
-        RenderTexture.active = renderTex;
+        RenderTexture.active = _renderTexture;
+        _renderCamera.Render(); // Manually render the camera
 
-        // Create Texture2D and read pixels
+        // Read pixels
         TextureFormat format = transparentBackground ? TextureFormat.RGBA32 : TextureFormat.RGB24;
         Texture2D tex = new Texture2D(imageWidth, imageHeight, format, false);
         tex.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), 0, 0);
         tex.Apply();
 
         // Save as PNG
-        byte[] bytes = tex.EncodeToPNG();
-        string path = Path.Combine(Application.dataPath, model.name + ".png");
-        File.WriteAllBytes(path, bytes);
+        string directory = Path.Combine(Application.dataPath, "Art/2D");
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
+        string path = Path.Combine(directory, model.name + ".png");
+        File.WriteAllBytes(path, tex.EncodeToPNG());
 
         Debug.Log("Screenshot saved to: " + path);
 
-        // Clean up
+        // Cleanup
         RenderTexture.active = null;
-        _renderCamera.targetTexture = null;
-        Destroy(renderTex);
-        Destroy(_renderCamera.gameObject);
+        Destroy(tex);
     }
 
     // Calculate the bounds of the model

@@ -12,68 +12,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36baaa8bdcb9d8b49b9199833965d2c3, type: 3}
   m_Name: MainCamera Blends
   m_EditorClassIdentifier: 
-  m_CustomBlends:
-  - m_From: Run
-    m_To: Idle
-    m_Blend:
-      m_Style: 2
-      m_Time: 0.3
-      m_CustomCurve:
+  CustomBlends:
+  - From: Run
+    To: Idle
+    Blend:
+      Style: 2
+      Time: 0.3
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Walk
-    m_To: Idle
-    m_Blend:
-      m_Style: 1
-      m_Time: 0.3
-      m_CustomCurve:
+  - From: Walk
+    To: Idle
+    Blend:
+      Style: 1
+      Time: 0.3
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Idle
-    m_To: Run
-    m_Blend:
-      m_Style: 2
-      m_Time: 1
-      m_CustomCurve:
+  - From: Idle
+    To: Run
+    Blend:
+      Style: 2
+      Time: 1
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Idle
-    m_To: Walk
-    m_Blend:
-      m_Style: 3
-      m_Time: 2
-      m_CustomCurve:
+  - From: Idle
+    To: Walk
+    Blend:
+      Style: 3
+      Time: 2
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Walk
-    m_To: Run
-    m_Blend:
-      m_Style: 6
-      m_Time: 0.3
-      m_CustomCurve:
+  - From: Walk
+    To: Run
+    Blend:
+      Style: 6
+      Time: 0.3
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Run
-    m_To: Walk
-    m_Blend:
-      m_Style: 6
-      m_Time: 0.3
-      m_CustomCurve:
+  - From: Run
+    To: Walk
+    Blend:
+      Style: 6
+      Time: 0.3
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - From: Crouch
+    To: Idle
+    Blend:
+      Style: 6
+      Time: 0.5
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - From: Idle
+    To: Crouch
+    Blend:
+      Style: 6
+      Time: 0.5
+      CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0

@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private List<Item> items = new();
+    [SerializeField] private Sprite noteIcon;
+    [SerializeField] private Sprite backpackIcon;
+    [SerializeField] private Image iconImage;
 
     private void OnEnable()
     {
@@ -31,6 +36,25 @@ public class Inventory : MonoBehaviour
     private void AddItem(Item item)
     {
         items.Add(item);
+        iconImage.sprite = item is NoteItem ? noteIcon : backpackIcon;
+        AnimateIcon();
+    }
+
+    private void AnimateIcon()
+    {
+        if (iconImage == null) return;
+
+        iconImage.DOFade(1f, 0.5f).OnComplete(() =>  // Ensure it starts visible
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            for (var i = 0; i < 3; i++)
+            {
+                sequence.Append(iconImage.DOFade(0f, 0.3f)).Append(iconImage.DOFade(1f, 0.3f));
+            }
+
+            sequence.Append(iconImage.DOFade(0f, 0.3f)).Play();
+        });
     }
     
     private bool RemoveItem(Item itemToRemove)
@@ -48,16 +72,22 @@ public class Inventory : MonoBehaviour
     
     private bool RemoveItems(Item itemToRemove, int count)
     {
+        var currentCount = 0;
         if (FindItems(itemToRemove, count))
         {
             foreach (var item in items)
             {
+                if (currentCount == count)
+                {
+                    return true;
+                }
+                
                 if (item.Id == itemToRemove.Id)
                 {
+                    currentCount++;
                     items.Remove(item);
                 }
             }
-            return true;
         }
         return false;
     }

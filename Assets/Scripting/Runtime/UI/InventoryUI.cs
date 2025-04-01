@@ -54,20 +54,38 @@ public class InventoryUI : MonoBehaviour
         {
             MoveRight();
         }
+        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0)
+        {
+            UseSelectedItem();
+        }
     }
-
+    
     private void MoveLeft()
     {
+        if (NoteUIManager.NoteActions.GetIsOn()) return;
         _selectedIndex = (_selectedIndex - 1 + _itemList.Count) % _itemList.Count;
         AnimateInventoryDisplay();
     }
 
     private void MoveRight()
     {
+        if (NoteUIManager.NoteActions.GetIsOn()) return;
         _selectedIndex = (_selectedIndex + 1) % _itemList.Count;
         AnimateInventoryDisplay();
     }
+    
+    private void UseSelectedItem()
+    {
+        if (_selectedIndex < 0 || _selectedIndex >= _itemList.Count)
+            return;
 
+        Item item = _itemList[_selectedIndex];
+        if (item is NoteItem note && !NoteUIManager.NoteActions.GetIsOn())
+        {
+            NoteUIManager.NoteActions.OpenNote(note);
+        }
+    }
+    
     private void SetInventoryPanel(ItemType itemType)
     {
         if (inventoryViewer.childCount != 0)
@@ -77,14 +95,28 @@ public class InventoryUI : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-        
-        _itemList = Inventory.InventoryEvents.GetItemsByType(itemType);
+
+        var allItems = Inventory.InventoryEvents.GetItemsByType(itemType);
+        if (allItems.Count == 0) return;
+
+        // Dictionary to track occurrences
+        Dictionary<Item, int> itemOccurrences = new();
+        foreach (var item in allItems)
+        {
+            if (itemOccurrences.ContainsKey(item))
+                itemOccurrences[item]++;
+            else
+                itemOccurrences[item] = 1;
+        }
+
+        _itemList = new List<Item>(itemOccurrences.Keys); // Store unique items
+
         if (_itemList.Count != 0)
         {
             itemNameText.enabled = true;
             itemDescText.enabled = true;
             inventoryViewer.gameObject.SetActive(true);
-            
+
             _displayedItems.Clear();
             var displayCount = Mathf.Min(_itemList.Count, VisibleItemsCount);
             for (var i = 0; i < displayCount; i++)
@@ -93,38 +125,54 @@ public class InventoryUI : MonoBehaviour
                 _displayedItems.Add(itemTemp);
             }
         }
-        UpdateInventoryDisplay();
+
+        UpdateInventoryDisplay(itemOccurrences);
     }
 
-    private void UpdateInventoryDisplay()
+
+    private void UpdateInventoryDisplay(Dictionary<Item, int> itemOccurrences)
     {
         var displayCount = Mathf.Min(_itemList.Count, VisibleItemsCount);
-        
+
         for (var i = 0; i < displayCount; i++)
         {
             var itemIndex = (_selectedIndex + i - 1 + _itemList.Count) % _itemList.Count;
+            var item = _itemList[itemIndex];
             var itemTransform = _displayedItems[i].transform;
-            
-            itemTransform.GetComponent<Image>().sprite = _itemList.Count == 2 ? _itemList[i].itemIcon : _itemList[itemIndex].itemIcon;
-            
+
+            // Always use itemIndex for the sprite to show the correct item
+            itemTransform.GetComponent<Image>().sprite = item.itemIcon;
+
+            // Get the TextMeshPro in the prefab and set the count text
+            var countText = itemTransform.GetComponentInChildren<TextMeshProUGUI>();
+            if (itemOccurrences.TryGetValue(item, out int count))
+            {
+                countText.text = count > 1 ? count.ToString() : "";
+            }
+            else
+            {
+                countText.text = "";
+            }
+
             switch (displayCount)
             {
                 case 1:
-                    itemTransform.localScale = Vector3.one * 1.2f; // Highlight single item
-                    itemTransform.localPosition = Vector3.zero; // Center
+                    itemTransform.localScale = Vector3.one * 1.2f;
+                    itemTransform.localPosition = Vector3.zero;
                     break;
                 case 2:
-                    itemTransform.localScale = (i == _selectedIndex) ? Vector3.one * 1.2f : Vector3.one;
-                    itemTransform.localPosition = new Vector3((i - 0.5f) * 200, 0, 0); // Spread items evenly
+                    itemTransform.localScale = (itemIndex == _selectedIndex) ? Vector3.one * 1.2f : Vector3.one;
+                    itemTransform.localPosition = new Vector3((i - 0.5f) * 200, 0, 0);
                     break;
                 default:
-                    itemTransform.localScale = (i == 1) ? Vector3.one * 1.2f : Vector3.one; // Highlight middle item
+                    itemTransform.localScale = (i == 1) ? Vector3.one * 1.2f : Vector3.one;
                     itemTransform.localPosition = new Vector3((i - 1) * 200, 0, 0);
                     break;
             }
-            SetItemDesc(itemIndex);
         }
+        SetItemDesc(_selectedIndex); // Always show description for selected item
     }
+
 
     private void SetItemDesc(int itemIndex)
     {
@@ -152,6 +200,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
         SetItemDesc(_selectedIndex);
+        SetInventoryPanel(_itemList[_selectedIndex].itemType);
     }
 
     private void GenerateButtons()
