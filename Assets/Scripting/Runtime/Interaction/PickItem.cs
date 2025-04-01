@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PickItem : InteractableObject
 {
-    [SerializeField] private Item item;
+    [SerializeField] protected Item item;
     [SerializeField] private Sound pickSound;
     public bool isPickable;
     private bool _isFirst = true;
@@ -24,6 +24,10 @@ public class PickItem : InteractableObject
             gameObject.SetActive(false);
             _isFirst = false;
             _collider.enabled = false;
+            if (item is NoteItem note)
+            {
+                NoteUIManager.NoteActions.OpenNote(note);
+            }
         }
         return true;
     }

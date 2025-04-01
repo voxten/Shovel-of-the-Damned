@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,22 +7,26 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioSource mainAudio;
     [SerializeField] private AudioSource musicAudio;
-
     [SerializeField] private AudioLibraryData audioLibrary;
 
     private static Action<Sound, Vector2?, Vector2?> _onPlaySound;
     private static Action<Sound, Transform, Vector2?, Vector2?> _onPlaySound3D;
+    private static Action<Sound> _onStopSound; // Delegate for stopping sound
+
+    private static Dictionary<Sound, AudioSource> activeSounds = new();
 
     private void OnEnable() 
     {
         _onPlaySound += PlayAudioShot;
         _onPlaySound3D += Play3DAudioShot;
+        _onStopSound += StopAudioShot;
     }
 
     private void OnDisable() 
     {
         _onPlaySound -= PlayAudioShot;
         _onPlaySound3D -= Play3DAudioShot;
+        _onStopSound -= StopAudioShot;
     }
 
     public static void PlaySound(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 
@@ -38,46 +43,59 @@ public class SoundManager : MonoBehaviour
         _onPlaySound3D?.Invoke(type, objTransform, pitchRange, volumeRange);
     }
 
+    public static void StopSound(Sound type)
+    {
+        if (_onStopSound == null) Debug.LogError("There is no SoundManager in the scene");
+
+        _onStopSound?.Invoke(type);
+    }
+
     private void Play3DAudioShot(Sound type, Transform objTransform, Vector2? pitchRange = null, Vector2? volumeRange = null) 
     {
-        HandleAudioPitch(pitchRange);
-        HandleAudioVolume(volumeRange);
-
-        if (type == Sound.None) 
-            return;
+        if (type == Sound.None) return;
         
         var sfx = audioLibrary.GetAudioClip(type);
-        if(volumeRange != null)
-            AudioSource.PlayClipAtPoint(sfx, objTransform.position, Random.Range(volumeRange.Value.x, volumeRange.Value.y));
-        else
-            AudioSource.PlayClipAtPoint(sfx, objTransform.position);
+        if (!activeSounds.ContainsKey(type))
+        {
+            var newSource = objTransform.gameObject.AddComponent<AudioSource>();
+            activeSounds[type] = newSource;
+        }
+
+        var source = activeSounds[type];
+        source.clip = sfx;
+        source.spatialBlend = 1f; // Makes it 3D
+        source.volume = volumeRange != null ? Random.Range(volumeRange.Value.x, volumeRange.Value.y) : 1f;
+        source.pitch = pitchRange != null ? Random.Range(pitchRange.Value.x, pitchRange.Value.y) : 1f;
+        source.loop = false;
+        source.Play();
     }
 
     private void PlayAudioShot(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 
     {
-        HandleAudioPitch(pitchRange);
-        HandleAudioVolume(volumeRange);
-
         var sfx = audioLibrary.GetAudioClip(type);
-        if(volumeRange != null)
-            mainAudio.PlayOneShot(sfx, Random.Range(volumeRange.Value.x, volumeRange.Value.y));
+        AudioSource source = mainAudio; // Default to mainAudio
+
+        if (activeSounds.ContainsKey(type)) 
+        {
+            source = activeSounds[type]; // Use existing source if available
+        }
         else
-            mainAudio.PlayOneShot(sfx);
+        {
+            activeSounds[type] = source; // Assign new sound to mainAudio/musicAudio
+        }
+
+        source.clip = sfx;
+        source.volume = volumeRange != null ? Random.Range(volumeRange.Value.x, volumeRange.Value.y) : 1f;
+        source.pitch = pitchRange != null ? Random.Range(pitchRange.Value.x, pitchRange.Value.y) : 1.5f;
+        source.loop = false;
+        source.Play();
     }
 
-    private void HandleAudioVolume(Vector2? volumeRange) 
+    private void StopAudioShot(Sound type)
     {
-        if (volumeRange != null)
-            mainAudio.volume = Random.Range(volumeRange.Value.x, volumeRange.Value.y);
-        else
-            mainAudio.volume = 1;
-    }
-
-    private void HandleAudioPitch(Vector2? pitchRange) 
-    {
-        if (pitchRange != null)
-            mainAudio.pitch = Random.Range(pitchRange.Value.x, pitchRange.Value.y);
-        else
-            mainAudio.pitch = 1.5f;
+        if (activeSounds.TryGetValue(type, out AudioSource source))
+        {
+            source.Stop();
+        }
     }
 }

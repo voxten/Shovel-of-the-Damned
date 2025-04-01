@@ -31,9 +31,7 @@ public class Item : ScriptableObject
 
 public enum ItemType
 {
-    test,
-    test2,
-    test3,
     keyItem,
-    Personal
+    Personal,
+    Notes,
 }

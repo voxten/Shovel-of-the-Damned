@@ -22,4 +22,9 @@
     GeneratorPuzzleStart,
     GeneratorPuzzleLoop,
     EmergencyBeep,
+    Drop,
+    BunsenStart,
+    BunsenLoop,
+    MeltIce,
+    Paper,
 }

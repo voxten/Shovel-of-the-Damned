@@ -62,7 +62,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.25, y: 0.25, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &632826066896158769
 MonoBehaviour:
@@ -77,6 +77,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 9532b382bd95d8746803addac442bc71, type: 2}
+  pickSound: 0
+  isPickable: 1
 --- !u!1001 &652079435273890061
 PrefabInstance:
   m_ObjectHideFlags: 0

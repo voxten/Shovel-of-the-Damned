@@ -3,6 +3,7 @@ using System;
 using StarterAssets;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class InteractionSystem : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class InteractionSystem : MonoBehaviour
     
     [Header("Moveable Objects")]
     [SerializeField] private LayerMask moveableLayerMask;
+    
+    [Header("Door/Drawer Objects")]
+    [SerializeField] private LayerMask doorLayerMask;
 
     private Camera _playerCamera;
 
@@ -28,6 +32,7 @@ public class InteractionSystem : MonoBehaviour
         _playerCamera = Camera.main;
         interactionIcon.DOFade(0f, 0f);
     }
+    
     
     private void OnEnable()
     {
@@ -106,6 +111,15 @@ public class InteractionSystem : MonoBehaviour
         {
             DisableInteractionIcon();
         }
+        
+        if (Physics.Raycast(ray, out hit, interactionRange, doorLayerMask) && !DragObject.DragEvents.GetDragging())
+        {
+            EnableInteractionIcon();
+        }
+        else if(_currentInteractable && !_isInRange || !_isInRange)
+        {
+            DisableInteractionIcon();
+        }
     
         // Interaction
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
@@ -131,7 +145,7 @@ public class InteractionSystem : MonoBehaviour
     
     private void TryInteract()
     {
-        if (_isInRange && _currentInteractable != null)
+        if (_isInRange && _currentInteractable != null && Time.timeScale > 0)
         {
             if (_currentInteractable.Interact())
             {
@@ -178,20 +192,40 @@ public class InteractionSystem : MonoBehaviour
         }
         FirstPersonController.PlayerEvents.ToggleMove();
     }
-
-    private void DisableInteractionIcon()
-    {
-        _isInRange = false;
-        _currentInteractable = null;
-        interactionIcon.DOFade(0f, 0.5f);
-    }
     
     private void EnableInteractionIcon()
     {
         _isInRange = true;
         interactionIcon.DOFade(1f, 0.5f);
+
+        if (_currentInteractable != null)
+        {
+            Outline outline = _currentInteractable.GetComponent<Outline>();
+            if (outline == null)
+            {
+                outline = _currentInteractable.gameObject.AddComponent<Outline>();
+            }
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.OutlineColor = Color.white;
+            outline.OutlineWidth = 2f;
+        }
     }
 
+    private void DisableInteractionIcon()
+    {
+        _isInRange = false;
+        if (_currentInteractable != null)
+        {
+            Outline outline = _currentInteractable.GetComponent<Outline>();
+            if (outline != null)
+            {
+                Destroy(outline); // Remove outline when interaction ends
+            }
+        }
+        _currentInteractable = null;
+        interactionIcon.DOFade(0f, 0.5f);
+    }
+    
     private void ToggleIcon()
     {
         interactionIcon.gameObject.SetActive(!interactionIcon.gameObject.activeSelf);
