@@ -9,18 +9,23 @@ public class ItemCameraOptions : MonoBehaviour
     [SerializeField] private Item itemBattery;
     private float _batterryLevel = 2.00f;
     private float _lastLowerTime;
+    
     private void Start()
     {
         screen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         _lastLowerTime = Time.time;
     }
-
     
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
             ChangeNightVisionEnable();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ChangeBattery();
         }
         LowerBateryState(); //Tymczasowe oparte na frame'ach
     }
@@ -46,16 +51,20 @@ public class ItemCameraOptions : MonoBehaviour
         }
         int toShow = System.Convert.ToInt32(System.Math.Floor(_batterryLevel));
         showedBateryLevel.text = toShow + "%";
-        if(_batterryLevel < 0.0)
+        if (_batterryLevel< 0.0)
         {
             screen.color = Color.black;
             showedBateryLevel.text = "";
-            if (Inventory.InventoryEvents.FindItem(itemBattery))
-            {
-                Inventory.InventoryEvents.RemoveItem(itemBattery);
-                _batterryLevel = 100.00f;
-                screen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-            }
+        }
+    }
+
+    private void ChangeBattery()
+    {
+        if (Inventory.InventoryEvents.FindItem(itemBattery) && _batterryLevel <= 25f)
+        {
+            Inventory.InventoryEvents.RemoveItem(itemBattery);
+            _batterryLevel = 100.00f;
+            screen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         }
     }
 }
