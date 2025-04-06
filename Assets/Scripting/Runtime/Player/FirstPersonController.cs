@@ -61,9 +61,9 @@ namespace StarterAssets
 
 		[SerializeField] private Animator mainAnimator;
 		[SerializeField] private Animator shadowAnimator;
-		
+        [SerializeField] private ItemCamera itemCamera;
 
-		private bool _isTurned;
+        private bool _isTurned;
 		
 		// cinemachine
 		private float _cinemachineTargetPitch;
@@ -283,7 +283,12 @@ namespace StarterAssets
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 			SetAnimations();
-		}
+
+            if (itemCamera != null)
+            {
+                itemCamera.SetPlayerMoving(_input.move != Vector2.zero);
+            }
+        }
 
 		private void SetAnimations()
 		{
