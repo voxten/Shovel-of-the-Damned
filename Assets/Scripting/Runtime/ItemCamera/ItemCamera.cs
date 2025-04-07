@@ -1,87 +1,116 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class ItemCamera : MonoBehaviour
 {
-    [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject cameraObject;
     [SerializeField] private GameObject cameraMonitor;
     [SerializeField] private Item itemCamera;
-    [SerializeField] private TwoBoneIKConstraint handMover;
-    private float _handMoverWeightHelp = 0.0f;
-    private int _r = 0;
+    [SerializeField] private TwoBoneIKConstraint handIK;
+    [SerializeField] private TwoBoneIKConstraint ShadowHandIK;
+
+    private const float weightSpeed = 1.5f;
+
+    private float handWeight = 0.0f;
+    private const float weightStep = 0.02f;
+    private const int rotationSteps = 45;
+    private const float rotationPerStep = 2.0f;
+
+    private int currentRotationStep = 0;
+
     private bool _active = false;
-    private bool _toOpen = false;
-    private bool _toClose = false;
-    private bool _isOpened = false;
-    void Start()
-    {
-
-    }
-
-    
+    private bool isOpening = false;
+    private bool isClosing = false;
+    private bool isFullyOpened = false;
+    private bool _isPlayerMoving = false;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T) && Inventory.InventoryEvents.FindItem(itemCamera))
         {
-            ChangeCameraEnable();
+            ToggleCamera();
         }
-        if (_active && handMover.weight != 1.0f)
+
+        UpdateHandIKWeight();
+        HandleOpeningRotation();
+        HandleClosingRotation();
+    }
+
+    private void UpdateHandIKWeight()
+    {
+        float targetWeight = _active ? 1.0f : 0.0f;
+
+        // Obni¿ wagê rêki, jeœli gracz siê porusza
+        if (_isPlayerMoving && _active)
         {
-            _handMoverWeightHelp += 0.02f;
-            handMover.weight = _handMoverWeightHelp;
+            targetWeight = 0.2f; // Mo¿na to regulowaæ
         }
-        else if(!_active && handMover.weight != 0.0f)
+
+        // Zmieniamy wagê wzglêdem czasu
+        handWeight = Mathf.MoveTowards(handWeight, targetWeight, weightSpeed * Time.deltaTime);
+        handIK.weight = handWeight;
+        ShadowHandIK.weight = handWeight;
+
+        if (handWeight <= 0.0f && !_active)
         {
-            _handMoverWeightHelp -= 0.02f;
-            handMover.weight = _handMoverWeightHelp;
+            isFullyOpened = false;
+            cameraObject.SetActive(false);
         }
-        else if(_handMoverWeightHelp <= 0.0f)
+
+        if (handWeight >= 1.0f && !isFullyOpened && !isOpening)
         {
-            _handMoverWeightHelp = -0.02f;
-            _isOpened = false;
-            camera.SetActive(false);
-        }
-        else if (_handMoverWeightHelp >= 1.0f && !_isOpened)
-        {
-            _toOpen = true;
-            _handMoverWeightHelp = 1.02f;
-        }
-        if(_toOpen)
-        {
-            if (_r < 45)
-            {
-                _r += 1;
-                cameraMonitor.transform.Rotate(0.0f, 0.0f, 2.0f, Space.Self);
-            }
-            else _isOpened = true;
-        }
-        else if(_toClose)
-        {
-            if (_r > 0)
-            {
-                _r -= 1;
-                cameraMonitor.transform.Rotate(0.0f, 0.0f, -2.0f, Space.Self);
-            }
-            else
-            {
-                _toClose = false;
-                _active = false;
-            }
+            isOpening = true;
+            isFullyOpened = true;
         }
     }
 
-    private void ChangeCameraEnable()
+    private void HandleOpeningRotation()
     {
-        if (!camera.activeSelf)
+        if (!isOpening) return;
+
+        if (currentRotationStep < rotationSteps)
         {
-            camera.SetActive(true);
+            currentRotationStep++;
+            cameraMonitor.transform.Rotate(0.0f, 0.0f, rotationPerStep, Space.Self);
+        }
+        else
+        {
+            isOpening = false;
+        }
+    }
+
+    private void HandleClosingRotation()
+    {
+        if (!isClosing) return;
+
+        if (currentRotationStep > 0)
+        {
+            currentRotationStep--;
+            cameraMonitor.transform.Rotate(0.0f, 0.0f, -rotationPerStep, Space.Self);
+        }
+        else
+        {
+            isClosing = false;
+            _active = false;
+        }
+    }
+
+    private void ToggleCamera()
+    {
+        if (!cameraObject.activeSelf)
+        {
+            cameraObject.SetActive(true);
             _active = true;
         }
         else
         {
-            _toOpen = false;
-            _toClose = true;
+            isOpening = false;
+            isClosing = true;
         }
+    }
+    public void SetPlayerMoving(bool isMoving)
+    {
+        _isPlayerMoving = isMoving;
     }
 }
