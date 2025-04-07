@@ -11,6 +11,8 @@ public class ItemCamera : MonoBehaviour
     [SerializeField] private TwoBoneIKConstraint handIK;
     [SerializeField] private TwoBoneIKConstraint ShadowHandIK;
 
+    private const float weightSpeed = 1.5f;
+
     private float handWeight = 0.0f;
     private const float weightStep = 0.02f;
     private const int rotationSteps = 45;
@@ -34,7 +36,7 @@ public class ItemCamera : MonoBehaviour
         HandleOpeningRotation();
         HandleClosingRotation();
     }
-    
+
     private void UpdateHandIKWeight()
     {
         float targetWeight = _active ? 1.0f : 0.0f;
@@ -45,7 +47,8 @@ public class ItemCamera : MonoBehaviour
             targetWeight = 0.2f; // Mo¿na to regulowaæ
         }
 
-        handWeight = Mathf.MoveTowards(handWeight, targetWeight, weightStep);
+        // Zmieniamy wagê wzglêdem czasu
+        handWeight = Mathf.MoveTowards(handWeight, targetWeight, weightSpeed * Time.deltaTime);
         handIK.weight = handWeight;
         ShadowHandIK.weight = handWeight;
 
