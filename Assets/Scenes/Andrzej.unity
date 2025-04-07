@@ -224,6 +224,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2591627493079020748, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
   m_PrefabInstance: {fileID: 2142865248}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &782518175 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8263731971782156074, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+  m_PrefabInstance: {fileID: 2142865248}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &894305476
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,11 +860,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5816667719305073914, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.000000014901161
+      value: 0.029999971
+      objectReference: {fileID: 0}
+    - target: {fileID: 5816667719305073914, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0002501
       objectReference: {fileID: 0}
     - target: {fileID: 5816667719305073914, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.09999992
+      value: 0.025000103
       objectReference: {fileID: 0}
     - target: {fileID: 7719873512610377743, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: handIK
@@ -863,6 +878,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 460849780}
+    - target: {fileID: 7719873512610377743, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: rigBuilder
+      value: 
+      objectReference: {fileID: 782518175}
     - target: {fileID: 7719873512610377743, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: cameraObject
       value: 
@@ -879,13 +898,25 @@ PrefabInstance:
       propertyPath: 'handTargets.Array.data[1]'
       value: 
       objectReference: {fileID: 1801525615}
+    - target: {fileID: 8253929698740189922, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8411381123255043943, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: m_Name
       value: First Person Controller
       objectReference: {fileID: 0}
     - target: {fileID: 8788933456424813928, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: ShoulderOffset.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788933456424813928, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: ShoulderOffset.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788933456424813928, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
       propertyPath: ShoulderOffset.z
-      value: 0.1
+      value: 0.025
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

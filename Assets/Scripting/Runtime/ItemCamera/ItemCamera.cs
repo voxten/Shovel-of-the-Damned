@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -6,10 +7,9 @@ public class ItemCamera : MonoBehaviour
 {
     [SerializeField] private GameObject cameraObject;
     [SerializeField] private GameObject cameraMonitor;
-    [SerializeField] private GameObject[] handTargets;
     [SerializeField] private Item itemCamera;
     [SerializeField] private TwoBoneIKConstraint handIK;
-    [SerializeField] private Animator animator;
+    [SerializeField] private RigBuilder rigBuilder;
 
     private float handWeight = 0.0f;
     private const float weightStep = 0.02f;
@@ -34,18 +34,7 @@ public class ItemCamera : MonoBehaviour
         HandleOpeningRotation();
         HandleClosingRotation();
     }
-    private void CrouchingTargetSet()
-    {
-        if (animator.GetBool("Crouch"))
-        {
-            handIK.data.target = handTargets[1].transform;
-        }
-        else
-        {
-            handIK.data.target = handTargets[0].transform;
-        }
-        
-    }
+    
     private void UpdateHandIKWeight()
     {
         float targetWeight = _active ? 1.0f : 0.0f;
