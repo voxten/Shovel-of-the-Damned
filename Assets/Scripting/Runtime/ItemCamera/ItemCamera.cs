@@ -9,7 +9,7 @@ public class ItemCamera : MonoBehaviour
     [SerializeField] private GameObject cameraMonitor;
     [SerializeField] private Item itemCamera;
     [SerializeField] private TwoBoneIKConstraint handIK;
-    [SerializeField] private RigBuilder rigBuilder;
+    [SerializeField] private TwoBoneIKConstraint ShadowHandIK;
 
     private float handWeight = 0.0f;
     private const float weightStep = 0.02f;
@@ -47,6 +47,7 @@ public class ItemCamera : MonoBehaviour
 
         handWeight = Mathf.MoveTowards(handWeight, targetWeight, weightStep);
         handIK.weight = handWeight;
+        ShadowHandIK.weight = handWeight;
 
         if (handWeight <= 0.0f && !_active)
         {
