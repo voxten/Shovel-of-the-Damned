@@ -7,6 +7,7 @@ public class ItemCameraOptions : MonoBehaviour
     [SerializeField] private TextMeshPro showedBateryLevel;
     [SerializeField] private Material screen;
     [SerializeField] private Item itemBattery;
+    [SerializeField] private GameObject light;
     private float _batterryLevel = 2.00f;
     private float _lastLowerTime;
     
@@ -33,6 +34,7 @@ public class ItemCameraOptions : MonoBehaviour
     private void ChangeNightVisionEnable()
     {
         nightVision.SetActive(!nightVision.activeSelf);
+        light.SetActive(nightVision.activeSelf);
     }
 
     private void LowerBateryState()
