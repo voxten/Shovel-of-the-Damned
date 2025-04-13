@@ -299,6 +299,60 @@ MonoBehaviour:
   cropToFit:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-1840781259145401469
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32eb3b8fb939d9b41b04b5621e6d36dd, type: 3}
+  m_Name: Fog
+  m_EditorClassIdentifier: 
+  active: 1
+  <displayName>k__BackingField: 
+  fogDensity:
+    <debugId>k__BackingField: fogDensity
+    m_OverrideState: 1
+    m_Value: 1
+  fogDistance:
+    <debugId>k__BackingField: fogDistance
+    m_OverrideState: 1
+    m_Value: 10
+  fogColor:
+    <debugId>k__BackingField: fogColor
+    m_OverrideState: 1
+    m_Value:
+      r: 1
+      g: 1
+      b: 1
+      a: 1
+  fogNear:
+    <debugId>k__BackingField: fogNear
+    m_OverrideState: 1
+    m_Value: 1
+  fogFar:
+    <debugId>k__BackingField: fogFar
+    m_OverrideState: 1
+    m_Value: 100
+  fogAltScale:
+    <debugId>k__BackingField: fogAltScale
+    m_OverrideState: 1
+    m_Value: 10
+  fogThinning:
+    <debugId>k__BackingField: fogThinning
+    m_OverrideState: 1
+    m_Value: 100
+  noiseScale:
+    <debugId>k__BackingField: noiseScale
+    m_OverrideState: 1
+    m_Value: 100
+  noiseStrength:
+    <debugId>k__BackingField: noiseStrength
+    m_OverrideState: 1
+    m_Value: 0.05
 --- !u!114 &-1410297666881709256
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -837,6 +891,36 @@ MonoBehaviour:
   param:
     m_OverrideState: 1
     m_Value: 123
+--- !u!114 &4341512055836243926
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea62842ddb6960488930897ba9ce398, type: 3}
+  m_Name: Dithering
+  m_EditorClassIdentifier: 
+  active: 1
+  <displayName>k__BackingField: 
+  patternIndex:
+    <debugId>k__BackingField: patternIndex
+    m_OverrideState: 1
+    m_Value: 0
+  ditherThreshold:
+    <debugId>k__BackingField: ditherThreshold
+    m_OverrideState: 1
+    m_Value: 512
+  ditherStrength:
+    <debugId>k__BackingField: ditherStrength
+    m_OverrideState: 1
+    m_Value: 1
+  ditherScale:
+    <debugId>k__BackingField: ditherScale
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &4644742534064026673
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -853,6 +937,32 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &6581962517257909853
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a1bd58dd7548198609eabd8ae2bb7d, type: 3}
+  m_Name: Pixelation
+  m_EditorClassIdentifier: 
+  active: 1
+  <displayName>k__BackingField: 
+  widthPixelation:
+    <debugId>k__BackingField: widthPixelation
+    m_OverrideState: 1
+    m_Value: 512
+  heightPixelation:
+    <debugId>k__BackingField: heightPixelation
+    m_OverrideState: 1
+    m_Value: 512
+  colorPrecision:
+    <debugId>k__BackingField: colorPrecision
+    m_OverrideState: 1
+    m_Value: 32
 --- !u!114 &6940869943325143175
 MonoBehaviour:
   m_ObjectHideFlags: 3
