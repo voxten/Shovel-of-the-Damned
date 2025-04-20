@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: Security Guard's Note
+  m_EditorClassIdentifier: 
+  id: f5b5de6c9a7d43658377d2db8a0a8ee5
+  itemIcon: {fileID: 0}
+  itemName: "Guard Log \u2013 Containment Section"
+  itemDescription: Guard Log
+  itemType: 2
+  noteContent:
+  - "07:00 \u2013 routine check, subject in dormant state\n07:38 \u2013 sample collection
+    from subject\n08:10 \u2013 subject awakened\n08:24 \u2013 subject shows no interest
+    in food\n09:53 \u2013 one of the UV lamps went out, power failure\n09:57 \u2013
+    lamp reactivated\n10:31 \u2013 subject still dormant\n10:45 \u2013 another UV
+    lamp failed\n10:48 \u2013 report sent to maintenance"
+  - "10:52 \u2013 subject raised its head\u2026 staring at the camera\n10:53 \u2013
+    lights flickering. surveillance is unstable\n10:54 \u2013 ...hearing noises in
+    the vents\n10:54 \u2013 trying emergency override, nothing's\u2014\n10:55 \u2013
+    the lights are all out. all of them.\n10:58 \u2013 it's moving. I think it knows\u2014\n11:0\u2014\n"

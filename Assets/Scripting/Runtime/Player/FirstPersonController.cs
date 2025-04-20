@@ -41,6 +41,15 @@ namespace StarterAssets
 		[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
 		public float FallTimeout = 0.15f;
 
+		[Space(10)] 
+		[Header("Crouch")] 
+		[Header("Heights")] 
+		public float normalHeight;
+		public float crouchHeight;
+		[Header("Centers")] 
+		public float normalCenter;
+		public float crouchCenter;
+
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
 		public bool Grounded = true;
@@ -212,10 +221,14 @@ namespace StarterAssets
 			// set target speed based on move speed, sprint speed and if sprint is pressed or if player is crouching
 			if (_input.crouch)
 			{
+				_controller.height = crouchHeight;
+				_controller.center = new Vector3(_controller.center.x, crouchCenter, _controller.center.z);
 				targetSpeed = CrouchSpeed;
 			}
 			else
 			{
+				_controller.height = normalHeight;
+				_controller.center = new Vector3(_controller.center.x, normalCenter, _controller.center.z);
 				if (_input.move.y < 0.0f)
 				{
 					mainAnimator.SetBool("Sprint", false);

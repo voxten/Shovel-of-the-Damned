@@ -9,8 +9,12 @@ public class NoteUIManager : MonoBehaviour
     [SerializeField] private GameObject notePanel;
     [SerializeField] private TextMeshProUGUI noteText;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button previousButton;
+    [SerializeField] private Button nextButton;
     [SerializeField] private Sound paperSound;
+    private NoteItem _currentNoteItem;
     private bool _isOn;
+    private int _currentIndex;
 
     private void OnEnable()
     {
@@ -26,12 +30,48 @@ public class NoteUIManager : MonoBehaviour
 
     private void OpenNote(NoteItem noteItem)
     {
+        _currentIndex = 0;
         _isOn = true;
-        noteText.text = noteItem.noteContent;
+        _currentNoteItem = noteItem;
+        noteText.text = noteItem.noteContent[_currentIndex];
         closeButton.onClick.AddListener(ClosePanel);
         notePanel.SetActive(true);
+        
+        if (noteItem.noteContent.Count > 1)
+        {
+            nextButton.onClick.AddListener(NextNote);
+            previousButton.onClick.AddListener(PreviousNote);
+            UpdateNavigationButtons();
+        }
         SoundManager.PlaySound(paperSound);
         ToggleUtils(true);
+    }
+
+    private void NextNote()
+    {
+        if (_currentIndex + 1 < _currentNoteItem.noteContent.Count)
+        {
+            _currentIndex++;
+            noteText.text = _currentNoteItem.noteContent[_currentIndex];
+            UpdateNavigationButtons();
+        }
+    }
+
+    private void PreviousNote()
+    {
+        if (_currentIndex - 1 >= 0)
+        {
+            _currentIndex--;
+            noteText.text = _currentNoteItem.noteContent[_currentIndex];
+            UpdateNavigationButtons();
+        }
+    }
+
+    private void UpdateNavigationButtons()
+    {
+        SoundManager.PlaySound(paperSound);
+        nextButton.gameObject.SetActive(_currentIndex < _currentNoteItem.noteContent.Count - 1);
+        previousButton.gameObject.SetActive(_currentIndex > 0);
     }
 
     private void ClosePanel()
@@ -39,6 +79,8 @@ public class NoteUIManager : MonoBehaviour
         _isOn = false;
         noteText.text = "";
         closeButton.onClick.RemoveAllListeners();
+        previousButton.onClick.RemoveAllListeners();
+        nextButton.onClick.RemoveAllListeners();
         notePanel.SetActive(false);
         ToggleUtils(false);
     }

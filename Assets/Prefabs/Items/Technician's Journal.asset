@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: Technician's Journal
+  m_EditorClassIdentifier: 
+  id: 48be8304253840769e1da3f453f7a239
+  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemName: Technician's Journal
+  itemDescription: File found in the technical room
+  itemType: 2
+  noteContent:
+  - "They got Michael a radio. At least now he has something to help him unwind a
+    bit during his breaks. And good for him \u2014 he deserved it. That guy seems
+    to live for work these days. He\u2019s handling the entire shift on his own."
+  - "Paul and I try not to bother him when he finally gets a rest. But how much longer
+    can this go on? If something goes wrong, if Michael misses something, it could
+    lead to a serious failure. And we can\u2019t afford to lose the generators.\n"
+  - "I\u2019m worried about him. Really."
