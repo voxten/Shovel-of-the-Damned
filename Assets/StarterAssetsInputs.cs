@@ -83,17 +83,16 @@ namespace StarterAssets
 
 		public void CrouchInput(bool newCrouchState)
 		{
+			if (!FirstPersonController.PlayerEvents.CheckMove()) return;
+			
 			if (crouch)
 			{
-				Debug.Log("wychodzeeeee");
 				CameraSwitch.CameraEvents.SwitchCameraToDefaultWithTime(0.75f);
 				crouch = !newCrouchState;
 			}
 			else
 			{
 				crouch = newCrouchState;
-				Debug.Log("Wchodze w inputa");
-
 				CameraSwitch.CameraEvents.SwitchCamera(crouchCamera);
 			}
 		}

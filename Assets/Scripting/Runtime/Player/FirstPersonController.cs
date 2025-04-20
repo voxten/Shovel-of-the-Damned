@@ -126,6 +126,7 @@ namespace StarterAssets
 			PlayerEvents.ToggleController += ToggleController;
 			PlayerEvents.ToggleMove += ToggleMovement;
 			PlayerEvents.ToggleMoveCamera += ToggleMoveCamera;
+			PlayerEvents.CheckMove += CheckMove;
 		}
 
 		private void OnDisable() 
@@ -136,6 +137,7 @@ namespace StarterAssets
 			PlayerEvents.ToggleController -= ToggleController;
 			PlayerEvents.ToggleMove -= ToggleMovement;
 			PlayerEvents.ToggleMoveCamera -= ToggleMoveCamera;
+			PlayerEvents.CheckMove -= CheckMove;
 		}
 
 		private void Start()
@@ -400,6 +402,11 @@ namespace StarterAssets
 			_canMove = !_canMove;
 		}
 
+		private bool CheckMove()
+		{
+			return _canMove;
+		}
+
 		private void ToggleMoveCamera(bool state)
 		{
 			_canMoveCamera = state;
@@ -425,6 +432,7 @@ namespace StarterAssets
 			public static Action TogglePlayerModel;
 			public static Action ToggleController;
 			public static Action ToggleMove;
+			public static Func<bool> CheckMove;
 			public static Action<bool> ToggleMoveCamera;
 		}
 	}
