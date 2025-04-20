@@ -18,7 +18,7 @@ public class InventoryUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && !NoteUIManager.NoteActions.GetIsOn())
+        if (Input.GetKeyDown(KeyCode.Tab) && !NoteUIManager.NoteActions.GetIsOn() && !PauseManager.PauseEvents.GetIsOn())
         {
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);
             _isOn = inventoryUI.gameObject.activeSelf;
