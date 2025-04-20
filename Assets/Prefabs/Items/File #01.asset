@@ -17,7 +17,8 @@ MonoBehaviour:
   itemName: File #01 - Employee Note 1
   itemDescription: File found in the laboratory
   itemType: 2
-  noteContent: "Dr. Kowalska is being unreasonable. I've told her so many times that
-    we need to become independent from the city's energy supply. What happens if
-    there's a power outage? Forget the lights, but if the UV lamps by the cave go
-    out\u2026 Nothing will stop it."
+  noteContent:
+  - "Dr. Kowalska is being unreasonable. I've told her so many times that we need
+    to become independent from the city's energy supply. What happens if there's
+    a power outage? Forget the lights, but if the UV lamps by the cave go out\u2026
+    Nothing will stop it."

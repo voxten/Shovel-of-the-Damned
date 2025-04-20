@@ -5,7 +5,7 @@ public class PickItem : InteractableObject
 {
     [SerializeField] protected Item item;
     [SerializeField] private Sound pickSound;
-    public bool isPickable;
+    public bool isPickable = true;
     private bool _isFirst = true;
     private Collider _collider;
     

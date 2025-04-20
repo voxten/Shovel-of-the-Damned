@@ -17,7 +17,8 @@ MonoBehaviour:
   itemName: File #03 - Technician's Note
   itemDescription: File found in the laboratory
   itemType: 2
-  noteContent: "Hey, hey! I was too exhausted to replace the battery in the generator.
-    Can you do it for me? The spare battery should be lying around somewhere\u2014look
-    for it. Once you've replaced it, stop by the storage room as well\u2014we\u2019ve
+  noteContent:
+  - "Hey, hey! I was too exhausted to replace the battery in the generator. Can you
+    do it for me? The spare battery should be lying around somewhere\u2014look for
+    it. Once you've replaced it, stop by the storage room as well\u2014we\u2019ve
     run out of fuel."

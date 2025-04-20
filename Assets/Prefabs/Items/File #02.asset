@@ -17,6 +17,7 @@ MonoBehaviour:
   itemName: File #02 - Employee Note 2
   itemDescription: File found in the laboratory
   itemType: 2
-  noteContent: "Our contract for energy from the city helps us a lot. Sure, we have
-    solar panels, but their power isn\u2019t enough to sustain the entire facility.
-    At least there's enough energy for the keypads."
+  noteContent:
+  - "Our contract for energy from the city helps us a lot. Sure, we have solar panels,
+    but their power isn\u2019t enough to sustain the entire facility. At least there's
+    enough energy for the keypads.\n\n"
