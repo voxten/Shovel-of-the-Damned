@@ -30,6 +30,7 @@ public class NoteUIManager : MonoBehaviour
 
     private void OpenNote(NoteItem noteItem)
     {
+        TutorialManager.TutorialManagerEvents.stopTutorial();
         _currentIndex = 0;
         _isOn = true;
         _currentNoteItem = noteItem;

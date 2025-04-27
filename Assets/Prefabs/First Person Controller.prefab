@@ -889,7 +889,7 @@ Transform:
   m_GameObject: {fileID: 1057331929204653630}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.437, z: 0.39100003}
+  m_LocalPosition: {x: 0, y: -0.437, z: 0.048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -906,9 +906,9 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1000000
-  m_Range: 13.425956
-  m_SpotAngle: 74.563225
+  m_Intensity: 349
+  m_Range: 14.3
+  m_SpotAngle: 61.6457
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -949,7 +949,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 1.9739933}
   m_BounceIntensity: 51.93
-  m_ColorTemperature: 6847
+  m_ColorTemperature: 7303
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 2.09}
   m_UseBoundingSphereOverride: 0
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionIcon: {fileID: 2658922958905299058}
-  interactionRange: 5
+  interactionRange: 2
   interactionLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -5724,7 +5724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cf5bc9de89ab4abc966efb7b0d6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRange: 5
+  pickupRange: 2
   moveForce: 4000
   rotationSpeed: 300
   doorRotationSpeed: 50
