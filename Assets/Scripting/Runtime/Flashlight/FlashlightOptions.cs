@@ -18,7 +18,7 @@ public class FlashlightOptions : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && _batterryLevel>25.00)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && _batterryLevel>25.00 && lightUV.intensity == 0.0f)
         {
             ActiveUV();
         }
