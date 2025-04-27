@@ -27,6 +27,9 @@ public class InteractionSystem : MonoBehaviour
     private bool _isInteractingPuzzle;
     private bool _isInRange;
 
+    private GameObject _currentlyHighlighted;
+    private Outline _currentOutline;
+
     private void Awake()
     {
         _playerCamera = Camera.main;
@@ -40,6 +43,7 @@ public class InteractionSystem : MonoBehaviour
         InteractionEvents.SetInteractionView += SetInteractionView;
         InteractionEvents.TogglePuzzleCollider += TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon += DisableInteractionIcon;
+        DragObject.DragEvents.ObjectDropped += OnObjectDropped;
     }
 
     private void OnDisable()
@@ -48,6 +52,7 @@ public class InteractionSystem : MonoBehaviour
         InteractionEvents.SetInteractionView -= SetInteractionView;
         InteractionEvents.TogglePuzzleCollider -= TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon -= DisableInteractionIcon;
+        DragObject.DragEvents.ObjectDropped -= OnObjectDropped;
     }
 
     private void Update()
@@ -58,7 +63,7 @@ public class InteractionSystem : MonoBehaviour
     private void HandleRaycastInteraction()
     {
         var ray = _playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
-        
+
         if (Physics.Raycast(ray, out var hit, interactionRange, interactionLayerMask))
         {
             var interactable = hit.collider.GetComponent<InteractableObject>();
@@ -67,6 +72,9 @@ public class InteractionSystem : MonoBehaviour
                 if (_currentInteractable != interactable)
                 {
                     _currentInteractable = interactable;
+                    _currentlyHighlighted = interactable.gameObject;
+                    HighlightObject(_currentlyHighlighted);
+
                     if (_currentInteractable is PuzzleInteraction puzzleInteraction)
                     {
                         if (!puzzleInteraction.puzzleObject.isFinished)
@@ -94,45 +102,49 @@ public class InteractionSystem : MonoBehaviour
             }
             else
             {
+                RemoveHighlight();
                 DisableInteractionIcon();
             }
         }
+        else if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
+        {
+            if (_currentlyHighlighted != hit.collider.gameObject)
+            {
+                RemoveHighlight();
+                _currentlyHighlighted = hit.collider.gameObject;
+                HighlightObject(_currentlyHighlighted);
+            }
+            EnableInteractionIcon();
+        }
+        else if (Physics.Raycast(ray, out hit, interactionRange, doorLayerMask) && !DragObject.DragEvents.GetDragging())
+        {
+            if (_currentlyHighlighted != hit.collider.gameObject)
+            {
+                RemoveHighlight();
+                _currentlyHighlighted = hit.collider.gameObject;
+                HighlightObject(_currentlyHighlighted);
+            }
+            EnableInteractionIcon();
+        }
         else
         {
-            _isInRange = false;
-        }
-        
-        // Moveable objects
-        if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
-        {
-            EnableInteractionIcon();
-        }
-        else if(_currentInteractable && !_isInRange || !_isInRange)
-        {
+            RemoveHighlight();
             DisableInteractionIcon();
         }
-        
-        if (Physics.Raycast(ray, out hit, interactionRange, doorLayerMask) && !DragObject.DragEvents.GetDragging())
-        {
-            EnableInteractionIcon();
-        }
-        else if(_currentInteractable && !_isInRange || !_isInRange)
-        {
-            DisableInteractionIcon();
-        }
-    
-        // Interaction
+
+        // Interaction (klikniêcie)
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
         }
 
-        // Exit from puzzle
+        // Exit from puzzle (prawy przycisk)
         if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && !_puzzleInteraction.puzzleObject.isFinished)
         {
             ExitPuzzleInteraction();
         }
     }
+
 
     private void ExitPuzzleInteraction()
     {
@@ -243,4 +255,42 @@ public class InteractionSystem : MonoBehaviour
         public static Action TogglePuzzleCollider;
         public static Action DisableInteractionIcon;
     }
+
+    private void HighlightObject(GameObject obj)
+    {
+        if (obj == null) return;
+
+        Outline outline = obj.GetComponent<Outline>();
+        if (outline == null)
+        {
+            outline = obj.AddComponent<Outline>();
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.OutlineColor = Color.white;
+            outline.OutlineWidth = 2f;
+        }
+        _currentOutline = outline;
+    }
+
+    private void RemoveHighlight()
+    {
+        // Jeœli coœ jest trzymane (dragowane) - NIE usuwamy outline!
+        if (DragObject.DragEvents.GetDragging())
+            return;
+
+        if (_currentOutline != null)
+        {
+            Destroy(_currentOutline);
+            _currentOutline = null;
+            _currentlyHighlighted = null;
+        }
+    }
+
+    private void OnObjectDropped()
+    {
+        _currentlyHighlighted = null;
+        _currentOutline = null;
+    }
+
+
+
 }
