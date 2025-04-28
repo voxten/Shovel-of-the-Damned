@@ -216,88 +216,84 @@ namespace StarterAssets
 			}
 		}
 
-		private void Move()
-		{
-			mainAnimator.SetBool("Crouch", _input.crouch);
-			shadowAnimator.SetBool("Crouch", _input.crouch);
-			// set target speed based on move speed, sprint speed and if sprint is pressed or if player is crouching
-			if (_input.crouch)
-			{
-				_controller.height = crouchHeight;
-				_controller.center = new Vector3(_controller.center.x, crouchCenter, _controller.center.z);
-				targetSpeed = CrouchSpeed;
-			}
-			else
-			{
-				_controller.height = normalHeight;
-				_controller.center = new Vector3(_controller.center.x, normalCenter, _controller.center.z);
-				if (_input.move.y < 0.0f)
-				{
-					mainAnimator.SetBool("Sprint", false);
-					shadowAnimator.SetBool("Sprint", false);
-					targetSpeed = MoveSpeed;
-				}
-				else
-				{
-					targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-					mainAnimator.SetBool("Sprint", _input.sprint);
-					shadowAnimator.SetBool("Sprint", _input.sprint);
-				}
-			}
-			
-			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+        private void Move()
+        {
+            bool isTryingToCrouch = _input.crouch;
 
-			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero)
-			{
-				targetSpeed = 0.0f;
-			}
+            // Czy gracz może wstać?
+            if (!isTryingToCrouch && _controller.height != normalHeight)
+            {
+                if (CanStandUp())
+                {
+                    _controller.height = normalHeight;
+                    _controller.center = new Vector3(_controller.center.x, normalCenter, _controller.center.z);
+                    mainAnimator.SetBool("Crouch", false);
+                    shadowAnimator.SetBool("Crouch", false);
+                }
+                else
+                {
+                    // Blokuj wstawanie
+                    isTryingToCrouch = true;
+                    _input.crouch = true; // Wymuś ponowne kucanie
+                }
+            }
 
-			// a reference to the players current horizontal velocity
-			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+            // Aktualizacja wysokości podczas kucania
+            if (isTryingToCrouch)
+            {
+                _controller.height = crouchHeight;
+                _controller.center = new Vector3(_controller.center.x, crouchCenter, _controller.center.z);
+                mainAnimator.SetBool("Crouch", true);
+                shadowAnimator.SetBool("Crouch", true);
+            }
 
-			float speedOffset = 0.1f;
-			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+            // --- USTALANIE PRĘDKOŚCI ---
+            if (_input.move == Vector2.zero)
+            {
+                targetSpeed = 0.0f;
+            }
+            else if (isTryingToCrouch)
+            {
+                targetSpeed = CrouchSpeed;
+            }
+            else
+            {
+                targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            }
 
-			// accelerate or decelerate to target speed
-			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
-			{
-				// creates curved result rather than a linear one giving a more organic speed change
-				// note T in Lerp is clamped, so we don't need to clamp our speed
-				_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
-				// round speed to 3 decimal places
-				_speed = Mathf.Round(_speed * 1000f) / 1000f;
-			}
-			else
-			{
-				_speed = targetSpeed;
-			}
+            float speedOffset = 0.1f;
+            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 
-			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
+            {
+                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+                _speed = Mathf.Round(_speed * 1000f) / 1000f;
+            }
+            else
+            {
+                _speed = targetSpeed;
+            }
 
-			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is a move input rotate player when the player is moving
-			
-			
-			if (_input.move != Vector2.zero)
-			{
-				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-			}
- 
-			if (_input.move == Vector2.zero && currentHorizontalSpeed > 0)
-			{
-				_speed -= decelerationRate * Time.deltaTime;
-				_speed = Mathf.Max(_speed, 0);
- 
-				inputDirection = _controller.velocity.normalized;
-			}
+            // --- KIERUNEK RUCHU ---
+            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            if (_input.move != Vector2.zero)
+            {
+                inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+            }
+            else if (currentHorizontalSpeed > 0)
+            {
+                _speed -= decelerationRate * Time.deltaTime;
+                _speed = Mathf.Max(_speed, 0);
+                inputDirection = _controller.velocity.normalized;
+            }
 
-			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-			SetAnimations();
+            // --- RUCH POSTACI ---
+            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
+            // --- ANIMACJE ---
+            SetAnimations();
 
             if (itemCamera != null)
             {
@@ -305,7 +301,8 @@ namespace StarterAssets
             }
         }
 
-		private void SetAnimations()
+
+        private void SetAnimations()
 		{
 			mainAnimator.SetBool("Walk", _input.move != Vector2.zero);
 			mainAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
@@ -404,7 +401,7 @@ namespace StarterAssets
 
 		private bool CheckMove()
 		{
-			return _canMove;
+			return _canMove && CanStandUp();
 		}
 
 		private void ToggleMoveCamera(bool state)
@@ -435,5 +432,14 @@ namespace StarterAssets
 			public static Func<bool> CheckMove;
 			public static Action<bool> ToggleMoveCamera;
 		}
-	}
+
+        private bool CanStandUp()
+        {
+            float rayDistance = normalHeight; // ile "wolnej" przestrzeni potrzebujesz
+            Vector3 rayStart = transform.position + Vector3.up * (crouchHeight + 0.05f); // start minimalnie nad crouchem
+
+            // Strzel promieniem w górę
+            return !Physics.Raycast(rayStart, Vector3.up, rayDistance, GroundLayers, QueryTriggerInteraction.Ignore);
+        }
+    }
 }
