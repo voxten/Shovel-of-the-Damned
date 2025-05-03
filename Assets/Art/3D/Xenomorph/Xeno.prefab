@@ -1531,6 +1531,9 @@ PrefabInstance:
       addedObject: {fileID: 6375429659170206216}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5222ae6833d5e6e479bc40375616e959, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8335151488566138209}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5222ae6833d5e6e479bc40375616e959, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4209837039086210496}
   m_SourcePrefab: {fileID: 100100000, guid: 5222ae6833d5e6e479bc40375616e959, type: 3}
 --- !u!1 &7505547441503346901 stripped
@@ -1596,7 +1599,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ventPoints:
   - {fileID: 0}
+  searchRadius: 10
+  searchPointsCount: 3
+  playerDetectionRange: 15
+  playerDetectionAngle: 60
+  fearDuration: 3
+  climbInDuration: 1.5
+  climbOutDuration: 1.5
+  walkSpeed: 0.8
+  runSpeed: 1.5
+  flashlightOptions: {fileID: 0}
+  searchAreaColor: {r: 0, g: 1, b: 0, a: 0.1}
+  detectionRangeColor: {r: 1, g: 0, b: 0, a: 0.1}
+  fovColor: {r: 1, g: 1, b: 0, a: 0.2}
+  currentPathColor: {r: 0, g: 0, b: 1, a: 1}
+  ventPathColor: {r: 1, g: 0, b: 1, a: 1}
+  gizmoLineWidth: 2
   player: {fileID: 0}
+--- !u!54 &8335151488566138209
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7505547441503346901}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!136 &4209837039086210496
 CapsuleCollider:
   m_ObjectHideFlags: 0
