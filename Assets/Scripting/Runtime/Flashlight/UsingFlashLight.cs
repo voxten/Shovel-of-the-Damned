@@ -1,21 +1,27 @@
+using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class UsingFlashLight : MonoBehaviour
 {
     [SerializeField] private GameObject flashlightObject;
+    private FlashlightOptions _flashlightOptions;
     [SerializeField] private Item itemFlashlight;
     [SerializeField] private TwoBoneIKConstraint handIK;
     [SerializeField] private TwoBoneIKConstraint ShadowHandIK;
-    [SerializeField] private GameObject light;
+    [SerializeField] private Light mainLight;
     [SerializeField] private Light lightUV;
     [SerializeField] private GameObject textPrg;
 
     private const float weightSpeed = 1.5f;
-
     private float handWeight = 0.0f;
-
     private bool _active = false;
+
+    private void Awake()
+    {
+        _flashlightOptions = flashlightObject.GetComponent<FlashlightOptions>();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F) && Inventory.InventoryEvents.FindItem(itemFlashlight) && lightUV.intensity == 0)
@@ -30,7 +36,7 @@ public class UsingFlashLight : MonoBehaviour
     //{
     //    float targetWeight = _active ? 1.0f : 0.0f;
 
-    //    // Zmieniamy wagê wzglêdem czasu
+    //    // Zmieniamy wagï¿½ wzglï¿½dem czasu
     //    handWeight = Mathf.MoveTowards(handWeight, targetWeight, weightSpeed * Time.deltaTime);
     //    handIK.weight = handWeight;
     //    ShadowHandIK.weight = handWeight;
@@ -44,18 +50,19 @@ public class UsingFlashLight : MonoBehaviour
 
     private void ToggleFlashlight()
     {
-        if (!flashlightObject.activeSelf)
+        if (!mainLight.enabled)
         {
-            flashlightObject.SetActive(true);
+            _flashlightOptions.enabled = true;
+            mainLight.enabled = true;
             textPrg.SetActive(true);
             _active = true;
         }
         else
         {
-            flashlightObject.SetActive(false);
-            _active = false;
-            light.SetActive(false);
+            _flashlightOptions.enabled = false;
+            mainLight.enabled = false;
             textPrg.SetActive(false);
+            _active = false;
         }
     }
 }
