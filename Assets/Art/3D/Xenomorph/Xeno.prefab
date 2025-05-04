@@ -1599,23 +1599,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ventPoints:
   - {fileID: 0}
+  - {fileID: 0}
   searchRadius: 10
   searchPointsCount: 3
-  playerDetectionRange: 15
-  playerDetectionAngle: 60
+  playerDetectionRange: 7.5
+  playerDetectionAngle: 80
   fearDuration: 3
   climbInDuration: 1.5
   climbOutDuration: 1.5
   walkSpeed: 0.8
   runSpeed: 1.5
-  flashlightOptions: {fileID: 0}
   searchAreaColor: {r: 0, g: 1, b: 0, a: 0.1}
   detectionRangeColor: {r: 1, g: 0, b: 0, a: 0.1}
-  fovColor: {r: 1, g: 1, b: 0, a: 0.2}
+  fovColor: {r: 1, g: 1, b: 0, a: 1}
   currentPathColor: {r: 0, g: 0, b: 1, a: 1}
   ventPathColor: {r: 1, g: 0, b: 1, a: 1}
   gizmoLineWidth: 2
   player: {fileID: 0}
+  mainCubePrefab: {fileID: 7700311665861587848, guid: a85a7a4fae75396449f5663e19630774, type: 3}
+  cubeMoveSpeed: 5
+  cubeRotationSpeed: 5
+  pointReachedThreshold: 0.1
 --- !u!54 &8335151488566138209
 Rigidbody:
   m_ObjectHideFlags: 0
