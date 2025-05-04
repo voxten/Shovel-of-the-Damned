@@ -19,16 +19,6 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float walkSpeed = 0.8f;
     [SerializeField] private float runSpeed = 1.5f;
     
-    [SerializeField] private FlashlightOptions flashlightOptions;
-    
-    [Header("Gizmo Settings")]
-    [SerializeField] private Color searchAreaColor = new(0, 1, 0, 0.1f);
-    [SerializeField] private Color detectionRangeColor = new(1, 0, 0, 0.1f);
-    [SerializeField] private Color fovColor = new(1, 1, 0, 0.2f);
-    [SerializeField] private Color currentPathColor = Color.blue;
-    [SerializeField] private Color ventPathColor = Color.magenta;
-    [SerializeField] private float gizmoLineWidth = 2f;
-
     private Vent _currentVentPoint;
     private int _currentSearchPointIndex;
     private Vector3 _currentDestination;
@@ -37,10 +27,29 @@ public class EnemyAI : MonoBehaviour
     [Header("References")]
     [SerializeField] private FirstPersonController player;
     private bool _isPlayerVisible;
+    private bool _isEnemyFear;
     
     private SkinnedMeshRenderer _enemySkinnedMeshRenderer;
     private Animator _enemyAnimator;
     private NavMeshAgent _enemyAgent;
+    
+    [Header("Main Cube Settings")]
+    [SerializeField] private GameObject mainCubePrefab;
+    [SerializeField] private float cubeMoveSpeed = 5f;
+    [SerializeField] private float cubeRotationSpeed = 5f;
+    [SerializeField] private float pointReachedThreshold = 0.1f;
+
+    private GameObject _mainCube;
+    private int _currentPointIndex;
+    private Coroutine _cubeMovementCoroutine;
+    
+    [Header("Gizmo Settings")]
+    [SerializeField] private Color searchAreaColor = new(0, 1, 0, 0.1f);
+    [SerializeField] private Color detectionRangeColor = new(1, 0, 0, 0.1f);
+    [SerializeField] private Color fovColor = new(1, 1, 0, 0.2f);
+    [SerializeField] private Color currentPathColor = Color.blue;
+    [SerializeField] private Color ventPathColor = Color.magenta;
+    [SerializeField] private float gizmoLineWidth = 2f;
     
     private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear }
     private AIState _currentState = AIState.MovingToVent;
@@ -56,6 +65,7 @@ public class EnemyAI : MonoBehaviour
     private void Start()
     {
         SetDestination(ventPoints[0].gameObject);
+        SpawnMainCube();
     }
     
     private void Update()
@@ -63,16 +73,116 @@ public class EnemyAI : MonoBehaviour
         UpdateStateMachine();
         UpdateAnimator();
     }
+    
+    private void SpawnMainCube()
+    {
+        if (_mainCube != null)
+        {
+            Destroy(_mainCube);
+        }
+
+        // Select random vent with at least one valid point
+        Vent randomVent = null;
+        int attempts = 0;
+        const int maxAttempts = 10;
+        
+        while (attempts < maxAttempts)
+        {
+            randomVent = ventPoints[Random.Range(0, ventPoints.Length)];
+            if (randomVent.Points.Count > 0 && randomVent.Points[0] != null)
+            {
+                break;
+            }
+            attempts++;
+        }
+
+        if (randomVent == null || randomVent.Points.Count == 0 || randomVent.Points[0] == null)
+        {
+            Debug.LogWarning("No valid vent with points found!");
+            return;
+        }
+
+        // Create mainCube at first point of the vent
+        _mainCube = Instantiate(mainCubePrefab, randomVent.Points[0].transform.position, Quaternion.identity);
+        
+        // Start moving through points
+        _currentPointIndex = 1; // Start moving to next point
+        if (_cubeMovementCoroutine != null)
+        {
+            StopCoroutine(_cubeMovementCoroutine);
+        }
+        _cubeMovementCoroutine = StartCoroutine(MoveCubeThroughPoints(randomVent));
+    }
+
+    private IEnumerator MoveCubeThroughPoints(Vent vent)
+    {
+        while (true)
+        {
+            if (vent.Points.Count == 0) yield break;
+
+            // Get current target point (looping back to 0 when reaching end)
+            if (_currentPointIndex >= vent.Points.Count)
+            {
+                _currentPointIndex = 0;
+            }
+
+            // Skip null points
+            if (vent.Points[_currentPointIndex] == null)
+            {
+                _currentPointIndex++;
+                continue;
+            }
+
+            Transform targetPoint = vent.Points[_currentPointIndex].transform;
+            
+            // Move towards the point
+            while (Vector3.Distance(_mainCube.transform.position, targetPoint.position) > pointReachedThreshold)
+            {
+                _mainCube.transform.position = Vector3.MoveTowards(
+                    _mainCube.transform.position, 
+                    targetPoint.position, 
+                    cubeMoveSpeed * Time.deltaTime);
+
+                // Smoothly rotate towards movement direction
+                if (_mainCube.transform.position != targetPoint.position)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(targetPoint.position - _mainCube.transform.position);
+                    _mainCube.transform.rotation = Quaternion.Slerp(
+                        _mainCube.transform.rotation, 
+                        targetRotation, 
+                        cubeRotationSpeed * Time.deltaTime);
+                }
+
+                yield return null;
+            }
+
+            // Point reached, move to next
+            _currentPointIndex++;
+        }
+    }
 
     private void UpdateStateMachine()
     {
         if (_currentCoroutine != null) return; // Don't update state while a coroutine is running
+        
+        if (_isEnemyFear)
+        {
+            if (_currentState != AIState.MovingToVent)
+            {
+                Vent nearestVent = FindNearestVent();
+                _enemyAgent.speed = runSpeed;
+                SetDestination(nearestVent.gameObject);
+                _currentState = AIState.MovingToVent;
+            }
+            return;
+        }
 
         switch (_currentState)
         {
             case AIState.MovingToVent:
                 if (HasReachedDestination())
                 {
+                    _isEnemyFear = false;
                     _currentCoroutine = StartCoroutine(ClimbIntoVentRoutine());
                 }
                 break;
@@ -130,7 +240,7 @@ public class EnemyAI : MonoBehaviour
 
     private void CheckPlayerVisibility()
     {
-        if (player == null) return;
+        if (player == null || _isEnemyFear) return;
 
         Vector3 directionToPlayer = player.transform.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
@@ -258,6 +368,7 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator FearRoutine()
     {
+        _isEnemyFear = true;
         _enemyAgent.isStopped = true;
         _enemyAnimator.SetTrigger("Fear");
         
@@ -323,7 +434,7 @@ public class EnemyAI : MonoBehaviour
                 DrawThickLine(_enemyAgent.path.corners[i], _enemyAgent.path.corners[i + 1], gizmoLineWidth);
                 Gizmos.DrawSphere(_enemyAgent.path.corners[i], gizmoLineWidth * 0.1f);
             }
-            Gizmos.DrawSphere(_enemyAgent.path.corners[_enemyAgent.path.corners.Length - 1], gizmoLineWidth * 0.15f);
+            Gizmos.DrawSphere(_enemyAgent.path.corners[^1], gizmoLineWidth * 0.15f);
         }
         
         // Draw current destination with bigger marker

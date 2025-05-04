@@ -106,7 +106,7 @@ public class FlashlightOptions : MonoBehaviour
         // Narastanie intensywnosci szybko
         float currentIntensity = 0f;
         float targetIntensity = 2000f;
-        float riseSpeed = 3000f;
+        float riseSpeed = 5000f;
 
         while (currentIntensity < targetIntensity)
         {
@@ -117,7 +117,7 @@ public class FlashlightOptions : MonoBehaviour
         }
 
         // Krotka chwila maksymalnego swiatla
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         // Powolne opadanie intensywnosci
         float fallSpeed = 1000f;
