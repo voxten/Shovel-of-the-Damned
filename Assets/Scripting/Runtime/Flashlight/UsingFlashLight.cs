@@ -22,7 +22,7 @@ public class UsingFlashLight : MonoBehaviour
         _flashlightOptions = flashlightObject.GetComponent<FlashlightOptions>();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F) && Inventory.InventoryEvents.FindItem(itemFlashlight) && lightUV.intensity == 0)
         {
@@ -55,6 +55,7 @@ public class UsingFlashLight : MonoBehaviour
             _flashlightOptions.enabled = true;
             mainLight.enabled = true;
             textPrg.SetActive(true);
+            SoundManager.PlaySound3D(Sound.FlashlightOn, transform);
             _active = true;
         }
         else
@@ -62,6 +63,7 @@ public class UsingFlashLight : MonoBehaviour
             _flashlightOptions.enabled = false;
             mainLight.enabled = false;
             textPrg.SetActive(false);
+            SoundManager.PlaySound3D(Sound.FlashlightOff, transform);
             _active = false;
         }
     }

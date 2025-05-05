@@ -4,7 +4,6 @@ using UnityEngine;
 public class GeneratorCanister : MonoBehaviour
 {
     [SerializeField] private Material normalMaterial;
-    [SerializeField] private Sound pourSound;
     private BoxCollider _boxCollider;
     private Rigidbody _rigidbody;
     private MeshRenderer _meshRenderer;
@@ -24,7 +23,7 @@ public class GeneratorCanister : MonoBehaviour
         {
             _meshRenderer.materials = new[] { normalMaterial };
             _meshRenderer.material = normalMaterial;
-            SoundManager.PlaySound3D(pourSound, transform);
+            SoundManager.PlaySound3D(Sound.CanisterPour, transform);
             _animator.SetTrigger("Pour");
             DragObject.DragEvents.DropObject();
             Destroy(other.gameObject);

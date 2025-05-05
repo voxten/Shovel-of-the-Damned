@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class ObjectDrop : MonoBehaviour
 {
-    [SerializeField] private Sound dropSound;
-    
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
-            SoundManager.PlaySound3D(dropSound, transform);
+            SoundManager.PlaySound3D(Sound.Drop, transform);
         }
     }
 }

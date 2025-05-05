@@ -27,4 +27,6 @@
     BunsenLoop,
     MeltIce,
     Paper,
+    FlashlightOn,
+    FlashlightOff,
 }

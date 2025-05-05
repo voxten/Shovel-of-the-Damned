@@ -28,6 +28,7 @@ public class GeneratorPull : InteractableObject
     private IEnumerator StartPull()
     {
         _animator.SetTrigger("StartPull");
+        SoundManager.PlaySound3D(Sound.GeneratorPull, transform);
         yield return new WaitForSeconds(1.5f);
         CheckPull();
     }
