@@ -1,16 +1,32 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private AccessCardType requiredAccessLevel;
     [SerializeField] private GameObject doorObject;
     [SerializeField] private float animationDuration = 1f;
+    [SerializeField] private TextMeshPro[] numberTexts;
+    
+    private Color _approvedColor = Color.green;
+    private Color _deniedColor = Color.red;
+    private Color _neutralColor = Color.white;
     
     private float _doorMaxY = 395f;
     private float _doorMinY = 0f;
-    private bool _isOpen = false;
+    private bool _isOpen;
+
+    private void Awake()
+    {
+        SetTextColor(_neutralColor);
+        var number = SetMonitorNumber();
+        foreach (var numberText in numberTexts)
+        {
+            numberText.text = number;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,15 +40,21 @@ public class DoorTrigger : MonoBehaviour
                 if (cardItem.cardPair.cardType >= requiredAccessLevel)
                 {
                     OpenDoor();
+                    SoundManager.PlaySound3D(Sound.CodeApprove, transform);
+                    SetTextColor(_approvedColor);
                 }
                 else
                 {
                     Debug.Log($"Access denied! Required: {requiredAccessLevel}, Current: {cardItem.cardPair.cardType}");
+                    SoundManager.PlaySound3D(Sound.CodeDenied, transform);
+                    SetTextColor(_deniedColor);
                 }
             }
             else
             {
                 Debug.Log("No access card found!");
+                SoundManager.PlaySound3D(Sound.CodeDenied, transform);
+                SetTextColor(_deniedColor);
             }
         }
         else if (other.CompareTag("Enemy"))
@@ -47,6 +69,7 @@ public class DoorTrigger : MonoBehaviour
         if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
             CloseDoor();
+            SetTextColor(_neutralColor);
         }
     }
 
@@ -70,5 +93,32 @@ public class DoorTrigger : MonoBehaviour
         doorObject.transform.DOLocalMoveY(_doorMinY, animationDuration)
             .SetEase(Ease.InQuad)
             .OnComplete(() => Debug.Log("Door fully closed"));
+    }
+
+    private void SetTextColor(Color color)
+    {
+        foreach (var numberText in numberTexts)
+        {
+            numberText.color = color;
+        }
+    }
+
+    private string SetMonitorNumber()
+    {
+        switch (requiredAccessLevel)
+        {
+            case AccessCardType.Level0:
+                return "0";
+            case AccessCardType.Level1:
+                return "1";
+            case AccessCardType.Level2:
+                return "2";
+            case AccessCardType.Level3:
+                return "3";
+            case AccessCardType.Level4:
+                return "4";
+            default:
+                return "None";
+        }
     }
 }

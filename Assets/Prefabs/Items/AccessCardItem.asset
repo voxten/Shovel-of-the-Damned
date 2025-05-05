@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: d1f92f8416e240bb8a4c1c74316cf911
   itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
-  itemName: Level 0
+  itemName: Level 0 - Guest
   itemDescription: Access Card
   itemType: 0
   cardPair:
     cardType: 0
-    description: Level 0
+    description: "Level 0 \u2013 Guest"
     upgradeCode: 0000

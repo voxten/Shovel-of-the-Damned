@@ -20,8 +20,8 @@ MonoBehaviour:
   noteContent:
   - "Access cards are divided into several levels:\nLevel 0 \u2013 Guest\r\nLevel
     1 \u2013 Worker\r\nLevel 2 \u2013 General Staff\r\nLevel 3 \u2013 Senior Staff\r\nLevel
-    4 \u2013 Admin Staff\n\nAccess cards are extremely important \u2013 do not lose
-    them!"
+    4 \u2013 Admin Staff\nLevel S - Security (cannot upgrade!!!)\n\nAccess cards
+    are extremely important \u2013 do not lose them!"
   - They allow movement throughout the laboratory via an infrared detection system.
     As long as the card is visible (e.g., clipped to your clothing), doors will open
     automatically.
