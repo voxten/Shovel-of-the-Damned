@@ -4,7 +4,6 @@ using UnityEngine;
 public class PickItem : InteractableObject
 {
     [SerializeField] protected Item item;
-    [SerializeField] private Sound pickSound;
     public bool isPickable = true;
     private bool _isFirst = true;
     private Collider _collider;
@@ -19,7 +18,7 @@ public class PickItem : InteractableObject
         if (_isFirst && isPickable)
         {
             base.Interact();
-            SoundManager.PlaySound3D(pickSound, transform);
+            SoundManager.PlaySound3D(Sound.Pickup, transform);
             Inventory.InventoryEvents.AddItem(item);
             gameObject.SetActive(false);
             _isFirst = false;

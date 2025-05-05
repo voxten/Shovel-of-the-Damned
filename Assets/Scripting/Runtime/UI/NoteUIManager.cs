@@ -11,7 +11,6 @@ public class NoteUIManager : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button previousButton;
     [SerializeField] private Button nextButton;
-    [SerializeField] private Sound paperSound;
     private NoteItem _currentNoteItem;
     private bool _isOn;
     private int _currentIndex;
@@ -44,7 +43,7 @@ public class NoteUIManager : MonoBehaviour
             previousButton.onClick.AddListener(PreviousNote);
             UpdateNavigationButtons();
         }
-        SoundManager.PlaySound(paperSound);
+        SoundManager.PlaySound(Sound.Paper);
         ToggleUtils(true);
     }
 
@@ -70,7 +69,7 @@ public class NoteUIManager : MonoBehaviour
 
     private void UpdateNavigationButtons()
     {
-        SoundManager.PlaySound(paperSound);
+        SoundManager.PlaySound(Sound.Paper);
         nextButton.gameObject.SetActive(_currentIndex < _currentNoteItem.noteContent.Count - 1);
         previousButton.gameObject.SetActive(_currentIndex > 0);
     }

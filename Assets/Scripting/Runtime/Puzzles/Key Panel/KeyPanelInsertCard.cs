@@ -11,7 +11,6 @@ public class KeyPanelInsertCard : InteractableObject
     [Header("AccessCard")]
     [SerializeField] private GameObject accessCardObject;
     [SerializeField] private AccessCardData accessCardData;
-    [SerializeField] private Sound insertSound;
     private string _requiredUpgradeCode;
 
     [Header("Animation")]
@@ -56,7 +55,7 @@ public class KeyPanelInsertCard : InteractableObject
         
         _isInserting = true;
         
-        SoundManager.PlaySound3D(insertSound, transform);
+        SoundManager.PlaySound3D(Sound.CodeInput, transform);
         
         var card = Inventory.InventoryEvents.GetAccessCard();
         

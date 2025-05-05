@@ -13,12 +13,6 @@ public class KeyPanelPuzzle : PuzzleObject
     [SerializeField] private AccessCardData accessCardData;
     private List<AccessCardPair> _accessCardPairs;
     [SerializeField] private KeyPanelInsertCard insertCard;
-    
-    [Header("Audio")]
-    [SerializeField] private Sound approvedSound;
-    [SerializeField] private Sound deniedSound;
-    [SerializeField] private Sound inputSound;
-    [SerializeField] private Sound openDoorSound;
 
     private void Awake()
     {
@@ -59,7 +53,7 @@ public class KeyPanelPuzzle : PuzzleObject
     private void AddNumber(int number)
     {
         if (PlayerPassCode.Length == 4) return;
-        SoundManager.PlaySound3D(inputSound, transform);
+        SoundManager.PlaySound3D(Sound.CodeInput, transform);
         PlayerPassCode += number.ToString();
         UpdateText();
     }
@@ -120,14 +114,14 @@ public class KeyPanelPuzzle : PuzzleObject
     public void DeniedCode(string narrationText)
     {
         Narration.DisplayText?.Invoke(narrationText);
-        SoundManager.PlaySound3D(deniedSound, transform);
+        SoundManager.PlaySound3D(Sound.CodeDenied, transform);
         ClearPasscode();
     }
 
     public void ApprovedCode(string narrationText)
     {
         Narration.DisplayText?.Invoke(narrationText);
-        SoundManager.PlaySound3D(approvedSound, transform);
+        SoundManager.PlaySound3D(Sound.CodeApprove, transform);
     }
 
     public void ClearPasscode()

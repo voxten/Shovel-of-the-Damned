@@ -3,7 +3,6 @@ using DG.Tweening;
 
 public class KeyPanelButtonClear : MonoBehaviour
 {
-    [SerializeField] private Sound clearSound;
     private const float StandardButton = -0.30f;  
     private const float PressedButton = -0.25f;
     
@@ -22,7 +21,7 @@ public class KeyPanelButtonClear : MonoBehaviour
                 });
 
             KeyPanelPuzzle.KeyPanelEvents.ClearPasscode();
-            SoundManager.PlaySound3D(clearSound, transform, Vector2.one, new Vector2(0.6f,0.7f));
+            SoundManager.PlaySound3D(Sound.CodeInput, transform, Vector2.one, new Vector2(0.6f,0.7f));
         }
     }
 }

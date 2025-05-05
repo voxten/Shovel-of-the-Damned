@@ -11,7 +11,6 @@ public class IceMelting : MonoBehaviour
     [SerializeField] private Animator handAnimator;
     [SerializeField] private GameObject key;
     [SerializeField] private BunsenBurnerTank bunsenBurnerTank;
-    [SerializeField] private Sound meltSound;
     
     private Material _iceMaterial;
     private Vector3 _initialScale;
@@ -51,7 +50,7 @@ public class IceMelting : MonoBehaviour
             if(!bunsenBurnerTank.isOn)
                 Narration.DisplayText?.Invoke("There's no propane.");
             else 
-                SoundManager.PlaySound(meltSound);
+                SoundManager.PlaySound(Sound.MeltIce);
         }
     }
 
@@ -72,7 +71,7 @@ public class IceMelting : MonoBehaviour
             if (bunsenBurnerTank.isOn)
             {
                 _isMelting = false;
-                SoundManager.StopSound(meltSound);
+                SoundManager.StopSound(Sound.MeltIce);
             }
                 
             Debug.Log("Ice not triggered");
