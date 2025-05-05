@@ -174,7 +174,6 @@ public class EnemyAI : MonoBehaviour
                 SetDestination(nearestVent.gameObject);
                 _currentState = AIState.MovingToVent;
             }
-            return;
         }
 
         switch (_currentState)

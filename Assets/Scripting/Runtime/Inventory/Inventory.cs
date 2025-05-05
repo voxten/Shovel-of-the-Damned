@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
+        InventoryEvents.GetAccessCard += GetAccessCard;
         InventoryEvents.GetItemsByType += GetItemsByType;
         InventoryEvents.GetAllItems += GetAllItems;
         InventoryEvents.RemoveItem += RemoveItem;
@@ -24,6 +25,7 @@ public class Inventory : MonoBehaviour
 
     private void OnDisable()
     {
+        InventoryEvents.GetAccessCard -= GetAccessCard;
         InventoryEvents.GetItemsByType -= GetItemsByType;
         InventoryEvents.GetAllItems -= GetAllItems;
         InventoryEvents.RemoveItem -= RemoveItem;
@@ -129,6 +131,18 @@ public class Inventory : MonoBehaviour
         }
         return itemsTemp;
     }
+    
+    private Item GetAccessCard()
+    {
+        foreach (var item in items)
+        {
+            if (item is AccessCardItem)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
 
     private List<Item> GetAllItems()
     {
@@ -137,6 +151,7 @@ public class Inventory : MonoBehaviour
 
     public static class InventoryEvents
     {
+        public static Func<Item> GetAccessCard;
         public static Action<Item> AddItem;
         public static Func<ItemType, List<Item>> GetItemsByType;
         public static Func<List<Item>> GetAllItems;

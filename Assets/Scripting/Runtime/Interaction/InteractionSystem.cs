@@ -19,6 +19,9 @@ public class InteractionSystem : MonoBehaviour
     [Header("Door/Drawer Objects")]
     [SerializeField] private LayerMask doorLayerMask;
 
+    [Header("Light Object")] 
+    [SerializeField] private GameObject coneObject;
+
     private Camera _playerCamera;
 
     private InteractableObject _currentInteractable;
@@ -35,7 +38,6 @@ public class InteractionSystem : MonoBehaviour
         _playerCamera = Camera.main;
         interactionIcon.DOFade(0f, 0f);
     }
-    
     
     private void OnEnable()
     {
@@ -132,7 +134,7 @@ public class InteractionSystem : MonoBehaviour
             DisableInteractionIcon();
         }
 
-        // Interaction (klikniêcie)
+        // Interaction (klikniï¿½cie)
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
@@ -151,6 +153,7 @@ public class InteractionSystem : MonoBehaviour
         _puzzleInteraction.EndInteract();
         TogglePuzzleCollider();
         SetInteractionView(false);
+        coneObject.SetActive(true);
         DisableInteractionIcon();
         _puzzleInteraction = null;
     }
@@ -166,6 +169,7 @@ public class InteractionSystem : MonoBehaviour
                     _puzzleInteraction = puzzleInteraction;
                     if (_puzzleInteraction.puzzleObject.isFinished) return;
                     TogglePuzzleCollider();
+                    coneObject.SetActive(false);
                     SetInteractionView(true);
                 }
             }
@@ -273,7 +277,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void RemoveHighlight()
     {
-        // Jeœli coœ jest trzymane (dragowane) - NIE usuwamy outline!
+        // Jeï¿½li coï¿½ jest trzymane (dragowane) - NIE usuwamy outline!
         if (DragObject.DragEvents.GetDragging())
             return;
 

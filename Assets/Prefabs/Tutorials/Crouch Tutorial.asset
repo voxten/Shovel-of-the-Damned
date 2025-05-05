@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Crouch Tutorial
   m_EditorClassIdentifier: 
   keyCode: 306
-  tutorialDescription: Press the (Left CTRL) key to crouch.
+  tutorialDescription: Press the (Left CTRL) key to crouch

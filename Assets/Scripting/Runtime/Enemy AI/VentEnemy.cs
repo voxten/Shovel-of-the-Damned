@@ -7,8 +7,8 @@ public class VentEnemy : MonoBehaviour
     {
         StartCoroutine(PlayEnemySound());
     }
-    
-    IEnumerator PlayEnemySound()
+
+    private IEnumerator PlayEnemySound()
     {
         while (true)
         {

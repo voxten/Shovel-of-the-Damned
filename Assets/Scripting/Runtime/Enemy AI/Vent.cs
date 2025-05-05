@@ -21,7 +21,7 @@ public class Vent : MonoBehaviour
         
         // Draw points and connections
         Gizmos.color = pointsColor;
-        for (int i = 0; i < points.Count; i++)
+        for (var i = 0; i < points.Count; i++)
         {
             if (points[i] == null) continue;
             
