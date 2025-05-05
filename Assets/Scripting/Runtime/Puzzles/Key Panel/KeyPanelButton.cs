@@ -9,6 +9,7 @@ public class KeyPanelButton : MonoBehaviour
 
     private void OnMouseOver()
     {
+        Debug.Log("Even goes in??");
         if (Input.GetMouseButtonDown(0))
         {
             var position = transform.localPosition;

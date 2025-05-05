@@ -61,10 +61,10 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 619a91761feb2c84fac7afde4b3d973b, type: 3}
     type: 13
   - clip:
-    - {fileID: 8300000, guid: 56a8ce297fbe71e45932f1412ba46967, type: 3}
+    - {fileID: 8300000, guid: b19d8c623deee0643ae391d954046c87, type: 3}
     type: 14
   - clip:
-    - {fileID: 8300000, guid: d4fa2c2d74fa1b34da440d70abb32b6d, type: 3}
+    - {fileID: 8300000, guid: 368222a7d98ac0849bd93c33ffe6ac61, type: 3}
     type: 15
   - clip:
     - {fileID: 8300000, guid: 8f075dcd2a3359c4c93f2d0af71abec6, type: 3}

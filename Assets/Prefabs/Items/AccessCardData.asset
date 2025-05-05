@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37af47aeb00f384abb44bcbffd11287, type: 3}
+  m_Name: AccessCardData
+  m_EditorClassIdentifier: 
+  accessCards:
+  - cardType: 0
+    description: "Level 0 \u2013 Guest"
+    upgradeCode: 0000
+  - cardType: 1
+    description: "Level 1 \u2013 Worker"
+    upgradeCode: 1111
+  - cardType: 2
+    description: "Level 2 \u2013 General Staff"
+    upgradeCode: 2222
+  - cardType: 3
+    description: "Level 3 \u2013 Senior Staff"
+    upgradeCode: 3333
+  - cardType: 4
+    description: "Level 4 \u2013 Admin"
+    upgradeCode: 4444

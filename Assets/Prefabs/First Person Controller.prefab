@@ -1474,6 +1474,7 @@ MonoBehaviour:
   doorLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+  coneObject: {fileID: 686737899155638485}
 --- !u!1 &1708301584631956409
 GameObject:
   m_ObjectHideFlags: 0
@@ -3952,7 +3953,7 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 100
+  m_Intensity: 5
   m_Range: 20
   m_SpotAngle: 52.9409
   m_InnerSpotAngle: 32.072403
@@ -7032,6 +7033,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
   m_PrefabInstance: {fileID: 380168974118516100}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &686737899155638485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
+  m_PrefabInstance: {fileID: 380168974118516100}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1957101207014933157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7030219592342931679, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
@@ -8296,6 +8302,10 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 8056092202974840557, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: max3DSoundsPerType
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
