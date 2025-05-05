@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 213aed085b8505c4dae903efa73bbd41, type: 3}
+  m_Name: AccessCardItem
+  m_EditorClassIdentifier: 
+  id: d1f92f8416e240bb8a4c1c74316cf911
+  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemName: Level 0
+  itemDescription: Access Card
+  itemType: 0
+  cardPair:
+    cardType: 0
+    description: Level 0
+    upgradeCode: 0000

@@ -15,5 +15,5 @@ MonoBehaviour:
   id: bda51b29bb21419e9ac2b39da668720e
   itemIcon: {fileID: -804667674, guid: 05e0567213a58c840a3ea79a4409bdfd, type: 3}
   itemName: Battery
-  itemDescription: It can be usefull with camera
+  itemDescription: It can be useful for flashlight
   itemType: 0

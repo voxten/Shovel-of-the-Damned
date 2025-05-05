@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: "Access Cards \u2013 Types and Guidelines"
+  m_EditorClassIdentifier: 
+  id: 844dde2d28de4903a9d3883d98d1f4d9
+  itemIcon: {fileID: 0}
+  itemName: "Access Cards \u2013 Types and Guidelines"
+  itemDescription: Note about access cards and how they work
+  itemType: 0
+  noteContent:
+  - "Access cards are divided into several levels:\nLevel 0 \u2013 Guest\r\nLevel
+    1 \u2013 Worker\r\nLevel 2 \u2013 General Staff\r\nLevel 3 \u2013 Senior Staff\r\nLevel
+    4 \u2013 Admin Staff\n\nAccess cards are extremely important \u2013 do not lose
+    them!"
+  - They allow movement throughout the laboratory via an infrared detection system.
+    As long as the card is visible (e.g., clipped to your clothing), doors will open
+    automatically.
+  - "Cards can be upgraded to a higher level. To do this, you'll need a valid access
+    code. This code changes with each use, so even if it's leaked, unauthorized users
+    won\u2019t be able to exploit it."
+  - To upgrade your card, use the card terminal located at the reception desk.
+  - 'Please note: the system is new and may behave unpredictably. Always carry your
+    pager with you so manual access can be granted if necessary.'

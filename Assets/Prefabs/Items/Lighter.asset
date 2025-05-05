@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34ccfe4476d06a04294a5b0ac73fb861, type: 3}
-  m_Name: Security Key Card
+  m_Name: Lighter
   m_EditorClassIdentifier: 
-  id: 2a54c454f3f74f3c9208f469e85ee4ab
-  itemIcon: {fileID: -660757625, guid: 38f9829997991e74db4d92975a95ca36, type: 3}
-  itemName: Security Key Card
-  itemDescription: Key card for security room
-  itemType: 1
+  id: 982a1fe68fb94f3ea5bd25f898d5c12d
+  itemIcon: {fileID: -1730254177, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
+  itemName: Lighter
+  itemDescription: Lighter, not enough for light source, but maybe I can use it somewhere??
+  itemType: 0

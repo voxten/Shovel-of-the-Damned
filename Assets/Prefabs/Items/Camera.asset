@@ -15,5 +15,5 @@ MonoBehaviour:
   id: fbf77900178548e48766ba15cdef1df4
   itemIcon: {fileID: -622110977, guid: 05e0567213a58c840a3ea79a4409bdfd, type: 3}
   itemName: Camera
-  itemDescription: It cam be usefull to look for something.
+  itemDescription: It cam be useful to look for something.
   itemType: 0
