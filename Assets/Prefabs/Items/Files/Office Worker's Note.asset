@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: Office Worker's Note
+  m_EditorClassIdentifier: 
+  id: 25dc8a2a731245129e6be819b0cd6492
+  itemIcon: {fileID: -691152583, guid: 34593bda9722d0b4bb0fd94de0436d9e, type: 3}
+  itemName: Office Worker's Note
+  itemDescription: Note found in the notebook
+  itemType: 2
+  noteContent:
+  - "Looks like I\u2019m being transferred to the technical department. I have an
+    engineering degree and I\u2019ve worked with generators before, so it shouldn\u2019t
+    be a problem.\nThis \u201Cpromotion\u201D caught me a bit off guard \u2014 I
+    asked around before, and they said there were no open positions. Now suddenly
+    there is. Apparently one of the workers has been overworking himself and they
+    want to give him some rest.\nTomorrow I\u2019m supposed to upgrade my access
+    card and go through safety training.\n\nP.S. If someone finds this note, it probably
+    won\u2019t matter anyway, so...  1246 that's my code."

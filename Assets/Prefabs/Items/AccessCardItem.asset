@@ -18,6 +18,6 @@ MonoBehaviour:
   itemDescription: Access Card
   itemType: 0
   cardPair:
-    cardType: 0
+    cardType: 4
     description: "Level 0 \u2013 Guest"
     upgradeCode: 0000

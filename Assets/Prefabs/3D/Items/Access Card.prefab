@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390067ca6e4f4e1468618f11d7440d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 8db53625f60b3b442b5633f7a901bf49, type: 2}
-  pickSound: 10
+  item: {fileID: 11400000, guid: a4380b3c690a4054288cf208a1d9075a, type: 2}
   isPickable: 1
 --- !u!65 &1604777401190718272
 BoxCollider:
