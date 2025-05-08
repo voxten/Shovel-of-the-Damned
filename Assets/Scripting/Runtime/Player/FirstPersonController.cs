@@ -305,11 +305,13 @@ namespace StarterAssets
         private void SetAnimations()
 		{
 			mainAnimator.SetBool("Walk", _input.move != Vector2.zero);
+			mainAnimator.SetBool("Sprint", _input.sprint);
 			mainAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
 			mainAnimator.SetBool("WalkRight", _input.move.x > 0.0f);
 			mainAnimator.SetBool("WalkBack", _input.move.y < 0.0f);
 			
 			shadowAnimator.SetBool("Walk", _input.move != Vector2.zero);
+			shadowAnimator.SetBool("Sprint", _input.sprint);
 			shadowAnimator.SetBool("WalkLeft", _input.move.x < 0.0f);
 			shadowAnimator.SetBool("WalkRight", _input.move.x > 0.0f);
 			shadowAnimator.SetBool("WalkBack", _input.move.y < 0.0f);
