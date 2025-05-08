@@ -16,7 +16,7 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemName: "Access Cards \u2013 Types and Guidelines"
   itemDescription: Note about access cards and how they work
-  itemType: 0
+  itemType: 2
   noteContent:
   - "Access cards are divided into several levels:\nLevel 0 \u2013 Guest\r\nLevel
     1 \u2013 Worker\r\nLevel 2 \u2013 General Staff\r\nLevel 3 \u2013 Senior Staff\r\nLevel

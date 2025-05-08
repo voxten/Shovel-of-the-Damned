@@ -30,10 +30,10 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 1baa7a4010f68604e85298827560773c, type: 3}
     type: 3
   - clip:
-    - {fileID: 8300000, guid: 56cf28cbe495817458aad72e052aa70c, type: 3}
+    - {fileID: 8300000, guid: f55c650e0f0047745952e083edfc2b51, type: 3}
     type: 4
   - clip:
-    - {fileID: 8300000, guid: f55c650e0f0047745952e083edfc2b51, type: 3}
+    - {fileID: 8300000, guid: 56cf28cbe495817458aad72e052aa70c, type: 3}
     type: 5
   - clip:
     - {fileID: 8300000, guid: 5b6912a3ee6935f47add9ff81f11c13b, type: 3}
