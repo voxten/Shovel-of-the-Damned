@@ -3,7 +3,22 @@ guid: a663121315be0f84499eadddaeef0821
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: XRAY
+    second: {fileID: 2100000, guid: 121743e009347484fbe0e17ff8b792fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: box
+    second: {fileID: 2100000, guid: 3269e9a732ff61c44aabf6bd35a3b863, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: glass
+    second: {fileID: 2100000, guid: d24880738f482bb44b862bd4f3da024d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
