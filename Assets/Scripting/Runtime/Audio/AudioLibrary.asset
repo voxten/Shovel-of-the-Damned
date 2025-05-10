@@ -14,20 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - clip:
-    - {fileID: 8300000, guid: df1e5887ab16aaf4980e1f1aab90165a, type: 3}
-    - {fileID: 8300000, guid: 523bf7940fda902469debc1e8c45f483, type: 3}
-    - {fileID: 8300000, guid: 91629042673586b4b8c9f9116572ecdc, type: 3}
+    - {fileID: 8300000, guid: 022ee171a83c2814a9b1122dfc67d99f, type: 3}
     type: 1
   - clip:
-    - {fileID: 8300000, guid: cc7680d56537c2f47bae1f26abcebbf1, type: 3}
-    - {fileID: 8300000, guid: ff8004d0950c1684abde2b022248640b, type: 3}
-    - {fileID: 8300000, guid: bf8a27f424c77b544a42fa8fcbe2e03d, type: 3}
+    - {fileID: 8300000, guid: da262c5a2dcbf8846bca1640925d8188, type: 3}
     type: 2
   - clip:
-    - {fileID: 8300000, guid: fd70fffc459ca084ea36b493c3b08457, type: 3}
-    - {fileID: 8300000, guid: 8cb1f1c01dc29a546b3888bb1814cdff, type: 3}
-    - {fileID: 8300000, guid: 157d283d8c1930246a6e214b3a34e93a, type: 3}
-    - {fileID: 8300000, guid: 1baa7a4010f68604e85298827560773c, type: 3}
+    - {fileID: 8300000, guid: 909e893ad9484e34ca0bd3c53b820dad, type: 3}
+    - {fileID: 8300000, guid: 64330cba205636e4993a18fe1a1f91f4, type: 3}
+    - {fileID: 8300000, guid: a4e1fd91fe30c2a418a84ec4ef905fab, type: 3}
+    - {fileID: 8300000, guid: 8c29745473d6ce948b7dd8186477f551, type: 3}
+    - {fileID: 8300000, guid: 9be1ae27ebed6e14a98e197ba75e0466, type: 3}
+    - {fileID: 8300000, guid: 6d41588187579b34592bef000ce8c723, type: 3}
+    - {fileID: 8300000, guid: 8c29745473d6ce948b7dd8186477f551, type: 3}
     type: 3
   - clip:
     - {fileID: 8300000, guid: f55c650e0f0047745952e083edfc2b51, type: 3}
@@ -51,7 +50,11 @@ MonoBehaviour:
   - clip:
     - {fileID: 8300000, guid: 56cf28cbe495817458aad72e052aa70c, type: 3}
     type: 10
-  - clip: []
+  - clip:
+    - {fileID: 8300000, guid: d8117397df0c3164082037a774c0b6da, type: 3}
+    - {fileID: 8300000, guid: 6cb277dac3080a344818ade2df9ab381, type: 3}
+    - {fileID: 8300000, guid: e8e808510433fac4ab982e57e4f8d304, type: 3}
+    - {fileID: 8300000, guid: 538cf660fd5e5154ebc24f3a005a791b, type: 3}
     type: 11
   - clip:
     - {fileID: 8300000, guid: a97d9c07079c9564e854110ee5349886, type: 3}
@@ -80,10 +83,10 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4a549b63ff586db4fbed50e3d0a88722, type: 3}
     type: 21
   - clip:
-    - {fileID: 8300000, guid: 132aa7f6f27bf464abfc30140f5f1ada, type: 3}
+    - {fileID: 8300000, guid: b6b20274e78bf744cb432c9a188e69a4, type: 3}
     type: 19
   - clip:
-    - {fileID: 8300000, guid: 63cb27ba4bea70e4ea0f3d306ced47e7, type: 3}
+    - {fileID: 8300000, guid: 19d80ab8fa0eb6f45ba7342890116a65, type: 3}
     type: 20
   - clip:
     - {fileID: 8300000, guid: 146ea7cce32e38a46ba3209f4f6a112a, type: 3}

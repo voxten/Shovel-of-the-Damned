@@ -6,12 +6,14 @@ public class BunsenBurnerTank : InteractableObject
 {
     [SerializeField] private GameObject burner;
     [SerializeField] private GameObject flameParticles;
+    [SerializeField] private GameObject lightParticles;
     private bool _isFirst = true;
     public bool isOn;
 
     private void Start()
     {
         flameParticles.SetActive(false);
+        lightParticles.SetActive(false);
     }
 
     public override bool Interact()
@@ -43,7 +45,7 @@ public class BunsenBurnerTank : InteractableObject
     {
         isOn = true;
         flameParticles.SetActive(true);
-        
+        lightParticles.SetActive(true);
         SoundManager.PlaySound3D(Sound.BunsenLoop, burner.transform);
     }
 
@@ -52,5 +54,6 @@ public class BunsenBurnerTank : InteractableObject
         isOn = false;
         SoundManager.StopSound(Sound.BunsenLoop);
         flameParticles.SetActive(false);
+        lightParticles.SetActive(false);
     }
 }

@@ -18,7 +18,7 @@ MonoBehaviour:
     upgradeCode: 0000
   - cardType: 1
     description: "Level 1 \u2013 Worker"
-    upgradeCode: 1111
+    upgradeCode: 1246
   - cardType: 2
     description: "Level 2 \u2013 General Staff"
     upgradeCode: 2222

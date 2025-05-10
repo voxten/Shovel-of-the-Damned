@@ -18,10 +18,9 @@ public class GeneratorSwitch : MonoBehaviour
             lights[1].enabled = !_isSwitched;
             _isSwitched = !_isSwitched;
             
-            var currentX = transform.eulerAngles.x;
-            var currentY = transform.eulerAngles.y;
+            transform.DOLocalRotateQuaternion(Quaternion.Euler(0, 0, targetRotation), 0.5f);
             
-            transform.DOLocalRotate(new Vector3(currentX, currentY, targetRotation), 0.5f, RotateMode.Fast);
+            SoundManager.PlaySound3D(Sound.SwitchOn, transform);
         }
     }
 
