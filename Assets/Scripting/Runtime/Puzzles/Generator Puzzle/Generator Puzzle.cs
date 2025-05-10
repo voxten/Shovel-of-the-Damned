@@ -39,8 +39,15 @@ public class GeneratorPuzzle : PuzzleObject
         
     }
 
+    protected override void EndPuzzle()
+    {
+        SoundManager.PlaySound3D(Sound.GeneratorPuzzleStart, transform);
+        base.EndPuzzle();
+    }
+
     private void SetBatteryLed()
     {
+        SoundManager.PlaySound3D(Sound.LedOn, batteryLedLights[0].transform);
         batteryLedLights[0].enabled = false;
         batteryLedLights[1].enabled = true;
         _batteryIsOn = true;
@@ -48,6 +55,7 @@ public class GeneratorPuzzle : PuzzleObject
 
     private void SetFuelLed()
     {
+        SoundManager.PlaySound3D(Sound.LedOn, fuelLedLights[0].transform);
         fuelLedLights[0].enabled = false;
         fuelLedLights[1].enabled = true;
         _fuelIsOn = true;
@@ -62,6 +70,7 @@ public class GeneratorPuzzle : PuzzleObject
 
     private void DisableWarningLed()
     {
+        SoundManager.PlaySound3D(Sound.LedOff, warningLedLights[0].transform);
         warningLedLights[0].enabled = true;
         warningLedLights[1].enabled = false;
         _warningIsOn = false;
@@ -87,8 +96,7 @@ public class GeneratorPuzzle : PuzzleObject
 
         if (counter == 2)
         {
-            SetWarningLed();
-            InteractionSystem.InteractionEvents.ExitPuzzleInteraction();
+            FinishPuzzle();
         }
         else
         {
@@ -111,6 +119,14 @@ public class GeneratorPuzzle : PuzzleObject
         SetWarningLed();
         yield return new WaitForSeconds(1);
         DisableWarningLed();
+    }
+
+    private void FinishPuzzle()
+    {
+        SetWarningLed();
+        SoundManager.PlaySound3D(Sound.LedOn, warningLedLights[0].transform);
+        InteractionSystem.InteractionEvents.ExitPuzzleInteraction();
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
     
     public static class GeneratorEvents

@@ -19,7 +19,9 @@ public class GeneratorButton : MonoBehaviour
                     gameObject.transform.DOLocalMove(new Vector3(position.x, position.y, standardButton), 0.25f)
                         .SetEase(Ease.OutExpo);
                 });
-
+            
+            SoundManager.PlaySound3D(Sound.ButtonClick, transform);
+            
             GeneratorPuzzle.GeneratorEvents.CheckWarningLed();
         }
     }

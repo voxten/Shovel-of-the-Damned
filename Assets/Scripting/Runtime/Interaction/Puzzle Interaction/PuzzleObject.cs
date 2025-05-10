@@ -26,8 +26,6 @@ public abstract class PuzzleObject : MonoBehaviour
     private IEnumerator WaitForEndOfPuzzle(float time)
     {
         yield return new WaitForSeconds(time);
-        InteractionSystem.InteractionEvents.SetInteractionView(false);
         SoundManager.PlaySound3D(finishAudioClip,transform, new Vector2(1,1), clipVolume);
-        InteractionSystem.InteractionEvents.TogglePuzzleCollider();
     }
 }

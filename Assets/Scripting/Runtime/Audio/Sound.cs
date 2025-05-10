@@ -1,8 +1,8 @@
 ﻿public enum Sound 
 {
     None,
-    PlugInCable,
-    PlugOutCable,
+    LedOn,
+    LedOff,
     ButtonClick,
     CodeApprove,
     CodeDenied,

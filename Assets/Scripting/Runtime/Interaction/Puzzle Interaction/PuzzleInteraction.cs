@@ -14,7 +14,7 @@ public class PuzzleInteraction : InteractableObject
     [Header("Tool")]
     [SerializeField] private bool requireItem;
     [SerializeField, ShowIf("requireItem"), Required] private Item requiredItem;
-    
+        
     private void Awake()
     {
         puzzleCollider = GetComponent<Collider>();
