@@ -21,7 +21,7 @@ public class KeyPanelButtonClear : MonoBehaviour
                 });
 
             KeyPanelPuzzle.KeyPanelEvents.ClearPasscode();
-            SoundManager.PlaySound3D(Sound.CodeInput, transform, Vector2.one, new Vector2(0.6f,0.7f));
+            SoundManager.PlaySound3D(Sound.CodeInput, transform);
         }
     }
 }
