@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -6,8 +7,12 @@ public class ElevatorButton : InteractableObject
     [SerializeField] private GameObject elevatorObject;
     [SerializeField] private GeneratorPuzzle generatorPuzzle;
     [SerializeField] private GameObject buttonObject;
+    [SerializeField] private ElevatorTrigger elevatorTrigger;
 
     [SerializeField] private float elevatorSpeed = 5f;
+    
+    [SerializeField] private List<GameObject> elevatorColliders;
+    
     private float _elevatorMinY = -2.88f;
     private float _elevatorMaxY = 0f;
 
@@ -17,7 +22,7 @@ public class ElevatorButton : InteractableObject
 
     public override bool Interact()
     {
-        if (_isMoving) 
+        if (_isMoving || !elevatorTrigger.GetIsTriggered()) 
             return false;
 
         if (generatorPuzzle.isFinished)
@@ -49,6 +54,11 @@ public class ElevatorButton : InteractableObject
     {
         if (!_doesElevatorWork) return;
 
+        foreach (var eleCollider in elevatorColliders)
+        {
+            eleCollider.SetActive(true);
+        }
+
         _isMoving = true;
 
         float targetY = _isAtMax ? _elevatorMinY : _elevatorMaxY;
@@ -64,6 +74,10 @@ public class ElevatorButton : InteractableObject
             .OnComplete(() =>
             {
                 _isMoving = false;
+                foreach (var eleCollider in elevatorColliders)
+                {
+                    eleCollider.SetActive(false);
+                }
             });
     }
 }
