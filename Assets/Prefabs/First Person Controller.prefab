@@ -8303,6 +8303,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8056092202974840557, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
     - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: maxDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: audioRolloff
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
       propertyPath: sfxMixerGroup
       value: 
       objectReference: {fileID: 8056092202974840557, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
@@ -8313,6 +8321,18 @@ PrefabInstance:
     - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
       propertyPath: max3DSoundsPerType
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: customRolloffCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: customRolloffCurve.m_Curve.Array.data[1].time
+      value: 0.502655
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: customRolloffCurve.m_Curve.Array.data[0].value
+      value: 0.80895996
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

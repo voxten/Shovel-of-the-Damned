@@ -6,11 +6,20 @@ using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour 
 {
+    [Header("Audio Sources")]
     [SerializeField] private AudioSource mainAudio;
     [SerializeField] private AudioSource musicAudio;
     [SerializeField] private AudioLibraryData audioLibrary;
+    
+    [Header("Audio Mixers")]
     [SerializeField] private AudioMixerGroup mainMixerGroup;
     [SerializeField] private AudioMixerGroup sfxMixerGroup;
+
+    [Header("3D Sound Settings")]
+    [SerializeField] private AudioRolloffMode audioRolloff = AudioRolloffMode.Logarithmic;
+    [SerializeField] private float minDistance = 1f;
+    [SerializeField] private float maxDistance = 500f;
+    [SerializeField] private AnimationCurve customRolloffCurve;
 
     private static Action<Sound, Vector2?, Vector2?> _onPlaySound;
     private static Action<Sound, Transform, Vector2?, Vector2?> _onPlaySound3D;
@@ -75,15 +84,25 @@ public class SoundManager : MonoBehaviour
         audioSource.outputAudioMixerGroup = sfxMixerGroup;
         audioSource.clip = sfx;
         audioSource.spatialBlend = 1f;
+        
+        // Configure 3D sound settings
+        audioSource.rolloffMode = audioRolloff;
+        audioSource.minDistance = minDistance;
+        audioSource.maxDistance = maxDistance;
+        
+        if (audioRolloff == AudioRolloffMode.Custom)
+        {
+            audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, customRolloffCurve);
+        }
     
         // Set volume (use single value if provided, otherwise random range)
-        if (volumeRange.HasValue && volumeRange.Value.x == volumeRange.Value.y)
+        if (volumeRange.HasValue && Mathf.Approximately(volumeRange.Value.x, volumeRange.Value.y))
             audioSource.volume = volumeRange.Value.x;
         else
             audioSource.volume = volumeRange != null ? Random.Range(volumeRange.Value.x, volumeRange.Value.y) : 1f;
     
         // Set pitch (use single value if provided, otherwise random range)
-        if (pitchRange.HasValue && pitchRange.Value.x == pitchRange.Value.y)
+        if (pitchRange.HasValue && Mathf.Approximately(pitchRange.Value.x, pitchRange.Value.y))
             audioSource.pitch = pitchRange.Value.x;
         else
             audioSource.pitch = pitchRange != null ? Random.Range(pitchRange.Value.x, pitchRange.Value.y) : 1f;
