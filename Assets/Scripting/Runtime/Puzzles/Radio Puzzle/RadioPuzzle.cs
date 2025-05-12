@@ -16,7 +16,7 @@ public class RadioPuzzle : PuzzleObject
     private Sound _currentSecondarySound = Sound.None;
     private bool _isCodePlaying;
 
-    private void Awake()
+    private void Start()
     {
         SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, noiseVolume);
         _radioLoopCoroutine = StartCoroutine(LoopRadio());
@@ -38,14 +38,6 @@ public class RadioPuzzle : PuzzleObject
     {
         RadioEvents.CheckNeedles -= CheckNeedles;
         RadioEvents.GetIsFinished -= GetIsFinished;
-        
-        if (_radioLoopCoroutine != null) StopCoroutine(_radioLoopCoroutine);
-        if (_codePlayCoroutine != null) StopCoroutine(_codePlayCoroutine);
-        
-        SoundManager.StopSound3D(Sound.RadioNoiseLoop, transform);
-        SoundManager.StopSound3D(Sound.RadioDistCode, transform);
-        SoundManager.StopSound3D(Sound.RadioCode, transform);
-        _isCodePlaying = false;
     }
 
     public override void OpenPuzzle()
@@ -99,7 +91,7 @@ public class RadioPuzzle : PuzzleObject
 
             if (soundToPlay != _currentSecondarySound)
             {
-                HandleSoundTransition(soundToPlay);
+                HandleSoundTransition(soundToPlay, count);
             }
             
             yield return new WaitForSeconds(0.3f);
@@ -116,14 +108,14 @@ public class RadioPuzzle : PuzzleObject
         return count;
     }
     
-    private void HandleSoundTransition(Sound newSound)
+    private void HandleSoundTransition(Sound newSound, int currentNeedleCount)
     {
         // Stop previous sound
         if (_currentSecondarySound != Sound.None)
         {
             SoundManager.StopSound3D(_currentSecondarySound, transform);
             
-            if (_currentSecondarySound == Sound.RadioCode && _codePlayCoroutine != null)
+            if (_codePlayCoroutine != null)
             {
                 StopCoroutine(_codePlayCoroutine);
                 _codePlayCoroutine = null;
@@ -131,43 +123,58 @@ public class RadioPuzzle : PuzzleObject
             }
         }
         
-        // Play new sound
+        // Play new sound only if needle count matches
         if (newSound != Sound.None)
         {
-            if (newSound == Sound.RadioCode)
+            bool shouldPlay = (newSound == Sound.RadioDistCode && currentNeedleCount == 1) ||
+                              (newSound == Sound.RadioCode && currentNeedleCount >= 2);
+            
+            if (shouldPlay)
             {
-                _codePlayCoroutine = StartCoroutine(PlayCodeRepeating());
+                _codePlayCoroutine = StartCoroutine(PlayCodeRepeating(newSound, currentNeedleCount));
+                _currentSecondarySound = newSound;
             }
             else
             {
-                SoundManager.PlaySound3D(newSound, transform, codeVolume);
+                _currentSecondarySound = Sound.None;
             }
         }
-        
-        _currentSecondarySound = newSound;
+        else
+        {
+            _currentSecondarySound = Sound.None;
+        }
     }
 
-    private IEnumerator PlayCodeRepeating()
+    private IEnumerator PlayCodeRepeating(Sound repeatSound, int requiredNeedleCount)
     {
-        while (true)
+        while (GetCorrectNeedleCount() == requiredNeedleCount)
         {
             if (!_isCodePlaying)
             {
                 _isCodePlaying = true;
-                SoundManager.PlaySound3D(Sound.RadioCode, transform, codeVolume);
+                SoundManager.PlaySound3D(repeatSound, transform, codeVolume);
                 
-                // Get clip length
-                float clipLength = GetAudioClipLength(Sound.RadioCode);
+                float clipLength = GetAudioClipLength(repeatSound);
                 yield return new WaitForSeconds(clipLength);
                 
                 _isCodePlaying = false;
-                yield return new WaitForSeconds(codeRepeatDelay);
+                
+                // Only wait the delay if we're still in the correct state
+                if (GetCorrectNeedleCount() == requiredNeedleCount)
+                {
+                    yield return new WaitForSeconds(codeRepeatDelay);
+                }
             }
             else
             {
                 yield return null;
             }
         }
+        
+        // If we exited the loop, stop the sound
+        SoundManager.StopSound3D(repeatSound, transform);
+        _isCodePlaying = false;
+        _currentSecondarySound = Sound.None;
     }
     
     public static class RadioEvents

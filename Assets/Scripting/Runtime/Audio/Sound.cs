@@ -12,7 +12,7 @@
     RadioCode,
     Pickup,
     SwitchOn,
-    SwitchOff,
+    HangingLight,
     RadioDistCode,
     DoorOpen,
     DoorClose,
