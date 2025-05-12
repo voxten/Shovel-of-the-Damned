@@ -1912,7 +1912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7835732441790861492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3457,7 +3457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9159914559429073833
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3847,7 +3847,6 @@ MonoBehaviour:
   closeButton: {fileID: 4076624591852604086}
   previousButton: {fileID: 8284760027965465861}
   nextButton: {fileID: 2963296407619183729}
-  paperSound: 26
 --- !u!114 &712514451177767022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3878,6 +3877,7 @@ MonoBehaviour:
   resumeButton: {fileID: 440602080047524621}
   menuButton: {fileID: 1866857817857229871}
   quitButton: {fileID: 3226751269942740117}
+  audioListener: {fileID: 1500263160103211682}
 --- !u!1 &5151578308923506519
 GameObject:
   m_ObjectHideFlags: 0
@@ -8302,6 +8302,14 @@ PrefabInstance:
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 8056092202974840557, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: sfxMixerGroup
+      value: 
+      objectReference: {fileID: 8056092202974840557, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
+    - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
+      propertyPath: mainMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 18a492fffdc042a4daab041b192583ac, type: 2}
     - target: {fileID: 9109316581568393058, guid: a0d747b091eb17a44aff15bb2c4378f2, type: 3}
       propertyPath: max3DSoundsPerType
       value: 15
