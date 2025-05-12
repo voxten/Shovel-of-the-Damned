@@ -6,7 +6,7 @@ public abstract class PuzzleObject : MonoBehaviour
     [Header("Finishing Puzzle Parameters")]
     [SerializeField] private float finishingTime;
     [SerializeField] private Sound finishAudioClip;
-    [SerializeField] private Vector2 clipVolume = new Vector2(1,1);
+    [SerializeField] private bool customFinish;
     public bool isFinished;
     
     // function which indicates what should be done after entering a puzzle
@@ -26,6 +26,12 @@ public abstract class PuzzleObject : MonoBehaviour
     private IEnumerator WaitForEndOfPuzzle(float time)
     {
         yield return new WaitForSeconds(time);
-        SoundManager.PlaySound3D(finishAudioClip,transform, new Vector2(1,1), clipVolume);
+        if (isFinished && !customFinish)
+        {
+            InteractionSystem.InteractionEvents.ExitPuzzleInteraction();
+            GetComponent<PuzzleInteraction>().puzzleCollider.enabled = false;
+        }
+            
+        SoundManager.PlaySound3D(finishAudioClip,transform);
     }
 }
