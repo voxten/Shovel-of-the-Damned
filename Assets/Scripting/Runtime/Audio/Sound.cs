@@ -8,7 +8,7 @@
     CodeDenied,
     CodeInput,
     RadioNoiseLoop,
-    RadioTunerLoop,
+    RadioTuner,
     RadioCode,
     Pickup,
     SwitchOn,

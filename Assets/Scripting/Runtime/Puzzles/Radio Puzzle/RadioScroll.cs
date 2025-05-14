@@ -24,11 +24,12 @@ public class RadioScroll : MonoBehaviour
                 _isRotating = false;
                 return;
             }
-                
+            
             float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
             if (Mathf.Abs(scrollInput) > 0.01f)
             {
+                SoundManager.PlaySound3D(Sound.RadioTuner, transform);
                 transform.Rotate(0f, -scrollInput * 1000f, 0f);
                 
                 float newPos = needle.transform.localPosition.z + scrollInput * 0.05f;

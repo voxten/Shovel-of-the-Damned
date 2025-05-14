@@ -42,7 +42,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 70749dfaafd0ee54da5303b983dbbd44, type: 3}
     type: 7
   - clip:
-    - {fileID: 8300000, guid: cbb570d04df4f5d4d83452c3ba272639, type: 3}
+    - {fileID: 8300000, guid: 4f00fa4fd403b2b43993f7b18acb406d, type: 3}
+    - {fileID: 8300000, guid: 6869534ade0bd634597deee38b03325c, type: 3}
+    - {fileID: 8300000, guid: 2c3900c6c09d9b243a8f9e679be80a9e, type: 3}
+    - {fileID: 8300000, guid: d5def845f57ab94478a89fb10883a2e6, type: 3}
+    - {fileID: 8300000, guid: 56d7177e394c25e4eaf38f740d40c09b, type: 3}
+    - {fileID: 8300000, guid: c4434d0d2498fd74fa4a14cf119c36b8, type: 3}
+    - {fileID: 8300000, guid: 90695e9af3f686947b951b61354b4aaa, type: 3}
     type: 8
   - clip:
     - {fileID: 8300000, guid: 62c7947ee88c7ef45a0f5435de72299b, type: 3}
