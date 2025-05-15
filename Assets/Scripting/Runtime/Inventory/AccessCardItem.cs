@@ -11,5 +11,11 @@ public class AccessCardItem : Item
         cardPair = accessCardPair;
         itemName = cardPair.description;
     }
+
+    public void ResetAccessCard(AccessCardData accessCardData)
+    {
+        var accessCardDataPair = accessCardData.accessCards[0];
+        cardPair = accessCardDataPair;
+    }
 }
 

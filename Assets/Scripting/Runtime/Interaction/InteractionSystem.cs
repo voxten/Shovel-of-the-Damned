@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using StarterAssets;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -30,7 +31,7 @@ public class InteractionSystem : MonoBehaviour
     private bool _isInteractingPuzzle;
     private bool _isInRange;
 
-    private GameObject _currentlyHighlighted;
+    private GameObject _lastHighlightedObject;
     private Outline _currentOutline;
 
     private void Awake()
@@ -65,88 +66,85 @@ public class InteractionSystem : MonoBehaviour
     private void HandleRaycastInteraction()
     {
         var ray = _playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+        GameObject objectToHighlight = null;
+        bool shouldShowIcon = false;
 
+        // Check interaction layer first
         if (Physics.Raycast(ray, out var hit, interactionRange, interactionLayerMask))
         {
             var interactable = hit.collider.GetComponent<InteractableObject>();
             if (interactable != null)
             {
-                if (_currentInteractable != interactable)
-                {
-                    _currentInteractable = interactable;
-                    _currentlyHighlighted = interactable.gameObject;
-                    HighlightObject(_currentlyHighlighted);
+                _currentInteractable = interactable;
+                objectToHighlight = interactable.gameObject;
 
-                    if (_currentInteractable is PuzzleInteraction puzzleInteraction)
+                if (_currentInteractable is PuzzleInteraction puzzleInteraction)
+                {
+                    if (!puzzleInteraction.puzzleObject.isFinished)
                     {
-                        if (!puzzleInteraction.puzzleObject.isFinished)
-                        {
-                            _isInRange = true;
-                            EnableInteractionIcon();
-                        }
-                    }
-                    else if (_currentInteractable is NewCableEndPoint cableEndPoint)
-                    {
-                        if (cableEndPoint.GetCable() == null)
-                        {
-                            DisableInteractionIcon();
-                        }
-                        else
-                        {
-                            EnableInteractionIcon();
-                        }
-                    }
-                    else
-                    {
-                        EnableInteractionIcon();
+                        _isInRange = true;
+                        shouldShowIcon = true;
                     }
                 }
-            }
-            else
-            {
-                RemoveHighlight();
-                DisableInteractionIcon();
+                else if (_currentInteractable is NewCableEndPoint cableEndPoint)
+                {
+                    shouldShowIcon = cableEndPoint.GetCable() != null;
+                }
+                else
+                {
+                    shouldShowIcon = true;
+                }
             }
         }
+        // Check moveable objects if no interactable was found
         else if (Physics.Raycast(ray, out hit, interactionRange, moveableLayerMask) && !DragObject.DragEvents.GetDragging())
         {
-            if (_currentlyHighlighted != hit.collider.gameObject)
-            {
-                RemoveHighlight();
-                _currentlyHighlighted = hit.collider.gameObject;
-                HighlightObject(_currentlyHighlighted);
-            }
-            EnableInteractionIcon();
+            objectToHighlight = hit.collider.gameObject;
+            shouldShowIcon = true;
         }
+        // Check door objects if no other objects were found
         else if (Physics.Raycast(ray, out hit, interactionRange, doorLayerMask) && !DragObject.DragEvents.GetDragging())
         {
-            if (_currentlyHighlighted != hit.collider.gameObject)
+            objectToHighlight = hit.collider.gameObject;
+            shouldShowIcon = true;
+        }
+        else
+        {
+            _currentInteractable = null;
+        }
+
+        // Update highlight only if needed
+        if (objectToHighlight != _lastHighlightedObject)
+        {
+            RemoveHighlight();
+            if (objectToHighlight != null)
             {
-                RemoveHighlight();
-                _currentlyHighlighted = hit.collider.gameObject;
-                HighlightObject(_currentlyHighlighted);
+                HighlightObject(objectToHighlight);
             }
+            _lastHighlightedObject = objectToHighlight;
+        }
+
+        // Update interaction icon
+        if (shouldShowIcon)
+        {
             EnableInteractionIcon();
         }
         else
         {
-            RemoveHighlight();
             DisableInteractionIcon();
         }
 
-        // Interaction (klikni�cie)
+        // Handle interaction input
         if (Input.GetMouseButtonDown(0) && !_isInteractingPuzzle)
         {
             TryInteract();
         }
 
-        // Exit from puzzle (prawy przycisk)
-        if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && !_puzzleInteraction.puzzleObject.isFinished)
+        if (Input.GetMouseButtonDown(1) && _isInteractingPuzzle && _puzzleInteraction != null && !_puzzleInteraction.puzzleObject.isFinished)
         {
             ExitPuzzleInteraction();
         }
     }
-
 
     private void ExitPuzzleInteraction()
     {
@@ -213,32 +211,11 @@ public class InteractionSystem : MonoBehaviour
     {
         _isInRange = true;
         interactionIcon.DOFade(1f, 0.5f);
-
-        if (_currentInteractable != null)
-        {
-            Outline outline = _currentInteractable.GetComponent<Outline>();
-            if (outline == null)
-            {
-                outline = _currentInteractable.gameObject.AddComponent<Outline>();
-            }
-            outline.OutlineMode = Outline.Mode.OutlineVisible;
-            outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 2f;
-        }
     }
 
     private void DisableInteractionIcon()
     {
         _isInRange = false;
-        if (_currentInteractable != null)
-        {
-            Outline outline = _currentInteractable.GetComponent<Outline>();
-            if (outline != null)
-            {
-                Destroy(outline); // Remove outline when interaction ends
-            }
-        }
-        _currentInteractable = null;
         interactionIcon.DOFade(0f, 0.5f);
     }
     
@@ -264,37 +241,32 @@ public class InteractionSystem : MonoBehaviour
     {
         if (obj == null) return;
 
-        Outline outline = obj.GetComponent<Outline>();
-        if (outline == null)
+        // Check if the object already has an outline
+        _currentOutline = obj.GetComponent<Outline>();
+        if (_currentOutline == null)
         {
-            outline = obj.AddComponent<Outline>();
-            outline.OutlineMode = Outline.Mode.OutlineVisible;
-            outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 2f;
+            _currentOutline = obj.AddComponent<Outline>();
         }
-        _currentOutline = outline;
-    }
 
+        _currentOutline.OutlineMode = Outline.Mode.OutlineVisible;
+        _currentOutline.OutlineColor = Color.white;
+        _currentOutline.OutlineWidth = 2f;
+        _currentOutline.enabled = true;
+    }
+    
     private void RemoveHighlight()
     {
-        // Je�li co� jest trzymane (dragowane) - NIE usuwamy outline!
-        if (DragObject.DragEvents.GetDragging())
-            return;
-
         if (_currentOutline != null)
         {
-            Destroy(_currentOutline);
+            // Only disable the outline instead of destroying it
+            _currentOutline.enabled = false;
             _currentOutline = null;
-            _currentlyHighlighted = null;
         }
+        _lastHighlightedObject = null;
     }
 
     private void OnObjectDropped()
     {
-        _currentlyHighlighted = null;
-        _currentOutline = null;
+        RemoveHighlight();
     }
-
-
-
 }
