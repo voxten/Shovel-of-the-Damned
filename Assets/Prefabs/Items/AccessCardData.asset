@@ -21,10 +21,10 @@ MonoBehaviour:
     upgradeCode: 1246
   - cardType: 2
     description: "Level 2 \u2013 General Staff"
-    upgradeCode: 2222
+    upgradeCode: 2138
   - cardType: 3
     description: "Level 3 \u2013 Senior Staff"
     upgradeCode: 3333
   - cardType: 4
     description: "Level 4 \u2013 Admin"
-    upgradeCode: 4444
+    upgradeCode: 6948

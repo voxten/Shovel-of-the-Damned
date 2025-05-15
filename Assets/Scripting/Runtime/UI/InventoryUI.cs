@@ -42,10 +42,13 @@ public class InventoryUI : MonoBehaviour
         DeleteButtons();
         FirstPersonController.PlayerEvents.ToggleMove();
         Time.timeScale = 1;
+        _selectedIndex = 0;
+        _itemList.Clear();
     }
 
     private void Update()
     {
+        if (_itemList == null || _itemList.Count == 0) return;
         if (Input.GetKeyDown(KeyCode.A) && _displayedItems.Count != 0)
         {
             MoveLeft();
@@ -176,6 +179,8 @@ public class InventoryUI : MonoBehaviour
 
     private void SetItemDesc(int itemIndex)
     {
+        if (itemIndex >= _itemList.Count) _selectedIndex = 0;
+        
         itemNameText.text = _itemList[itemIndex].itemName;
         itemDescText.text = _itemList[itemIndex].itemDescription;
     }
@@ -217,8 +222,14 @@ public class InventoryUI : MonoBehaviour
             var buttonObject = Instantiate(buttonPrefab, buttonParent);
             var button = buttonObject.GetComponent<Button>();
             button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemType.ToString().ToUpper();
-            button.onClick.AddListener(() => SetInventoryPanel(item.itemType));
+            button.onClick.AddListener(() => ButtonListeners(item));
         }
+    }
+
+    private void ButtonListeners(Item item)
+    {
+        _selectedIndex = 0;
+        SetInventoryPanel(item.itemType);
     }
     
     private void DeleteButtons()

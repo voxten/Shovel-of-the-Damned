@@ -49,6 +49,9 @@ namespace StarterAssets
 		[Header("Centers")] 
 		public float normalCenter;
 		public float crouchCenter;
+		
+		[Header("Enable Crouch")]
+		public bool EnableCrouch;
 
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
@@ -86,12 +89,10 @@ namespace StarterAssets
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
-
-	
+		
 		private PlayerInput _playerInput;
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
-		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
 
@@ -109,15 +110,6 @@ namespace StarterAssets
 			}
 		}
 		
-		private void Awake()
-		{
-			// get a reference to our main camera
-			if (_mainCamera == null)
-			{
-				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-			}
-		}
-
 		private void OnEnable() 
 		{
 			PlayerEvents.SetLocation += SetLocation;
@@ -127,6 +119,7 @@ namespace StarterAssets
 			PlayerEvents.ToggleMove += ToggleMovement;
 			PlayerEvents.ToggleMoveCamera += ToggleMoveCamera;
 			PlayerEvents.CheckMove += CheckMove;
+			PlayerEvents.CheckCrouch += CheckCrouch;
 		}
 
 		private void OnDisable() 
@@ -138,6 +131,7 @@ namespace StarterAssets
 			PlayerEvents.ToggleMove -= ToggleMovement;
 			PlayerEvents.ToggleMoveCamera -= ToggleMoveCamera;
 			PlayerEvents.CheckMove -= CheckMove;
+			PlayerEvents.CheckCrouch -= CheckCrouch;
 		}
 
 		private void Start()
@@ -405,6 +399,11 @@ namespace StarterAssets
 		{
 			return _canMove && CanStandUp();
 		}
+		
+		private bool CheckCrouch()
+		{
+			return EnableCrouch;
+		}
 
 		private void ToggleMoveCamera(bool state)
 		{
@@ -432,6 +431,7 @@ namespace StarterAssets
 			public static Action ToggleController;
 			public static Action ToggleMove;
 			public static Func<bool> CheckMove;
+			public static Func<bool> CheckCrouch;
 			public static Action<bool> ToggleMoveCamera;
 		}
 

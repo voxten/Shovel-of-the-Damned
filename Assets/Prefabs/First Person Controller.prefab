@@ -1420,6 +1420,7 @@ MonoBehaviour:
   crouchHeight: 0.4
   normalCenter: 0.6
   crouchCenter: 0.35
+  EnableCrouch: 1
   Grounded: 1
   GroundedOffset: -0.55
   GroundedRadius: 0.5
