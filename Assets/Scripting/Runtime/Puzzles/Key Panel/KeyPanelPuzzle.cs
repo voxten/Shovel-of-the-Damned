@@ -34,22 +34,6 @@ public class KeyPanelPuzzle : PuzzleObject
         KeyPanelEvents.ClearPasscode -= ClearPasscode;
     }
 
-    public override void OpenPuzzle()
-    {
-
-    }
-
-    public override void QuitPuzzle()
-    {
-
-    }
-
-    protected override void EndPuzzle()
-    {
-        base.EndPuzzle();
-        //End
-    }
-
     private void AddNumber(int number)
     {
         if (PlayerPassCode.Length == 4) return;

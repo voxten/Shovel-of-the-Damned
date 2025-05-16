@@ -118,15 +118,6 @@ public class DragObject : MonoBehaviour
                 _pickedObject.maxLinearVelocity = 3;
                 _isDragging = true;
 
-                Outline outline = _pickedObject.GetComponent<Outline>();
-                if (outline == null)
-                {
-                    outline = _pickedObject.gameObject.AddComponent<Outline>();
-                    outline.OutlineMode = Outline.Mode.OutlineVisible;
-                    outline.OutlineColor = Color.white;
-                    outline.OutlineWidth = 2f;
-                }
-
                 // Capture initial rotation
                 Vector3 initialRotation = _pickedObject.rotation.eulerAngles;
                 _rotationX = initialRotation.y;
