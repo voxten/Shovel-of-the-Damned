@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: Researcher's Doubts
+  m_EditorClassIdentifier: 
+  id: 8bc1e9b16ee64ca09c90394a81dab9d2
+  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemName: Researcher's Doubts
+  itemDescription: Note found in the laboratory
+  itemType: 2
+  noteContent:
+  - "Dr. Kowalska is being unreasonable. I've told her so many times that we need
+    to become independent from the city's energy supply. What happens if there's
+    a power outage? Forget the lights, but if the UV lamps by the cave go out\u2026
+    Nothing will stop it."

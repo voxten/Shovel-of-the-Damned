@@ -6,24 +6,33 @@ using UnityEngine.UI;
 
 public class NoteUIManager : MonoBehaviour
 {
+    [Header("Note")]
     [SerializeField] private GameObject notePanel;
     [SerializeField] private TextMeshProUGUI noteText;
     [SerializeField] private Button closeButton;
     [SerializeField] private Button previousButton;
     [SerializeField] private Button nextButton;
     private NoteItem _currentNoteItem;
+    
+    [Header("Picture Note")]
+    [SerializeField] private GameObject picturePanel;
+    [SerializeField] private Image pictureImage;
+    [SerializeField] private Button closePictureButton;
+    
     private bool _isOn;
     private int _currentIndex;
 
     private void OnEnable()
     {
         NoteActions.OpenNote += OpenNote;
+        NoteActions.OpenPicture += OpenPicture;
         NoteActions.GetIsOn += GetIsOn;
     }
 
     private void OnDisable()
     {
         NoteActions.OpenNote -= OpenNote;
+        NoteActions.OpenPicture -= OpenPicture;
         NoteActions.GetIsOn -= GetIsOn;
     }
 
@@ -34,7 +43,7 @@ public class NoteUIManager : MonoBehaviour
         _isOn = true;
         _currentNoteItem = noteItem;
         noteText.text = noteItem.noteContent[_currentIndex];
-        closeButton.onClick.AddListener(ClosePanel);
+        closeButton.onClick.AddListener(CloseNotePanel);
         notePanel.SetActive(true);
         
         if (noteItem.noteContent.Count > 1)
@@ -43,6 +52,19 @@ public class NoteUIManager : MonoBehaviour
             previousButton.onClick.AddListener(PreviousNote);
             UpdateNavigationButtons();
         }
+        SoundManager.PlaySound(Sound.Paper);
+        ToggleUtils(true);
+    }
+    
+    private void OpenPicture(PictureItem pictureItem)
+    {
+        TutorialManager.TutorialManagerEvents.stopTutorial();
+        _currentIndex = 0;
+        _isOn = true;
+        pictureImage.sprite = pictureItem.pictureSprite;
+        closePictureButton.onClick.AddListener(ClosePicturePanel);
+        picturePanel.SetActive(true);
+        
         SoundManager.PlaySound(Sound.Paper);
         ToggleUtils(true);
     }
@@ -74,7 +96,7 @@ public class NoteUIManager : MonoBehaviour
         previousButton.gameObject.SetActive(_currentIndex > 0);
     }
 
-    private void ClosePanel()
+    private void CloseNotePanel()
     {
         _isOn = false;
         noteText.text = "";
@@ -82,6 +104,14 @@ public class NoteUIManager : MonoBehaviour
         previousButton.onClick.RemoveAllListeners();
         nextButton.onClick.RemoveAllListeners();
         notePanel.SetActive(false);
+        ToggleUtils(false);
+    }
+    
+    private void ClosePicturePanel()
+    {
+        _isOn = false;
+        closePictureButton.onClick.RemoveAllListeners();
+        picturePanel.SetActive(false);
         ToggleUtils(false);
     }
 
@@ -103,6 +133,7 @@ public class NoteUIManager : MonoBehaviour
     public static class NoteActions
     {
         public static Action<NoteItem> OpenNote;
+        public static Action<PictureItem> OpenPicture;
         public static Func<bool> GetIsOn;
     }
 }

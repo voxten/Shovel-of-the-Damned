@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d869d75d699c704db9266aeba84da1a, type: 3}
+  m_Name: Morgue Scheme
+  m_EditorClassIdentifier: 
+  id: 5582cf3b1d7b4f32814f6ded7f671dff
+  itemIcon: {fileID: 0}
+  itemName: Morgue Scheme
+  itemDescription: 
+  itemType: 2
+  pictureSprite: {fileID: 357215614, guid: 4ad32c052dc5f9048a99e08bba48a1e9, type: 3}

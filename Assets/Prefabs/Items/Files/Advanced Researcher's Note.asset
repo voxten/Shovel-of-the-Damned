@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
+  m_Name: Advanced Researcher's Note
+  m_EditorClassIdentifier: 
+  id: 65bb8d9a75dd4456af80f9bbdf28d402
+  itemIcon: {fileID: 0}
+  itemName: Advanced Researcher's Note
+  itemDescription: Note found on the 2nd Level of Laboratory
+  itemType: 2
+  noteContent:
+  - "Professor Adamski gave us a few body parts to examine.\r\nThey were infested
+    with monster mucus, so we need to check them under the microscope. \nHe also
+    gave us a code for the Level 3 access card.\r\nHe said he needs help because
+    the previous worker died... and he needs an advanced researcher now.\r\nI don't
+    know what to think about that.\r\n\nIf anyone feels like they\u2019re up to it,
+    here\u2019s the code... 3318"

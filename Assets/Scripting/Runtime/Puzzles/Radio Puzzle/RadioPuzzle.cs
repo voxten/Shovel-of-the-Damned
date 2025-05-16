@@ -40,16 +40,6 @@ public class RadioPuzzle : PuzzleObject
         RadioEvents.GetIsFinished -= GetIsFinished;
     }
 
-    public override void OpenPuzzle()
-    {
-
-    }
-
-    public override void QuitPuzzle()
-    {
-
-    }
-
     protected override void EndPuzzle()
     {
         base.EndPuzzle();

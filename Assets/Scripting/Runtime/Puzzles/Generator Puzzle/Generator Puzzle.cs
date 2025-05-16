@@ -28,17 +28,7 @@ public class GeneratorPuzzle : PuzzleObject
         GeneratorEvents.SetFuelLed -= SetFuelLed;
         GeneratorEvents.CheckPuzzle -= CheckPuzzle; 
     }
-
-    public override void OpenPuzzle()
-    {
-        
-    }
-
-    public override void QuitPuzzle() 
-    {
-        
-    }
-
+    
     protected override void EndPuzzle()
     {
         SoundManager.PlaySound3D(Sound.GeneratorPuzzleStart, transform);

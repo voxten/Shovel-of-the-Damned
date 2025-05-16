@@ -83,9 +83,15 @@ public class InventoryUI : MonoBehaviour
             return;
 
         Item item = _itemList[_selectedIndex];
-        if (item is NoteItem note && !NoteUIManager.NoteActions.GetIsOn())
+        
+        switch (item)
         {
-            NoteUIManager.NoteActions.OpenNote(note);
+            case NoteItem note when !NoteUIManager.NoteActions.GetIsOn():
+                NoteUIManager.NoteActions.OpenNote(note);
+                break;
+            case PictureItem picture when !NoteUIManager.NoteActions.GetIsOn():
+                NoteUIManager.NoteActions.OpenPicture(picture);
+                break;
         }
     }
     

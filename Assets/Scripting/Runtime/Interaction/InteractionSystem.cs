@@ -249,7 +249,7 @@ public class InteractionSystem : MonoBehaviour
         }
 
         _currentOutline.OutlineMode = Outline.Mode.OutlineVisible;
-        _currentOutline.OutlineColor = Color.white;
+        _currentOutline.OutlineColor = Color.green;
         _currentOutline.OutlineWidth = 2f;
         _currentOutline.enabled = true;
     }

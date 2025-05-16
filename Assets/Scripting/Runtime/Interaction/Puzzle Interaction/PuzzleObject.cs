@@ -7,10 +7,14 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private float finishingTime;
     [SerializeField] private Sound finishAudioClip;
     [SerializeField] private bool customFinish;
+    [SerializeField] private GameObject buttonPanel;
     public bool isFinished;
     
     // function which indicates what should be done after entering a puzzle
-    public abstract void OpenPuzzle();
+    public virtual void OpenPuzzle()
+    {
+        buttonPanel.SetActive(true);
+    }
     
     // function which indicates what should be done after finishing a puzzle
     protected virtual void EndPuzzle()
@@ -21,7 +25,10 @@ public abstract class PuzzleObject : MonoBehaviour
     }
     
     // function which indicates what should be done after we quit puzzle without finishing
-    public abstract void QuitPuzzle();
+    public virtual void QuitPuzzle()
+    {
+        buttonPanel.SetActive(false);
+    }
     
     private IEnumerator WaitForEndOfPuzzle(float time)
     {
@@ -29,9 +36,9 @@ public abstract class PuzzleObject : MonoBehaviour
         if (isFinished && !customFinish)
         {
             InteractionSystem.InteractionEvents.ExitPuzzleInteraction();
+            buttonPanel.SetActive(false);
             GetComponent<PuzzleInteraction>().puzzleCollider.enabled = false;
         }
-            
         SoundManager.PlaySound3D(finishAudioClip,transform);
     }
 }
