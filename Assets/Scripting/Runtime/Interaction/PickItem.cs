@@ -23,9 +23,15 @@ public class PickItem : InteractableObject
             gameObject.SetActive(false);
             _isFirst = false;
             _collider.enabled = false;
-            if (item is NoteItem note)
+            
+            switch (item)
             {
-                NoteUIManager.NoteActions.OpenNote(note);
+                case NoteItem note:
+                    NoteUIManager.NoteActions.OpenNote(note);
+                    break;
+                case PictureItem picture:
+                    NoteUIManager.NoteActions.OpenPicture(picture);
+                    break;
             }
         }
         return true;
