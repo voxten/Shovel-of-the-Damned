@@ -1,5 +1,6 @@
 using System.Collections;
 using StarterAssets;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,10 +29,15 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private FirstPersonController player;
     private bool _isPlayerVisible;
     private bool _isEnemyFear;
+    private bool _isPlayerKilled;
     
     private SkinnedMeshRenderer _enemySkinnedMeshRenderer;
     private Animator _enemyAnimator;
     private NavMeshAgent _enemyAgent;
+
+    [Header("Attack")] 
+    [SerializeField] private CinemachineCamera firstAttackCamera;
+    [SerializeField] private CinemachineCamera lastAttackCamera;
     
     [Header("Main Cube Settings")]
     [SerializeField] private GameObject mainCubePrefab;
@@ -51,7 +57,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Color ventPathColor = Color.magenta;
     [SerializeField] private float gizmoLineWidth = 2f;
     
-    private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear }
+    private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear, Attack }
     private AIState _currentState = AIState.MovingToVent;
 
     private void Awake()
@@ -106,7 +112,7 @@ public class EnemyAI : MonoBehaviour
         _mainCube = Instantiate(mainCubePrefab, randomVent.Points[0].transform.position, Quaternion.identity);
         
         // Start moving through points
-        _currentPointIndex = 1; // Start moving to next point
+        _currentPointIndex = 0; // Start moving to next point
         if (_cubeMovementCoroutine != null)
         {
             StopCoroutine(_cubeMovementCoroutine);
@@ -114,27 +120,30 @@ public class EnemyAI : MonoBehaviour
         _cubeMovementCoroutine = StartCoroutine(MoveCubeThroughPoints(randomVent));
     }
 
+    public void SetAttackState()
+    {
+        _currentCoroutine = null;
+        _currentState = AIState.Attack;
+        _currentCoroutine = StartCoroutine(AttackRoutine());
+    }
+
     private IEnumerator MoveCubeThroughPoints(Vent vent)
     {
+        if (vent.Points.Count == 0) yield break;
+    
+        bool movingForward = true; // Track movement direction
+    
         while (true)
         {
-            if (vent.Points.Count == 0) yield break;
-
-            // Get current target point (looping back to 0 when reaching end)
-            if (_currentPointIndex >= vent.Points.Count)
-            {
-                _currentPointIndex = 0;
-            }
-
             // Skip null points
             if (vent.Points[_currentPointIndex] == null)
             {
-                _currentPointIndex++;
+                _currentPointIndex += movingForward ? 1 : -1;
                 continue;
             }
 
             Transform targetPoint = vent.Points[_currentPointIndex].transform;
-            
+        
             // Move towards the point
             while (Vector3.Distance(_mainCube.transform.position, targetPoint.position) > pointReachedThreshold)
             {
@@ -156,14 +165,35 @@ public class EnemyAI : MonoBehaviour
                 yield return null;
             }
 
-            // Point reached, move to next
-            _currentPointIndex++;
+            // Determine next point based on direction
+            if (movingForward)
+            {
+                _currentPointIndex++;
+                if (_currentPointIndex >= vent.Points.Count)
+                {
+                    // Reached end, start moving backward
+                    _currentPointIndex = vent.Points.Count - 2;
+                    movingForward = false;
+                }
+            }
+            else
+            {
+                _currentPointIndex--;
+                if (_currentPointIndex < 0)
+                {
+                    // Reached start, start moving forward
+                    _currentPointIndex = 1;
+                    movingForward = true;
+                }
+            }
         }
     }
 
     private void UpdateStateMachine()
     {
         if (_currentCoroutine != null) return; // Don't update state while a coroutine is running
+
+        if (_isPlayerKilled) return;
         
         if (_isEnemyFear)
         {
@@ -187,10 +217,8 @@ public class EnemyAI : MonoBehaviour
                 break;
                 
             case AIState.MovingOutVent:
-                if (HasReachedDestination())
-                {
-                    _currentCoroutine = StartCoroutine(ClimbOutVentRoutine());
-                }
+                TeleportEnemy(_currentVentPoint);
+                _currentCoroutine = StartCoroutine(ClimbOutVentRoutine());
                 break;
                 
             case AIState.Searching:
@@ -374,7 +402,7 @@ public class EnemyAI : MonoBehaviour
         // Wait for fear duration
         yield return new WaitForSeconds(fearDuration);
         
-        // When feared, run to a nearest vent
+        // When feared, run to the nearest vent
         Vent nearestVent = FindNearestVent();
         _enemyAgent.speed = runSpeed; // Set to run speed when feared
         SetDestination(nearestVent.gameObject);
@@ -383,6 +411,28 @@ public class EnemyAI : MonoBehaviour
         
         _currentCoroutine = null;
     }
+    
+    private IEnumerator AttackRoutine()
+    {
+        _enemyAgent.isStopped = true;
+        _enemyAgent.speed = 0f;
+        _enemyAnimator.SetTrigger("Attack");
+        _isPlayerKilled = true;
+        FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
+        CameraSwitch.CameraEvents.SwitchCamera(firstAttackCamera);
+        
+        yield return new WaitForSeconds(1f);
+        FirstPersonController.PlayerEvents.TogglePlayerModel();
+        CameraSwitch.CameraEvents.SwitchCamera(lastAttackCamera);
+        
+        yield return new WaitForSeconds(1f);
+
+        PlayerDeathUIPlayerDeathUIManager.DeathEvents.KillPlayer();
+        
+        _currentCoroutine = null;
+    }
+    
+    
     
     private void SetDestination(Vector3 destination)
     {

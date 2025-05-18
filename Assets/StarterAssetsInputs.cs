@@ -24,7 +24,7 @@ namespace StarterAssets
         public bool cursorLocked = true;
         public bool cursorInputForLook = true;
 
-        private bool _canMove = true;
+        public bool canMove = true;
         private bool _isTransitioning = false;
         private Coroutine _crouchTransitionRoutine;
         private Vector2 _bufferedMoveInput;
@@ -33,7 +33,7 @@ namespace StarterAssets
         {
             Vector2 inputValue = value.Get<Vector2>();
             
-            if (_canMove)
+            if (canMove)
             {
                 // Apply movement immediately if allowed
                 MoveInput(inputValue);
@@ -124,7 +124,7 @@ namespace StarterAssets
         private IEnumerator CrouchTransition()
         {
             _isTransitioning = true;
-            _canMove = false;
+            canMove = false;
 
             // Store current move input to prevent sudden stops
             Vector2 preTransitionMove = move;
@@ -145,7 +145,7 @@ namespace StarterAssets
                 yield return new WaitForSeconds(0.75f);
             }
 
-            _canMove = true;
+            canMove = true;
             _isTransitioning = false;
             _crouchTransitionRoutine = null;
 

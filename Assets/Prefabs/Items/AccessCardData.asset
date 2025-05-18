@@ -24,7 +24,7 @@ MonoBehaviour:
     upgradeCode: 2138
   - cardType: 3
     description: "Level 3 \u2013 Senior Staff"
-    upgradeCode: 3333
+    upgradeCode: 3318
   - cardType: 4
     description: "Level 4 \u2013 Admin"
     upgradeCode: 6948

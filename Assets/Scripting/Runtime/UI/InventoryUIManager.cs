@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using StarterAssets;
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class InventoryUIManager : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerDeathUIPlayerDeathUIManager.DeathEvents.GetIsPlayerDead()) return;
         if (Input.GetKeyDown(KeyCode.Tab) && !NoteUIManager.NoteActions.GetIsOn() && !PauseManager.PauseEvents.GetIsOn())
         {
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);

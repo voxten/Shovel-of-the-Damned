@@ -366,7 +366,8 @@ namespace StarterAssets
 			return Mathf.Clamp(lfAngle, lfMin, lfMax);
 		}
 
-		private void SetLocation(Transform destination) {
+		private void SetLocation(Transform destination) 
+		{
 			if (_locationStop) {
 				_newLocation = false;
 				_locationStop = false;
@@ -408,6 +409,7 @@ namespace StarterAssets
 		private void ToggleMoveCamera(bool state)
 		{
 			_canMoveCamera = state;
+			_input.canMove = state;
 			_canMove = state;
 		}
 		

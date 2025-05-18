@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 2591654434d42db48a02ea2154e06fdf
   - enabled: 1
+    path: Assets/3rd Party/TerrainDemoScene_URP/Scenes/CarScene.unity
+    guid: 9a18cc5d35536fd428eb6e90b3402589
+  - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
