@@ -25,6 +25,7 @@ public class PauseManager : MonoBehaviour
     
     private void Update()
     {
+        if (PlayerDeathUIPlayerDeathUIManager.DeathEvents.GetIsPlayerDead()) return;
         if (Input.GetKeyDown(KeyCode.Escape) && !NoteUIManager.NoteActions.GetIsOn() && !InventoryUIManager.InventoryUIEvents.GetIsOn())
         {
             if (_isOn)
@@ -77,7 +78,7 @@ public class PauseManager : MonoBehaviour
     private void LoadMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneLoader.SceneEvents.AnimateLoadScene("MainMenu");
     }
 
     private void QuitGame()

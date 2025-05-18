@@ -1,4 +1,5 @@
 using System;
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -12,6 +13,8 @@ public class UsingFlashLight : MonoBehaviour
     [SerializeField] private Light mainLight;
     [SerializeField] private Light lightUV;
     [SerializeField] private GameObject textPrg;
+    
+    public bool canActivate = true;
 
     private const float weightSpeed = 1.5f;
     private float handWeight = 0.0f;
@@ -24,6 +27,10 @@ public class UsingFlashLight : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerDeathUIPlayerDeathUIManager.DeathEvents.GetIsPlayerDead()) return;
+
+        if (!canActivate) return;
+        
         if (Input.GetKeyDown(KeyCode.F) && Inventory.InventoryEvents.FindItem(itemFlashlight) && lightUV.intensity == 0 && !NoteUIManager.NoteActions.GetIsOn() && !InventoryUIManager.InventoryUIEvents.GetIsOn())
         {
             ToggleFlashlight();
