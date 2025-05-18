@@ -5,6 +5,6 @@ public class PlayButton : ExtendedButton
 {
     protected override void Submit()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneLoader.SceneEvents.AnimateLoadScene("CarScene");
     }
 }

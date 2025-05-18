@@ -1403,7 +1403,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: fa4cc0eaa1a0e414e960fe2c6c3d3fa9, type: 2}
-  pickSound: 0
   isPickable: 1
 --- !u!1 &482477722236319853
 GameObject:

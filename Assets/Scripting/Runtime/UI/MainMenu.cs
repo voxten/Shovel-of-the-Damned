@@ -70,7 +70,7 @@ public class MainMenu : MonoBehaviour
     }
 
     private void Play() {
-        fadeCanvas.DOFade(1, .5f).SetEase(Ease.OutExpo).OnComplete(() => SceneManager.LoadScene(_mainGameSceneName));
+        fadeCanvas.DOFade(1, .5f).SetEase(Ease.OutExpo).OnComplete(() => SceneLoader.SceneEvents.AnimateLoadScene("CarScene"));
     }
 
     private void ShowOptions()

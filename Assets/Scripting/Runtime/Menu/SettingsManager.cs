@@ -25,6 +25,10 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private TMP_Text refreshRateLabel;
     [SerializeField] private Button prevRefreshRateButton, nextRefreshRateButton;
     
+    [Header("Quality Settings")]
+    [SerializeField] private TMP_Text qualityLabel;
+    [SerializeField] private Button prevQualityButton, nextQualityButton;
+    
     [Header("Apply Settings")]
     [SerializeField] private Button applyResolutionButton;
     
@@ -33,16 +37,20 @@ public class SettingsManager : MonoBehaviour
 
     private Resolution[] uniqueResolutions;
     private uint[] uniqueRefreshRates;
+    private string[] qualityLevels;
 
     private int _currentResolutionIndex;
     private int _currentRefreshRateIndex;
+    private int _currentQualityIndex;
 
     private void Awake()
     {
         LoadSettings();
         PopulateResolutionAndRefreshRate();
+        PopulateQualityLevels();
         AssignUIEvents();
         LoadResolutionAndRefreshRate();
+        LoadQualityLevel();
     }
 
     private void AssignUIEvents()
@@ -60,7 +68,40 @@ public class SettingsManager : MonoBehaviour
         prevRefreshRateButton.onClick.AddListener(PreviousRefreshRate);
         nextRefreshRateButton.onClick.AddListener(NextRefreshRate);
         
-        applyResolutionButton.onClick.AddListener(ApplyResolution);
+        prevQualityButton.onClick.AddListener(PreviousQuality);
+        nextQualityButton.onClick.AddListener(NextQuality);
+        
+        applyResolutionButton.onClick.AddListener(ApplySettings);
+    }
+
+    private void PopulateQualityLevels()
+    {
+        qualityLevels = QualitySettings.names;
+        _currentQualityIndex = QualitySettings.GetQualityLevel();
+        UpdateQualityLabel();
+    }
+
+    private void NextQuality()
+    {
+        if (_currentQualityIndex < qualityLevels.Length - 1)
+        {
+            _currentQualityIndex++;
+        }
+        UpdateQualityLabel();
+    }
+
+    private void PreviousQuality()
+    {
+        if (_currentQualityIndex > 0)
+        {
+            _currentQualityIndex--;
+        }
+        UpdateQualityLabel();
+    }
+
+    private void UpdateQualityLabel()
+    {
+        qualityLabel.text = qualityLevels[_currentQualityIndex];
     }
 
     private void PopulateResolutionAndRefreshRate()
@@ -167,15 +208,17 @@ public class SettingsManager : MonoBehaviour
         displayModeText.text = _currentMode.ToString();
     }
 
-    private void ApplyResolution()
+    private void ApplySettings()
     {
         var selectedResolution = uniqueResolutions[_currentResolutionIndex];
         var selectedRefreshRate = uniqueRefreshRates[_currentRefreshRateIndex];
 
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreen, (int)selectedRefreshRate);
+        QualitySettings.SetQualityLevel(_currentQualityIndex, true);
 
         PlayerPrefs.SetInt("ResolutionIndex", _currentResolutionIndex);
         PlayerPrefs.SetInt("RefreshRateIndex", _currentRefreshRateIndex);
+        PlayerPrefs.SetInt("QualityLevel", _currentQualityIndex);
         ApplyDisplayMode();
 
         PlayerPrefs.Save();
@@ -259,5 +302,13 @@ public class SettingsManager : MonoBehaviour
         
         UpdateResolutionLabel();
         UpdateRefreshRateLabel();
+    }
+
+    private void LoadQualityLevel()
+    {
+        if (PlayerPrefs.HasKey("QualityLevel"))
+            _currentQualityIndex = PlayerPrefs.GetInt("QualityLevel");
+        
+        UpdateQualityLabel();
     }
 }
