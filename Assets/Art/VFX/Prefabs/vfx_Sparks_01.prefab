@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4316839822185376087}
   - component: {fileID: 7440191685052868192}
   - component: {fileID: 577526660719123766}
+  - component: {fileID: 2375022233729544514}
   m_Layer: 0
   m_Name: vfx_Sparks_01
   m_TagString: Untagged
@@ -4774,6 +4775,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4830,3 +4834,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2375022233729544514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4503612902121041701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3768b267567de44b46bc5d11174c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioLibrary: {fileID: 11400000, guid: aefd61ba1554aa849a16b0b64420100d, type: 2}
+  sound: 29
+  delayBetweenLoops: 1

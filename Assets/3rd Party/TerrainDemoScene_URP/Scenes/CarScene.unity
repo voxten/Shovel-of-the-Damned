@@ -723,6 +723,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: First Person Controller
       objectReference: {fileID: 0}
+    - target: {fileID: 9189528149447985238, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: shouldGetStartupItems
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189528149447985238, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: startupItems.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189528149447985238, guid: 224a7163452dea647a854c20e0b38cce, type: 3}
+      propertyPath: 'startupItems.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9532b382bd95d8746803addac442bc71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
