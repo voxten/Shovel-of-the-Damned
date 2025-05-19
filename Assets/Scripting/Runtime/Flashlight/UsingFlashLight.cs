@@ -13,6 +13,7 @@ public class UsingFlashLight : MonoBehaviour
     [SerializeField] private Light mainLight;
     [SerializeField] private Light lightUV;
     [SerializeField] private GameObject textPrg;
+    [SerializeField] private GameObject playerObject;
     
     public bool canActivate = true;
 
@@ -62,7 +63,7 @@ public class UsingFlashLight : MonoBehaviour
             _flashlightOptions.enabled = true;
             mainLight.enabled = true;
             textPrg.SetActive(true);
-            SoundManager.PlaySound3D(Sound.FlashlightOn, transform);
+            SoundManager.PlaySound3D(Sound.FlashlightOn, playerObject.transform, null, 0.4f);
             _active = true;
         }
         else
@@ -70,7 +71,7 @@ public class UsingFlashLight : MonoBehaviour
             _flashlightOptions.enabled = false;
             mainLight.enabled = false;
             textPrg.SetActive(false);
-            SoundManager.PlaySound3D(Sound.FlashlightOff, transform);
+            SoundManager.PlaySound3D(Sound.FlashlightOff, playerObject.transform, null, 0.4f);
             _active = false;
         }
     }

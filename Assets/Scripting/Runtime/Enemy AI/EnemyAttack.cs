@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -8,9 +6,8 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !enemyAI.GetIsInVent())
         {
-            Debug.Log("Wchodze w triggera dla ataku");
             enemyAI.SetAttackState();
         }
     }
