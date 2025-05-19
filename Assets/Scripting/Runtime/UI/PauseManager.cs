@@ -8,6 +8,8 @@ public class PauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private Button resumeButton;
+    [SerializeField] private Button saveButton;
+    [SerializeField] private Button loadButton;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private AudioListener audioListener;
@@ -64,6 +66,8 @@ public class PauseManager : MonoBehaviour
     private void SetPause()
     {
         resumeButton.onClick.AddListener(Resume);
+        saveButton.onClick.AddListener(Save);
+        loadButton.onClick.AddListener(Load);
         menuButton.onClick.AddListener(LoadMainMenu);
         quitButton.onClick.AddListener(QuitGame);
     }
@@ -71,6 +75,8 @@ public class PauseManager : MonoBehaviour
     private void UnsetPause()
     {
         resumeButton.onClick.RemoveAllListeners();
+        saveButton.onClick.RemoveAllListeners();
+        loadButton.onClick.RemoveAllListeners();
         menuButton.onClick.RemoveAllListeners();
         quitButton.onClick.RemoveAllListeners();
     }
@@ -94,5 +100,14 @@ public class PauseManager : MonoBehaviour
     public static class PauseEvents
     {
         public static Func<bool> GetIsOn;
+    }
+    private void Save()
+    {
+        SavingSystem.SavingSystemEvents.Save();
+    }
+
+    private void Load()
+    {
+        SavingSystem.SavingSystemEvents.Load();
     }
 }

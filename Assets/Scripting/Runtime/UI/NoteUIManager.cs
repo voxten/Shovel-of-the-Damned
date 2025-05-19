@@ -38,21 +38,34 @@ public class NoteUIManager : MonoBehaviour
 
     private void OpenNote(NoteItem noteItem)
     {
-        TutorialManager.TutorialManagerEvents.stopTutorial();
+        if (noteItem.noteContent != null)
+        {
+            TutorialManager.TutorialManagerEvents.stopTutorial();
+        }
+        
         _currentIndex = 0;
         _isOn = true;
         _currentNoteItem = noteItem;
-        noteText.text = noteItem.noteContent[_currentIndex];
-        closeButton.onClick.AddListener(CloseNotePanel);
         notePanel.SetActive(true);
+        if (noteItem.noteContent != null)
+        {
+            noteText.text = noteItem.noteContent[_currentIndex];
+            SoundManager.PlaySound(Sound.Paper);
+        }
+        else
+        {
+            CloseNotePanel();
+        }
+        closeButton.onClick.AddListener(CloseNotePanel);
         
-        if (noteItem.noteContent.Count > 1)
+        
+        if (noteItem.noteContent != null && noteItem.noteContent.Count > 1)
         {
             nextButton.onClick.AddListener(NextNote);
             previousButton.onClick.AddListener(PreviousNote);
             UpdateNavigationButtons();
         }
-        SoundManager.PlaySound(Sound.Paper);
+        
         ToggleUtils(true);
     }
     

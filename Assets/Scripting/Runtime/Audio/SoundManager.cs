@@ -29,12 +29,23 @@ public class SoundManager : MonoBehaviour
     private static Dictionary<Sound, AudioSource> activeSounds = new();
     private static Dictionary<Sound, List<GameObject>> active3DSounds = new(); // Track 3D sound objects
 
+
+    private void Awake()
+    {
+        activeSounds.Clear();
+        active3DSounds.Clear();
+        mainAudio.Stop();
+        musicAudio.Stop();
+        mainAudio.clip = null;
+        musicAudio.clip = null;
+    }
     private void OnEnable() 
     {
         _onPlaySound += PlayAudioShot;
         _onPlaySound3D += Play3DAudioShot;
         _onStopSound += StopAudioShot;
         _onStopSound3D += Stop3DAudioShot; // Register new delegate
+        
     }
 
     private void OnDisable() 
@@ -43,6 +54,22 @@ public class SoundManager : MonoBehaviour
         _onPlaySound3D -= Play3DAudioShot;
         _onStopSound -= StopAudioShot;
         _onStopSound3D -= Stop3DAudioShot; // Unregister
+    }
+
+    private void AddAudioSource()
+    {
+        Transform sfxTransform = transform.Find("SFX");
+        Transform musicTransform = transform.Find("Music");
+
+        if (sfxTransform != null)
+            mainAudio = sfxTransform.GetComponent<AudioSource>();
+        else
+            Debug.LogWarning("Nie znaleziono obiektu SFX!");
+
+        if (musicTransform != null)
+            musicAudio = musicTransform.GetComponent<AudioSource>();
+        else
+            Debug.LogWarning("Nie znaleziono obiektu Music!");
     }
 
     public static void PlaySound(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 

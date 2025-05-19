@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Splines.ExtrusionShapes;
 
 public class FlashlightOptions : MonoBehaviour
 {
@@ -24,6 +26,32 @@ public class FlashlightOptions : MonoBehaviour
     private void Start()
     {
         _lastLowerTime = Time.time;
+    }
+
+    public static class FlashlightOptionsEvents
+    {
+        public static Func<float> GetBatteryLevel;
+        public static Action<float> SetBatteryLevel;
+    }
+    private void OnEnable()
+    {
+        FlashlightOptionsEvents.GetBatteryLevel += GetBatteryLevel;
+        FlashlightOptionsEvents.SetBatteryLevel += SetBatteryLevel;
+    }
+
+    private void OnDisable()
+    {
+        FlashlightOptionsEvents.GetBatteryLevel -= GetBatteryLevel;
+        FlashlightOptionsEvents.SetBatteryLevel -= SetBatteryLevel;
+    }
+
+    private float GetBatteryLevel()
+    {
+        return _batterryLevel;
+    }
+    private void SetBatteryLevel(float batteryLevel)
+    {
+        _batterryLevel = batteryLevel;
     }
 
     private void Update()

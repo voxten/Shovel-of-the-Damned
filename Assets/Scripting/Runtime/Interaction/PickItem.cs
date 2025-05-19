@@ -36,4 +36,17 @@ public class PickItem : InteractableObject
         }
         return true;
     }
+
+    //Unikalne id pod zapis
+    public string ID = Guid.NewGuid().ToString(); // generowane automatycznie
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (string.IsNullOrEmpty(ID))
+        {
+            ID = Guid.NewGuid().ToString();
+        }
+    }
+#endif
 }
