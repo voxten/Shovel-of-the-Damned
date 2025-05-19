@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Access Cards \u2013 Types and Guidelines"
   m_EditorClassIdentifier: 
   id: 844dde2d28de4903a9d3883d98d1f4d9
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: "Access Cards \u2013 Types and Guidelines"
   itemDescription: Note about access cards and how they work
   itemType: 2

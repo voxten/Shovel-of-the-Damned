@@ -37,7 +37,7 @@ public class MorgueDoorCorrect : InteractableObject
         }
         else
         {
-            SoundManager.PlaySound3D(Sound.MorgueDoorTry, transform);
+            SoundManager.PlaySound3D(Sound.MorgueDoorTry, transform, null, 0.3f);
             Narration.DisplayText?.Invoke("It’s sealed tight...");
         }
         return true;
@@ -45,7 +45,7 @@ public class MorgueDoorCorrect : InteractableObject
 
     private void OpenDoor()
     {
-        //SoundManager.PlaySound3D(Sound.MorgueDoorOpen, transform);
+        SoundManager.PlaySound3D(Sound.MorgueDoorOpen, transform);
         _morgueDoorObject.transform.DOLocalRotate(
                 new Vector3(0, _morgueDoorYMax, 0),
                 doorAnimationDuration,
@@ -57,7 +57,7 @@ public class MorgueDoorCorrect : InteractableObject
     private void PullDrawer()
     {
         // Move the drawer using DOTween
-        SoundManager.PlaySound3D(Sound.MorgueDrawer, transform);
+        //SoundManager.PlaySound3D(Sound.MorgueDrawer, transform);
         morgueTakhtObject.transform.DOLocalMoveX(
             _takhtXMax,
             drawerAnimationDuration

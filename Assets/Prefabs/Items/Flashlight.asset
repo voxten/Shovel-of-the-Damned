@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Flashlight
   m_EditorClassIdentifier: 
   id: cfa6cfa765534751a774a5016f85db97
-  itemIcon: {fileID: 749509126, guid: 05e0567213a58c840a3ea79a4409bdfd, type: 3}
+  itemIcon: {fileID: -956293413, guid: d83020e6279ef90469fb9a8d45594f81, type: 3}
   itemName: Flashlight
   itemDescription: Ideal for dark places
   itemType: 0

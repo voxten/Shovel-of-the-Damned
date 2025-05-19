@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Radio Code
   m_EditorClassIdentifier: 
   id: d54521b2d07a42d6898d37f1229ceefe
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
   itemName: Radio Voice
   itemDescription: 'I heard a distorted voice coming from the radio... it just kept
     repeating: 2138.'

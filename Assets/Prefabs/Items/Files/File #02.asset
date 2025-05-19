@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: File #02
   m_EditorClassIdentifier: 
   id: 8bc1e9b16ee64ca09c90394a81dab9d2
-  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: File #02 - Employee Note 2
   itemDescription: File found in the laboratory
   itemType: 2

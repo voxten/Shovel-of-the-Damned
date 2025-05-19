@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Office Worker's Note
   m_EditorClassIdentifier: 
   id: 25dc8a2a731245129e6be819b0cd6492
-  itemIcon: {fileID: -691152583, guid: 34593bda9722d0b4bb0fd94de0436d9e, type: 3}
+  itemIcon: {fileID: -1088397543, guid: cb2550c0061f1ad4487d9bd51a3112f5, type: 3}
   itemName: Office Worker's Note
   itemDescription: Note found in the notebook
   itemType: 2
@@ -23,6 +23,7 @@ MonoBehaviour:
     be a problem.\nThis \u201Cpromotion\u201D caught me a bit off guard \u2014 I
     asked around before, and they said there were no open positions. Now suddenly
     there is. Apparently one of the workers has been overworking himself and they
-    want to give him some rest.\nTomorrow I\u2019m supposed to upgrade my access
-    card and go through safety training.\n\nP.S. If someone finds this note, it probably
-    won\u2019t matter anyway, so... 1246 that's my code."
+    want to give him some rest.\n"
+  - "Tomorrow I\u2019m supposed to upgrade my access card and go through safety training.\n\nP.S.
+    If someone finds this note, it probably won\u2019t matter anyway, so... 1246
+    that's my code."

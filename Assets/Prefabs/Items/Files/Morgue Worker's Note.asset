@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Morgue Worker's Note
   m_EditorClassIdentifier: 
   id: b5cf81bed623444485dd2b44bdfcb7b5
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: Morgue Worker's Note
   itemDescription: Note found in the morgue
   itemType: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Technician's Journal
   m_EditorClassIdentifier: 
   id: 48be8304253840769e1da3f453f7a239
-  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemIcon: {fileID: 1416127957, guid: 4754d51dc87c1f04a91f7d36afd0f722, type: 3}
   itemName: Technician's Journal
   itemDescription: File found in the technical room
   itemType: 2
