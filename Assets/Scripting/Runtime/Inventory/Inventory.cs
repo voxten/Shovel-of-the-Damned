@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Sprite noteIcon;
     [SerializeField] private Sprite backpackIcon;
     [SerializeField] private Image iconImage;
+    [SerializeField] private bool shouldGetStartupItems;
+    [SerializeField] private List<Item> startupItems;
 
     private void OnEnable()
     {
@@ -34,14 +36,17 @@ public class Inventory : MonoBehaviour
         InventoryEvents.FindItem -= FindItem;
         InventoryEvents.FindItems -= FindItems;
     }
-    
-    private void AddItem(Item item)
-    {
-        items.Add(item);
-        iconImage.sprite = item is NoteItem ? noteIcon : backpackIcon;
-        AnimateIcon();
-    }
 
+    private void Awake()
+    {
+        if (!shouldGetStartupItems) return;
+        
+        foreach (var item in startupItems)
+        {
+            items.Add(item);
+        }
+    }
+    
     private void AnimateIcon()
     {
         if (iconImage == null) return;
@@ -57,6 +62,13 @@ public class Inventory : MonoBehaviour
 
             sequence.Append(iconImage.DOFade(0f, 0.3f)).Play();
         });
+    }
+    
+    private void AddItem(Item item)
+    {
+        items.Add(item);
+        iconImage.sprite = item is NoteItem ? noteIcon : backpackIcon;
+        AnimateIcon();
     }
     
     private bool RemoveItem(Item itemToRemove)

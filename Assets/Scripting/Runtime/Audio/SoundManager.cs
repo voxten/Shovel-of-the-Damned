@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AnimationCurve customRolloffCurve;
 
     private static Action<Sound, Vector2?, Vector2?> _onPlaySound;
-    private static Action<Sound, Transform, Vector2?, Vector2?> _onPlaySound3D;
+    private static Action<Sound, Transform, Vector2?, Vector2?, float?> _onPlaySound3D;
     private static Action<Sound> _onStopSound;
     private static Action<Sound, Transform> _onStopSound3D; // New delegate for stopping 3D sounds
 
@@ -51,10 +51,10 @@ public class SoundManager : MonoBehaviour
         _onPlaySound?.Invoke(type, pitchRange, volumeRange);
     }
 
-    public static void PlaySound3D(Sound type, Transform objTransform, float volume = 1f, float pitch = 1f)
+    public static void PlaySound3D(Sound type, Transform objTransform, float? overrideMaxDistance = null, float volume = 1f, float pitch = 1f)
     {
         if (_onPlaySound3D == null) Debug.LogError("There is no SoundManager in the scene");
-        _onPlaySound3D?.Invoke(type, objTransform, null, new Vector2(volume, volume));
+        _onPlaySound3D?.Invoke(type, objTransform, new Vector2(pitch, pitch), new Vector2(volume, volume), overrideMaxDistance);
     }
 
     public static void StopSound(Sound type)
@@ -69,7 +69,7 @@ public class SoundManager : MonoBehaviour
         _onStopSound3D?.Invoke(type, objTransform);
     }
     
-    private void Play3DAudioShot(Sound type, Transform objTransform, Vector2? pitchRange = null, Vector2? volumeRange = null) 
+    private void Play3DAudioShot(Sound type, Transform objTransform, Vector2? pitchRange = null, Vector2? volumeRange = null, float? overrideMaxDistance = null ) 
     {
         if (type == Sound.None) return;
 
@@ -88,7 +88,7 @@ public class SoundManager : MonoBehaviour
         // Configure 3D sound settings
         audioSource.rolloffMode = audioRolloff;
         audioSource.minDistance = minDistance;
-        audioSource.maxDistance = maxDistance;
+        audioSource.maxDistance = overrideMaxDistance ?? maxDistance; // Use provided or fallback
         
         if (audioRolloff == AudioRolloffMode.Custom)
         {

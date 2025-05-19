@@ -32,10 +32,12 @@ public class MorgueDoorCorrect : InteractableObject
         {
             Inventory.InventoryEvents.RemoveItem(morgueKey);
             OpenDoor();
+            SoundManager.PlaySound3D(Sound.MorgueDoorKey, transform);
             Narration.DisplayText?.Invoke("It worked...");
         }
         else
         {
+            SoundManager.PlaySound3D(Sound.MorgueDoorTry, transform);
             Narration.DisplayText?.Invoke("It’s sealed tight...");
         }
         return true;
@@ -43,18 +45,19 @@ public class MorgueDoorCorrect : InteractableObject
 
     private void OpenDoor()
     {
-        // Rotate the door using DOTween
+        //SoundManager.PlaySound3D(Sound.MorgueDoorOpen, transform);
         _morgueDoorObject.transform.DOLocalRotate(
                 new Vector3(0, _morgueDoorYMax, 0),
                 doorAnimationDuration,
                 RotateMode.Fast
             ).SetEase(doorEaseType)
-            .OnComplete(PullDrawer); // After door opens, pull the drawer
+            .OnComplete(PullDrawer);
     }
 
     private void PullDrawer()
     {
         // Move the drawer using DOTween
+        SoundManager.PlaySound3D(Sound.MorgueDrawer, transform);
         morgueTakhtObject.transform.DOLocalMoveX(
             _takhtXMax,
             drawerAnimationDuration

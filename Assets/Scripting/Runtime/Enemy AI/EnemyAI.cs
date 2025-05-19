@@ -56,6 +56,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Color currentPathColor = Color.blue;
     [SerializeField] private Color ventPathColor = Color.magenta;
     [SerializeField] private float gizmoLineWidth = 2f;
+
+    private bool _isEnemyInVents;
+    private Collider _collider;
+    private float _lastSpeed;
+    private Coroutine _stepsCoroutine;
     
     private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear, Attack }
     private AIState _currentState = AIState.MovingToVent;
@@ -65,13 +70,14 @@ public class EnemyAI : MonoBehaviour
         _enemyAgent = GetComponent<NavMeshAgent>();
         _enemySkinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _enemyAnimator = GetComponent<Animator>();
+        _collider = GetComponent<Collider>();
         _enemyAgent.speed = walkSpeed; // Set default speed to walk
+        _lastSpeed = _enemyAgent.speed;
     }
 
     private void Start()
     {
         SetDestination(ventPoints[0].gameObject);
-        SpawnMainCube();
     }
     
     private void Update()
@@ -126,6 +132,21 @@ public class EnemyAI : MonoBehaviour
         _currentState = AIState.Attack;
         _currentCoroutine = StartCoroutine(AttackRoutine());
     }
+    
+    public void SetVentOutState(Vent vent)
+    {
+        _currentCoroutine = null;
+        _currentVentPoint = vent;
+        StopCoroutine(_cubeMovementCoroutine);
+        _cubeMovementCoroutine = null;
+        _isEnemyInVents = false;
+        _currentState = AIState.MovingOutVent;
+    }
+
+    public bool GetIsInVent()
+    {
+        return _isEnemyInVents;
+    }
 
     private IEnumerator MoveCubeThroughPoints(Vent vent)
     {
@@ -143,9 +164,11 @@ public class EnemyAI : MonoBehaviour
             }
 
             Transform targetPoint = vent.Points[_currentPointIndex].transform;
+
+            if (_mainCube == null) yield break;
         
             // Move towards the point
-            while (Vector3.Distance(_mainCube.transform.position, targetPoint.position) > pointReachedThreshold)
+            while (Vector3.Distance(_mainCube.transform.position, targetPoint.position) > pointReachedThreshold && _mainCube != null)
             {
                 _mainCube.transform.position = Vector3.MoveTowards(
                     _mainCube.transform.position, 
@@ -194,6 +217,8 @@ public class EnemyAI : MonoBehaviour
         if (_currentCoroutine != null) return; // Don't update state while a coroutine is running
 
         if (_isPlayerKilled) return;
+
+        if (_isEnemyInVents) return;
         
         if (_isEnemyFear)
         {
@@ -261,8 +286,47 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        _enemyAnimator.SetBool("Walk", _enemyAgent.velocity.magnitude > 0.1f && _enemyAgent.velocity.magnitude <= _enemyAgent.speed * 0.5f);
-        _enemyAnimator.SetBool("Run", _enemyAgent.velocity.magnitude > _enemyAgent.speed * 0.5f);
+        // Update animations based on speed
+        bool isMoving = _enemyAgent.velocity.magnitude > 0.1f;
+        bool isRunning = Mathf.Approximately(_enemyAgent.speed, runSpeed) && isMoving;
+        bool isWalking = Mathf.Approximately(_enemyAgent.speed, walkSpeed) && isMoving;
+
+        _enemyAnimator.SetBool("Walk", isWalking);
+        _enemyAnimator.SetBool("Run", isRunning);
+
+        // Handle sound based on movement state
+        if (_enemyAgent.isStopped)
+        {
+            // Stop all sounds when stopped
+            if (_stepsCoroutine != null)
+            {
+                StopCoroutine(_stepsCoroutine);
+                _stepsCoroutine = null;
+            }
+            _lastSpeed = 0;
+        }
+        else if (isMoving)
+        {
+            // Handle initial sound playback or speed changes
+            if (_stepsCoroutine == null || !Mathf.Approximately(_lastSpeed, _enemyAgent.speed))
+            {
+                if (_stepsCoroutine != null)
+                {
+                    StopCoroutine(_stepsCoroutine);
+                }
+
+                if (isRunning)
+                {
+                    _stepsCoroutine = StartCoroutine(PlayRunSound());
+                }
+                else if (isWalking)
+                {
+                    _stepsCoroutine = StartCoroutine(PlayWalkSound());
+                }
+
+                _lastSpeed = _enemyAgent.speed;
+            }
+        }
     }
 
     private void CheckPlayerVisibility()
@@ -335,7 +399,26 @@ public class EnemyAI : MonoBehaviour
             _enemyAgent.isStopped = false;
         
         _enemyAgent.speed = runSpeed;
+        
         SetDestination(player.gameObject);
+    }
+
+    private IEnumerator PlayRunSound()
+    {
+        while (true)
+        {
+            SoundManager.PlaySound3D(Sound.EnemyStepsRun, transform, 100);
+            yield return new WaitForSeconds(3);
+        }
+    }
+    
+    private IEnumerator PlayWalkSound()
+    {
+        while (true)
+        {
+            SoundManager.PlaySound3D(Sound.EnemySteps, transform, 100);
+            yield return new WaitForSeconds(1);
+        }
     }
     
     private Vent FindNearestVent()
@@ -360,34 +443,41 @@ public class EnemyAI : MonoBehaviour
     {
         // Start climbing animation
         _enemyAnimator.SetTrigger("ClimbIn");
+        SoundManager.PlaySound3D(Sound.EnemyVentIn, transform);
         _enemyAgent.isStopped = true;
         
         // Wait for climb animation to complete
         yield return new WaitForSeconds(climbInDuration);
         
         // Hide enemy
+        _isEnemyInVents = true;
         _enemySkinnedMeshRenderer.enabled = false;
+        _collider.enabled = false;
         //TeleportEnemy(_currentVentPoint);
-        
+        SpawnMainCube();
         _currentCoroutine = null;
     }
 
     private IEnumerator ClimbOutVentRoutine()
     {
         // Start climb out animation
+        _enemySkinnedMeshRenderer.enabled = true;
         _enemyAnimator.SetTrigger("ClimbOut");
         
+        Destroy(_mainCube);
+        SoundManager.PlaySound3D(Sound.EnemyVentOut, transform);
         // Wait for climb out animation to complete
         yield return new WaitForSeconds(climbOutDuration);
         
         // Show enemy and resume movement
-        _enemySkinnedMeshRenderer.enabled = true;
+        
         _enemyAgent.isStopped = false;
         _enemyAgent.speed = walkSpeed; // Reset to walk speed after running
         
         // Start searching
         _currentState = AIState.Searching;
         _currentSearchPointIndex = 0;
+        _collider.enabled = true;
         MoveToRandomNearbyPoint();
         
         _currentCoroutine = null;
@@ -398,6 +488,7 @@ public class EnemyAI : MonoBehaviour
         _isEnemyFear = true;
         _enemyAgent.isStopped = true;
         _enemyAnimator.SetTrigger("Fear");
+        SoundManager.PlaySound3D(Sound.EnemyFear, transform);
         
         // Wait for fear duration
         yield return new WaitForSeconds(fearDuration);
@@ -416,12 +507,14 @@ public class EnemyAI : MonoBehaviour
     {
         _enemyAgent.isStopped = true;
         _enemyAgent.speed = 0f;
+        SoundManager.PlaySound3D(Sound.EnemyAttack, transform);
         _enemyAnimator.SetTrigger("Attack");
         _isPlayerKilled = true;
         FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
         CameraSwitch.CameraEvents.SwitchCamera(firstAttackCamera);
         
         yield return new WaitForSeconds(1f);
+        
         FirstPersonController.PlayerEvents.TogglePlayerModel();
         CameraSwitch.CameraEvents.SwitchCamera(lastAttackCamera);
         
@@ -431,8 +524,6 @@ public class EnemyAI : MonoBehaviour
         
         _currentCoroutine = null;
     }
-    
-    
     
     private void SetDestination(Vector3 destination)
     {

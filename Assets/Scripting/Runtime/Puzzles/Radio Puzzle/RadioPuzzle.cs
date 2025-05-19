@@ -18,7 +18,7 @@ public class RadioPuzzle : PuzzleObject
 
     private void Start()
     {
-        SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, noiseVolume);
+        SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, null, noiseVolume);
         _radioLoopCoroutine = StartCoroutine(LoopRadio());
     }
 
@@ -142,7 +142,7 @@ public class RadioPuzzle : PuzzleObject
             if (!_isCodePlaying)
             {
                 _isCodePlaying = true;
-                SoundManager.PlaySound3D(repeatSound, transform, codeVolume);
+                SoundManager.PlaySound3D(repeatSound, transform, null, codeVolume);
                 
                 float clipLength = GetAudioClipLength(repeatSound);
                 yield return new WaitForSeconds(clipLength);

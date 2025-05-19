@@ -23,47 +23,20 @@ public class HangingLight : MonoBehaviour
 
     [Header("Sound Settings")]
     [SerializeField] private bool loopSound = true;
-    private AudioLibraryData _audioLibrary;
 
     private Coroutine _flickerRoutine;
     private Coroutine _soundRoutine;
     private bool _isFlickering;
-
-    private void Awake()
-    {
-        // Try to load AudioLibraryData from Resources
-        _audioLibrary = Resources.Load<AudioLibraryData>("AudioLibrary");
     
-        if (_audioLibrary == null)
-        {
-            Debug.LogError("AudioLibraryData not found in Resources!");
-        }
-    }
-
     private void Start()
     {
         if (loopSound)
         {
-            _soundRoutine = StartCoroutine(SoundLoop());
+            SoundManager.PlaySound3D(Sound.HangingLightLoop, transform, null, 0.2f);
         }
 
         if (spotLights[0] != null && shouldFlick)
             StartCoroutine(FlickerLoop());
-    }
-
-    private IEnumerator SoundLoop()
-    {
-        while (true)
-        {
-            SoundManager.PlaySound3D(Sound.HangingLight, transform, 0.2f);
-            yield return new WaitForSeconds(GetAudioClipLength(Sound.HangingLight));
-        }
-    }
-    
-    private float GetAudioClipLength(Sound type)
-    {
-        var clip = _audioLibrary.GetAudioClip(type);
-        return clip != null ? clip.length : 0f;
     }
 
     private IEnumerator FlickerLoop()

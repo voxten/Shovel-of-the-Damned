@@ -58,6 +58,7 @@ public class ElevatorButton : InteractableObject
         {
             eleCollider.SetActive(true);
         }
+        SoundManager.PlaySound3D(Sound.ElevatorLift, elevatorTrigger.gameObject.transform);
 
         _isMoving = true;
 
