@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Security Guard's Note
   m_EditorClassIdentifier: 
   id: f5b5de6c9a7d43658377d2db8a0a8ee5
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
   itemName: "Guard Log \u2013 Containment Section"
   itemDescription: Guard Log
   itemType: 2

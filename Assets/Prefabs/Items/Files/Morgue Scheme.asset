@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Morgue Scheme
   m_EditorClassIdentifier: 
   id: 5582cf3b1d7b4f32814f6ded7f671dff
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1292726681, guid: 490055fc06387784ba5e0ead20639fa1, type: 3}
   itemName: Morgue Scheme
   itemDescription: 
   itemType: 2

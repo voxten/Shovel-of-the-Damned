@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Advanced Researcher's Note
   m_EditorClassIdentifier: 
   id: 65bb8d9a75dd4456af80f9bbdf28d402
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: Advanced Researcher's Note
   itemDescription: Note found on the 2nd Level of Laboratory
   itemType: 2

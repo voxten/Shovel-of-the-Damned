@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Key
   m_EditorClassIdentifier: 
   id: ad708edae410448a86a95ad5feca8182
-  itemIcon: {fileID: -1779289165, guid: 13e81588af9d07b46a2f75cdcbdb9ee5, type: 3}
+  itemIcon: {fileID: -1624381325, guid: d2fc638fb0b94e54ca6e28f498309b98, type: 3}
   itemName: Key
   itemDescription: 'Key with empty tag '
   itemType: 0
