@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AccessCardItem
   m_EditorClassIdentifier: 
   id: d1f92f8416e240bb8a4c1c74316cf911
-  itemIcon: {fileID: 289961718, guid: 75958f5fe38f5714db9c87c81c3b4ecd, type: 3}
+  itemIcon: {fileID: -2141728482, guid: b8caa187bc0c5b345a5209309480d874, type: 3}
   itemName: Level 0 - Guest
   itemDescription: Access Card
   itemType: 0

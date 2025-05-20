@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Corpse's Note
   m_EditorClassIdentifier: 
   id: 9f4785191cec44a1b6c3e17a4a02c4f4
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: Corpse's Note
   itemDescription: Found in the morgue, next to the corpse
   itemType: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Emergency Lock
   m_EditorClassIdentifier: 
   id: 5580559fd566439d9b00844362a24884
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -1514630463, guid: 1a83462956f19f7459a99805c9bc261b, type: 3}
   itemName: Emergency Lock
   itemDescription: Note saying about how to deactivate emergency lock
   itemType: 2

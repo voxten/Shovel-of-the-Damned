@@ -18,7 +18,7 @@ public class PickItem : InteractableObject
         if (_isFirst && isPickable)
         {
             base.Interact();
-            SoundManager.PlaySound3D(Sound.Pickup, transform);
+            SoundManager.PlaySound(Sound.Pickup);
             Inventory.InventoryEvents.AddItem(item);
             gameObject.SetActive(false);
             _isFirst = false;
