@@ -29,16 +29,18 @@ public class SoundManager : MonoBehaviour
     private static Dictionary<Sound, AudioSource> activeSounds = new();
     private static Dictionary<Sound, List<GameObject>> active3DSounds = new(); // Track 3D sound objects
 
-
     private void Awake()
     {
         activeSounds.Clear();
         active3DSounds.Clear();
+    
+        // Also clear the audio sources
         mainAudio.Stop();
-        musicAudio.Stop();
         mainAudio.clip = null;
+        musicAudio.Stop();
         musicAudio.clip = null;
     }
+
     private void OnEnable() 
     {
         _onPlaySound += PlayAudioShot;
