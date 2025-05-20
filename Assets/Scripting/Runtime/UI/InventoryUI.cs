@@ -57,9 +57,13 @@ public class InventoryUI : MonoBehaviour
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0)
+        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0 && !NoteUIManager.NoteActions.GetIsOn())
         {
             UseSelectedItem();
+        }
+        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0 && NoteUIManager.NoteActions.GetIsOn())
+        {
+            NoteUIManager.NoteActions.CloseNotePanel();
         }
     }
     
