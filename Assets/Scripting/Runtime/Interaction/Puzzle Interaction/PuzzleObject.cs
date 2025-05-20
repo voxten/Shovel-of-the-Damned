@@ -9,7 +9,8 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private bool customFinish;
     [SerializeField] private GameObject buttonPanel;
     public bool isFinished;
-    
+    public bool isAfterLoad;
+
     // function which indicates what should be done after entering a puzzle
     public virtual void OpenPuzzle()
     {

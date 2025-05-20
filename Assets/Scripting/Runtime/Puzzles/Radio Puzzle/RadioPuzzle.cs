@@ -16,10 +16,11 @@ public class RadioPuzzle : PuzzleObject
     private Sound _currentSecondarySound = Sound.None;
     private bool _isCodePlaying;
 
-    private void Start()
+    private void Awake()
     {
         SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, null, noiseVolume);
         _radioLoopCoroutine = StartCoroutine(LoopRadio());
+        
     }
 
     private float GetAudioClipLength(Sound type)
@@ -43,7 +44,10 @@ public class RadioPuzzle : PuzzleObject
     protected override void EndPuzzle()
     {
         base.EndPuzzle();
-        Inventory.InventoryEvents.AddItem(finishItem);
+        if (!Inventory.InventoryEvents.FindItem(finishItem))
+        {
+            Inventory.InventoryEvents.AddItem(finishItem);
+        } 
     }
     
     private bool GetIsFinished()
@@ -75,6 +79,13 @@ public class RadioPuzzle : PuzzleObject
         while (true)
         {
             var count = GetCorrectNeedleCount();
+            if (isAfterLoad)
+            {
+                if (isFinished)
+                {
+                    count = 2;
+                }
+            }
 
             Sound soundToPlay = count == 1 ? Sound.RadioDistCode : 
                 count >= 2 ? Sound.RadioCode : Sound.None;
@@ -137,7 +148,7 @@ public class RadioPuzzle : PuzzleObject
 
     private IEnumerator PlayCodeRepeating(Sound repeatSound, int requiredNeedleCount)
     {
-        while (GetCorrectNeedleCount() == requiredNeedleCount)
+        while (GetCorrectNeedleCount() == requiredNeedleCount || (isAfterLoad && isFinished))
         {
             if (!_isCodePlaying)
             {

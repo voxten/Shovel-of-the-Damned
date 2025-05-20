@@ -5,6 +5,8 @@ public class RadioScroll : MonoBehaviour
     [SerializeField] private RadioNeedle needle; // Reference to the needle
     private bool _isRotating;
     private float _currentPos;
+    private RadioPuzzle radioPuzzle;
+
 
     private void OnMouseOver()
     {
@@ -13,6 +15,19 @@ public class RadioScroll : MonoBehaviour
             if(!RadioPuzzle.RadioEvents.GetIsFinished())
                 _isRotating = true;
         }
+    }
+    private void Start()
+    {
+        radioPuzzle = FindObjectOfType<RadioPuzzle>();
+        if (radioPuzzle.isAfterLoad)
+        {
+            if (radioPuzzle.isFinished)
+            {
+                needle.transform.localPosition = new Vector3(needle.transform.localPosition.x, needle.transform.localPosition.y, needle.correctPos);
+                RadioPuzzle.RadioEvents.CheckNeedles();
+            }
+        }
+
     }
 
     private void Update()
@@ -53,6 +68,7 @@ public class RadioScroll : MonoBehaviour
                 _isRotating = false;
             }
         }
+        
     }
 
     public bool CheckNeedlePosition()

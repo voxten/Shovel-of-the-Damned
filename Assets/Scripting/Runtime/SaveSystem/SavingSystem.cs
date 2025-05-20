@@ -30,8 +30,8 @@ public class SavingSystem : MonoBehaviour
                 }
             }
         }
-        string idCard = "76941d22-6c05-422a-922d-ab802319afe0";
-        Debug.Log("Czy jest w pierwotnej: " + _allPicable.IndexOf(idCard));
+        //string idCard = "76941d22-6c05-422a-922d-ab802319afe0";
+        //Debug.Log("Czy jest w pierwotnej: " + _allPicable.IndexOf(idCard));
     }
 
     public static class SavingSystemEvents
@@ -102,7 +102,9 @@ public class SavingSystem : MonoBehaviour
 
         saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
 
-        Debug.Log(saveData.pickabelsIDs[0]);
+        saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
+
+        //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
     }
 
@@ -165,6 +167,13 @@ public class SavingSystem : MonoBehaviour
         }
 
         FlashlightOptions.FlashlightOptionsEvents.SetBatteryLevel(saveData.batteryLevel);
+
+        if (saveData.radio)
+        {
+            FindObjectOfType<RadioPuzzle>().isFinished = true;
+            FindObjectOfType<RadioPuzzle>().isAfterLoad = true;
+        }
+        
     }
 
     private List<string> FindAllPickable()
