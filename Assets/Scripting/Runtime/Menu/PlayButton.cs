@@ -8,6 +8,7 @@ public class PlayButton : ExtendedButton
     
     protected override void Submit()
     {
+        Utilitis.SetCursorState(true);
         SceneLoader.SceneEvents.AnimateLoadScene("CarScene");
         StartCoroutine(FadeOutAndLoadScene());
     }

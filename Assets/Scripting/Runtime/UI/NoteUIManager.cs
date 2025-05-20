@@ -27,6 +27,7 @@ public class NoteUIManager : MonoBehaviour
         NoteActions.OpenNote += OpenNote;
         NoteActions.OpenPicture += OpenPicture;
         NoteActions.GetIsOn += GetIsOn;
+        NoteActions.CloseNotePanel += CloseNotePanel;
     }
 
     private void OnDisable()
@@ -34,6 +35,7 @@ public class NoteUIManager : MonoBehaviour
         NoteActions.OpenNote -= OpenNote;
         NoteActions.OpenPicture -= OpenPicture;
         NoteActions.GetIsOn -= GetIsOn;
+        NoteActions.CloseNotePanel -= CloseNotePanel;
     }
 
     private void OpenNote(NoteItem noteItem)
@@ -48,9 +50,15 @@ public class NoteUIManager : MonoBehaviour
         
         if (noteItem.noteContent.Count > 1)
         {
+            nextButton.gameObject.SetActive(true);
             nextButton.onClick.AddListener(NextNote);
             previousButton.onClick.AddListener(PreviousNote);
             UpdateNavigationButtons();
+        }
+        else
+        {
+            previousButton.gameObject.SetActive(false);
+            nextButton.gameObject.SetActive(false);
         }
         SoundManager.PlaySound(Sound.Paper);
         ToggleUtils(true);
@@ -135,5 +143,6 @@ public class NoteUIManager : MonoBehaviour
         public static Action<NoteItem> OpenNote;
         public static Action<PictureItem> OpenPicture;
         public static Func<bool> GetIsOn;
+        public static Action CloseNotePanel;
     }
 }
