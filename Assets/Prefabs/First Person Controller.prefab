@@ -6795,7 +6795,7 @@ Transform:
   m_GameObject: {fileID: 6554184995933837049}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0074996883, y: 1.7502499, z: 0.074996956}
+  m_LocalPosition: {x: 0.02999878, y: 1.0002503, z: 0.29999924}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6962,7 +6962,7 @@ Transform:
   m_GameObject: {fileID: 6670529840568099616}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000000037252903, y: 1.8752499, z: 0.032501224}
+  m_LocalPosition: {x: 0, y: 1.5002503, z: 0.13000107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8763,7 +8763,7 @@ MonoBehaviour:
   mainLight: {fileID: 5356385833510219781}
   lightUV: {fileID: 7743500893901111453}
   textPrg: {fileID: 712994858875200598}
-  playerObject: {fileID: 0}
+  playerObject: {fileID: 1707123168352649269}
   canActivate: 1
 --- !u!1 &8520998098250026270
 GameObject:
@@ -9170,7 +9170,7 @@ Transform:
   m_GameObject: {fileID: 8804650552330610372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000000037252903, y: 1.8752499, z: 0.032501224}
+  m_LocalPosition: {x: -0.0000000037252903, y: 1.5002503, z: 0.13000107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10021,6 +10021,7 @@ MonoBehaviour:
   lightUV: {fileID: 7743500893901111453}
   coneLight: {fileID: 1957101207014933157}
   enemyAI: {fileID: 0}
+  tutorialObject: {fileID: 11400000, guid: f7643b9dc7766a7419b37f438abc84fd, type: 2}
 --- !u!1001 &1210928298705657853
 PrefabInstance:
   m_ObjectHideFlags: 0
