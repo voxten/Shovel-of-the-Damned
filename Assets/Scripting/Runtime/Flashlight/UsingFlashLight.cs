@@ -60,19 +60,21 @@ public class UsingFlashLight : MonoBehaviour
     {
         if (!mainLight.enabled)
         {
-            _flashlightOptions.enabled = true;
-            mainLight.enabled = true;
-            textPrg.SetActive(true);
+            ToggleLight(true);
             SoundManager.PlaySound3D(Sound.FlashlightOn, playerObject.transform, null, 0.4f);
-            _active = true;
         }
         else
         {
-            _flashlightOptions.enabled = false;
-            mainLight.enabled = false;
-            textPrg.SetActive(false);
+            ToggleLight(false);
             SoundManager.PlaySound3D(Sound.FlashlightOff, playerObject.transform, null, 0.4f);
-            _active = false;
         }
+    }
+
+    private void ToggleLight(bool state)
+    {
+        _flashlightOptions.enabled = state;
+        mainLight.enabled = state;
+        textPrg.SetActive(state);
+        _active = state;
     }
 }
