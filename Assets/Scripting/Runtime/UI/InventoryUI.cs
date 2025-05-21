@@ -18,6 +18,8 @@ public class InventoryUI : MonoBehaviour
     [Header("ButtonPanel")]
     [SerializeField] private RectTransform buttonParent;
     [SerializeField] private GameObject buttonPrefab;
+    private List<Button> _buttonList = new List<Button>();
+    private int _currentButtonIndex = 0;
     
     private List<Item> _itemList;
     private int _selectedIndex;
@@ -31,9 +33,15 @@ public class InventoryUI : MonoBehaviour
         FirstPersonController.PlayerEvents.ToggleMove();
         Time.timeScale = 0;
         
-        itemNameText.enabled = false;
-        itemDescText.enabled = false;
-        inventoryViewer.gameObject.SetActive(false);
+        inventoryViewer.gameObject.SetActive(true);
+        
+        // Automatically select and click the first button if any exist
+        if (_buttonList.Count > 0)
+        {
+            _currentButtonIndex = 0;
+            _buttonList[0].Select();
+            _buttonList[0].onClick.Invoke(); // This will show the first item category
+        }
     }
     
     private void OnDisable()
@@ -48,22 +56,46 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        if (_itemList == null || _itemList.Count == 0) return;
-        if (Input.GetKeyDown(KeyCode.A) && _displayedItems.Count != 0)
+        // Handle button navigation only when note panel isn't open
+        if (!NoteUIManager.NoteActions.GetIsOn())
         {
-            MoveLeft();
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                MoveDown();
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                MoveUp();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) && _displayedItems.Count != 0)
+
+        // Handle item navigation only when items are displayed
+        if (_displayedItems.Count > 0 && !NoteUIManager.NoteActions.GetIsOn())
         {
-            MoveRight();
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                MoveLeft();
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                MoveRight();
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
+            {
+                UseSelectedItem();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0 && !NoteUIManager.NoteActions.GetIsOn())
-        {
-            UseSelectedItem();
-        }
-        else if (Input.GetKeyDown(KeyCode.F) && _itemList.Count > 0 && NoteUIManager.NoteActions.GetIsOn())
+        else if (Input.GetKeyDown(KeyCode.F) && NoteUIManager.NoteActions.GetIsOn())
         {
             NoteUIManager.NoteActions.CloseNotePanel();
+        }
+        else if (Input.GetKeyDown(KeyCode.A) && NoteUIManager.NoteActions.GetIsOn())
+        {
+            NoteUIManager.NoteActions.PreviousNote();
+        }
+        else if (Input.GetKeyDown(KeyCode.D) && NoteUIManager.NoteActions.GetIsOn())
+        {
+            NoteUIManager.NoteActions.NextNote();
         }
     }
     
@@ -79,6 +111,24 @@ public class InventoryUI : MonoBehaviour
         if (NoteUIManager.NoteActions.GetIsOn()) return;
         _selectedIndex = (_selectedIndex + 1) % _itemList.Count;
         AnimateInventoryDisplay();
+    }
+    
+    private void MoveDown()
+    {
+        if (_buttonList.Count == 0) return;
+        
+        _currentButtonIndex = (_currentButtonIndex + 1) % _buttonList.Count;
+        _buttonList[_currentButtonIndex].Select();
+        _buttonList[_currentButtonIndex].onClick.Invoke();
+    }
+
+    private void MoveUp()
+    {
+        if (_buttonList.Count == 0) return;
+    
+        _currentButtonIndex = (_currentButtonIndex - 1 + _buttonList.Count) % _buttonList.Count;
+        _buttonList[_currentButtonIndex].Select();
+        _buttonList[_currentButtonIndex].onClick.Invoke();
     }
     
     private void UseSelectedItem()
@@ -223,7 +273,10 @@ public class InventoryUI : MonoBehaviour
         var tempList = Inventory.InventoryEvents.GetAllItems();
         if (tempList == null || tempList.Count == 0)
             return;
+    
         var uniqueItemTypes = new HashSet<ItemType>();
+        _buttonList.Clear();
+    
         foreach (var item in tempList)
         {
             if (!uniqueItemTypes.Add(item.itemType)) 
@@ -232,7 +285,25 @@ public class InventoryUI : MonoBehaviour
             var buttonObject = Instantiate(buttonPrefab, buttonParent);
             var button = buttonObject.GetComponent<Button>();
             button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemType.ToString().ToUpper();
-            button.onClick.AddListener(() => ButtonListeners(item));
+        
+            // Capture the current index in a local variable
+            int buttonIndex = _buttonList.Count;
+            var item1 = item;
+            
+            button.onClick.AddListener(() => 
+            {
+                ButtonListeners(item1);
+                _currentButtonIndex = buttonIndex; // Update current index when clicked
+            });
+        
+            _buttonList.Add(button);
+        }
+    
+        if (_buttonList.Count > 0)
+        {
+            _currentButtonIndex = 0;
+            _buttonList[0].Select();
+            _buttonList[0].onClick.Invoke();
         }
     }
 
@@ -248,5 +319,7 @@ public class InventoryUI : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        _buttonList.Clear(); // Clear the button list when deleting
+        _currentButtonIndex = 0; // Reset index
     }
 }
