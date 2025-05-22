@@ -142,6 +142,12 @@ public class EnemyAI : MonoBehaviour
         _isEnemyInVents = false;
         _currentState = AIState.MovingOutVent;
     }
+    
+    public void StopAllCouroutines()
+    {
+        _currentCoroutine = null;
+        StopAllCoroutines();
+    }
 
     public bool GetIsInVent()
     {
