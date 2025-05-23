@@ -98,12 +98,32 @@ public class SavingSystem : MonoBehaviour
             {
                 saveData.inventory[item.Id] = 1;
             }
+            if(item.name == "Key")
+            {
+                saveData.arm = true;
+            }
+            
         }
 
         saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
 
         saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
         saveData.generator = FindObjectOfType<GeneratorPuzzle>().isFinished;
+
+        if (saveData.arm)
+        {
+            GameObject arm = GameObject.Find("Arm");
+            Transform armTransform = arm.transform;
+
+            saveData.armPositionX = armTransform.position.x;
+            saveData.armPositionY = armTransform.position.y;
+            saveData.armPositionZ = armTransform.position.z;
+
+            saveData.armRotationX = armTransform.rotation.x;
+            saveData.armRotationY = armTransform.rotation.y;
+            saveData.armRotationZ = armTransform.rotation.z;
+            saveData.armRotationW = armTransform.rotation.w;
+        }
 
         //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
@@ -178,6 +198,16 @@ public class SavingSystem : MonoBehaviour
         {
             FindObjectOfType<GeneratorPuzzle>().isFinished = true;
             FindObjectOfType<GeneratorPuzzle>().isAfterLoad = true;
+        }
+        if (saveData.arm)
+        {
+            GameObject arm = GameObject.Find("Arm");
+            Transform armTransform = arm.transform;
+            armTransform.position = new Vector3(saveData.armPositionX, saveData.armPositionY, saveData.armPositionZ);
+            armTransform.rotation = new Quaternion(saveData.armRotationX, saveData.armRotationY, saveData.armRotationZ, saveData.armRotationW);
+
+            arm.GetComponentInChildren<IceMelting>().gameObject.SetActive(false);
+            //arm.GetComponentInChildren<PickItem>().gameObject.SetActive(false);
         }
 
     }

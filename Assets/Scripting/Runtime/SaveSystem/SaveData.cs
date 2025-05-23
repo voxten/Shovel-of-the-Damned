@@ -37,4 +37,15 @@ public class SaveData
     //Puzzles
     public bool radio;
     public bool generator;
+    public bool arm;
+
+    //Arm Puzle
+    public float armPositionX;
+    public float armPositionY;
+    public float armPositionZ;
+
+    public float armRotationX;
+    public float armRotationY;
+    public float armRotationZ;
+    public float armRotationW;
 }

@@ -23,7 +23,10 @@ public class PickItem : InteractableObject
             gameObject.SetActive(false);
             _isFirst = false;
             _collider.enabled = false;
-            
+            if(item.name == "Key")
+            {
+                SavingSystem.SavingSystemEvents.Save();
+            }
             switch (item)
             {
                 case NoteItem note:
