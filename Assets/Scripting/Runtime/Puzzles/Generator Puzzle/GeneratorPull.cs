@@ -13,6 +13,16 @@ public class GeneratorPull : InteractableObject
         _canPull = true;
         _animator = GetComponent<Animator>();
         _collider = GetComponent<Collider>();
+        
+    }
+    private void Start()
+    {
+        GeneratorPuzzle generatorPuzzle = FindObjectOfType<GeneratorPuzzle>();
+        if (generatorPuzzle.isFinished && generatorPuzzle.isAfterLoad)
+        {
+            _collider.enabled = false;
+            _canPull = false;
+        }
     }
 
     public override bool Interact()

@@ -36,4 +36,5 @@ public class SaveData
 
     //Puzzles
     public bool radio;
+    public bool generator;
 }

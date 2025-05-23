@@ -18,8 +18,8 @@ public class FlashlightOptions : MonoBehaviour
     
     [Header("Enemy")]
     [SerializeField] private EnemyAI enemyAI;
-    
-    private float _batteryLevel = 100.00f;
+
+    private float _batteryLevel;
     private float _lastLowerTime;
     private bool _isEnemyInArea;
     
@@ -51,11 +51,11 @@ public class FlashlightOptions : MonoBehaviour
 
     private float GetBatteryLevel()
     {
-        return _batterryLevel;
+        return _batteryLevel;
     }
     private void SetBatteryLevel(float batteryLevel)
     {
-        _batterryLevel = batteryLevel;
+        _batteryLevel = batteryLevel;
     }
 
     private void Update()

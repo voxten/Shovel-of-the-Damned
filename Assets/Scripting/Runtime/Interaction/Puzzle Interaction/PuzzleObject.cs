@@ -22,6 +22,7 @@ public abstract class PuzzleObject : MonoBehaviour
     {
         isFinished = true;
         Debug.Log("Puzzle has been solved");
+        SavingSystem.SavingSystemEvents.Save();
         StartCoroutine(WaitForEndOfPuzzle(finishingTime));
     }
     

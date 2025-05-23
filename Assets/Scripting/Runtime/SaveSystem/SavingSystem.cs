@@ -103,6 +103,7 @@ public class SavingSystem : MonoBehaviour
         saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
 
         saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
+        saveData.generator = FindObjectOfType<GeneratorPuzzle>().isFinished;
 
         //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
@@ -173,7 +174,12 @@ public class SavingSystem : MonoBehaviour
             FindObjectOfType<RadioPuzzle>().isFinished = true;
             FindObjectOfType<RadioPuzzle>().isAfterLoad = true;
         }
-        
+        if (saveData.generator)
+        {
+            FindObjectOfType<GeneratorPuzzle>().isFinished = true;
+            FindObjectOfType<GeneratorPuzzle>().isAfterLoad = true;
+        }
+
     }
 
     private List<string> FindAllPickable()

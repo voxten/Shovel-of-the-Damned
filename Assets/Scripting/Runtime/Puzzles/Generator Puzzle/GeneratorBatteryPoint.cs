@@ -5,7 +5,17 @@ public class GeneratorBatteryPoint : MonoBehaviour
 {
     [SerializeField] private GameObject batteryObject;
     [SerializeField] private GameObject batteryObjectRed;
-    
+
+    private void Start()
+    {
+        GeneratorPuzzle generatorPuzzle = FindObjectOfType<GeneratorPuzzle>();
+        if (generatorPuzzle.isFinished && generatorPuzzle.isAfterLoad)
+        {
+            GeneratorPuzzle.GeneratorEvents.SetBatteryLed();
+            batteryObject.SetActive(true);
+            batteryObjectRed.SetActive(false);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Battery"))

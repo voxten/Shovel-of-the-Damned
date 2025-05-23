@@ -16,6 +16,16 @@ public class GeneratorCanister : MonoBehaviour
         _meshRenderer = GetComponent<MeshRenderer>();
         _animator = GetComponent<Animator>();
     }
+    private void Start()
+    {
+        GeneratorPuzzle generatorPuzzle = FindObjectOfType<GeneratorPuzzle>();
+        if (generatorPuzzle.isFinished && generatorPuzzle.isAfterLoad)
+        {
+            _meshRenderer.materials = new[] { normalMaterial };
+            _meshRenderer.material = normalMaterial;
+            ResetCanister();
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

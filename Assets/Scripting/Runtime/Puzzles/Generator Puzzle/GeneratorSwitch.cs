@@ -1,5 +1,7 @@
-using UnityEngine;
+using System;
 using DG.Tweening;
+using UnityEngine;
+using static GeneratorPuzzle;
 
 public class GeneratorSwitch : MonoBehaviour
 {
@@ -27,5 +29,16 @@ public class GeneratorSwitch : MonoBehaviour
     public bool GetIsSwitched()
     {
         return _isSwitched;
+    }
+
+    public void ChangeLedState()
+    {
+        var targetRotation = _isSwitched ? rotationZ1 : rotationZ2;
+
+        lights[0].enabled = _isSwitched;
+        lights[1].enabled = !_isSwitched;
+        _isSwitched = !_isSwitched;
+
+        transform.DOLocalRotateQuaternion(Quaternion.Euler(0, 0, targetRotation), 0.5f);
     }
 }
