@@ -28,6 +28,8 @@ public class NoteUIManager : MonoBehaviour
         NoteActions.OpenPicture += OpenPicture;
         NoteActions.GetIsOn += GetIsOn;
         NoteActions.CloseNotePanel += CloseNotePanel;
+        NoteActions.PreviousNote += PreviousNote;
+        NoteActions.NextNote += NextNote;
     }
 
     private void OnDisable()
@@ -36,6 +38,22 @@ public class NoteUIManager : MonoBehaviour
         NoteActions.OpenPicture -= OpenPicture;
         NoteActions.GetIsOn -= GetIsOn;
         NoteActions.CloseNotePanel -= CloseNotePanel;
+        NoteActions.PreviousNote -= PreviousNote;
+        NoteActions.NextNote -= NextNote;
+    }
+
+    private void Update()
+    {
+        if (!_isOn) return;
+        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            PreviousNote();
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            NextNote();
+        }
     }
 
     private void OpenNote(NoteItem noteItem)
@@ -157,5 +175,7 @@ public class NoteUIManager : MonoBehaviour
         public static Action<PictureItem> OpenPicture;
         public static Func<bool> GetIsOn;
         public static Action CloseNotePanel;
+        public static Action NextNote;
+        public static Action PreviousNote;
     }
 }
