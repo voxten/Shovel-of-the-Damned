@@ -737,10 +737,10 @@ RectTransform:
   - {fileID: 2065672824811945014}
   m_Father: {fileID: 6544560564808237118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 513.795, y: -46.8455}
-  m_SizeDelta: {x: 280, y: 82}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &603532848011984915
 GameObject:
@@ -1123,10 +1123,10 @@ RectTransform:
   - {fileID: 2114035569836532845}
   m_Father: {fileID: 6544560564808237118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 233.79498, y: -46.8455}
-  m_SizeDelta: {x: 280, y: 82}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &959832968866884775
 GameObject:
@@ -4689,10 +4689,10 @@ RectTransform:
   - {fileID: 1386232651285701527}
   m_Father: {fileID: 6544560564808237118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 793.795, y: -46.8455}
-  m_SizeDelta: {x: 280, y: 82}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4247363374491000196
 GameObject:
@@ -6037,6 +6037,7 @@ MonoBehaviour:
   picturePanel: {fileID: 572494556286019443}
   pictureImage: {fileID: 651408759243352844}
   closePictureButton: {fileID: 9222479729197125222}
+  tutorialObject: {fileID: 11400000, guid: aba3931029abacb48b12912ea3e2fc0b, type: 2}
 --- !u!114 &712514451177767022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7056,8 +7057,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00015259, y: 3.5326}
-  m_SizeDelta: {x: 960.6578, y: 96.4675}
+  m_AnchoredPosition: {x: 0, y: 3.5326}
+  m_SizeDelta: {x: 1409.7056, y: 96.4675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2755956599466896280
 CanvasRenderer:
@@ -10653,6 +10654,7 @@ MonoBehaviour:
   coneLight: {fileID: 1957101207014933157}
   enemyAI: {fileID: 0}
   tutorialObject: {fileID: 11400000, guid: f7643b9dc7766a7419b37f438abc84fd, type: 2}
+  usingFlashLight: {fileID: 2897556127942281021}
 --- !u!1001 &1210928298705657853
 PrefabInstance:
   m_ObjectHideFlags: 0
