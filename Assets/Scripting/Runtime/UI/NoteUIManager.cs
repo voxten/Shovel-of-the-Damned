@@ -142,6 +142,7 @@ public class NoteUIManager : MonoBehaviour
         closeButton.onClick.RemoveAllListeners();
         previousButton.onClick.RemoveAllListeners();
         nextButton.onClick.RemoveAllListeners();
+        picturePanel.SetActive(false);
         notePanel.SetActive(false);
         ToggleUtils(false);
     }

@@ -82,7 +82,12 @@ public class EnemyAI : MonoBehaviour
 
     private void OnEnable()
     {
-        SetDestination(player.gameObject);
+        _isEnemyInVents = true;
+        _enemySkinnedMeshRenderer.enabled = false;
+        _collider.enabled = false;
+
+        SpawnMainCube();
+        _currentCoroutine = null;
     }
     
     private void Update()
