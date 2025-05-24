@@ -6986,12 +6986,12 @@ Light:
   m_GameObject: {fileID: 6448374899555264124}
   m_Enabled: 1
   serializedVersion: 11
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0, b: 0.7105627, a: 1}
   m_Intensity: 0
   m_Range: 15
   m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_InnerSpotAngle: 23.733051
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -9535,7 +9535,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1791
+    m_Bits: 3839
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

@@ -370,6 +370,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reception Room Door 2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b8e43b68442a135469108777ae9520a6, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 1151388028547126963, guid: b8e43b68442a135469108777ae9520a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18
@@ -377,6 +381,10 @@ PrefabInstance:
     - target: {fileID: 1151388028547126963, guid: b8e43b68442a135469108777ae9520a6, type: 3}
       propertyPath: m_LocalPosition.z
       value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: b8e43b68442a135469108777ae9520a6, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -410,8 +418,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 378.02878, y: 383.41907, z: 90.07161}
-  m_Center: {x: -0.039154056, y: 191.32938, z: 0.08876803}
+  m_Size: {x: 378.02878, y: 319.05377, z: 90.07161}
+  m_Center: {x: -0.039144006, y: 223.51198, z: 0.0887596}
 --- !u!4 &5235744707978345863 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b8e43b68442a135469108777ae9520a6, type: 3}
