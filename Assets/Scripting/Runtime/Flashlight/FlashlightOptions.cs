@@ -26,6 +26,8 @@ public class FlashlightOptions : MonoBehaviour
     [SerializeField] private TutorialObject tutorialObject;
     private bool _tutorialCompleted;
     private bool _isOnce;
+    
+    [SerializeField] private UsingFlashLight usingFlashLight;
 
     private void Start()
     {
@@ -65,7 +67,7 @@ public class FlashlightOptions : MonoBehaviour
             ActiveUV();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && usingFlashLight.canActivate)
         {
             ChangeBattery();
         }
