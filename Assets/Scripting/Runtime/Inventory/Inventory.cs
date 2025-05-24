@@ -23,6 +23,7 @@ public class Inventory : MonoBehaviour
         InventoryEvents.AddItem += AddItem;
         InventoryEvents.FindItem += FindItem;
         InventoryEvents.FindItems += FindItems;
+        InventoryEvents.RemoveStartupItems += RemoveStartupItems;
     }
 
     private void OnDisable()
@@ -35,6 +36,14 @@ public class Inventory : MonoBehaviour
         InventoryEvents.AddItem -= AddItem;
         InventoryEvents.FindItem -= FindItem;
         InventoryEvents.FindItems -= FindItems;
+        InventoryEvents.RemoveStartupItems -= RemoveStartupItems;
+    }
+    private void RemoveStartupItems()
+    {
+        foreach (var item in startupItems)
+        {
+            items.Remove(item);
+        }
     }
 
     private void Awake()
@@ -171,6 +180,7 @@ public class Inventory : MonoBehaviour
         public static Func<Item, int, bool> RemoveItems;
         public static Func<Item, bool> FindItem;
         public static Func<Item, int, bool> FindItems;
+        public static Action RemoveStartupItems;
     }
 }
 

@@ -243,6 +243,7 @@ public class SavingSystem : MonoBehaviour
             }
             
         }
+        Inventory.InventoryEvents.RemoveStartupItems();
 
         //FlashlightOptions.FlashlightOptionsEvents.SetBatteryLevel(saveData.batteryLevel);
 
