@@ -1,6 +1,5 @@
 using StarterAssets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -101,6 +100,7 @@ public class PauseManager : MonoBehaviour
 
     private void Load()
     {
+        Resume();
         SavingSystem.SavingSystemEvents.Load();
     }
 }

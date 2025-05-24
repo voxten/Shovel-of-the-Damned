@@ -1,19 +1,24 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using UnityEngine;
-using static StarterAssets.FirstPersonController;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class SavingSystem : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Transform cameraTransform;
     private List<String> _allPicable = new List<string>();
+    
+    [Header("Animation Settings")]
+    [SerializeField] private Image loadingCircle;
+    [SerializeField] private float rotationDuration = 1f;
+    [SerializeField] private float fadeDuration = 0.3f;
+    [SerializeField] private float fillAnimationDuration = 0.8f;
 
     private void Start()
     {
@@ -32,6 +37,13 @@ public class SavingSystem : MonoBehaviour
         }
         //string idCard = "76941d22-6c05-422a-922d-ab802319afe0";
         //Debug.Log("Czy jest w pierwotnej: " + _allPicable.IndexOf(idCard));
+        
+        // Initialize the loading circle as invisible
+        if (loadingCircle != null)
+        {
+            loadingCircle.color = new Color(loadingCircle.color.r, loadingCircle.color.g, loadingCircle.color.b, 0);
+            loadingCircle.gameObject.SetActive(false);
+        }
     }
 
     public static class SavingSystemEvents
@@ -53,13 +65,53 @@ public class SavingSystem : MonoBehaviour
 
     private void Save()
     {
+        StartCoroutine(SaveWithAnimation());
+    }
+    
+    private IEnumerator SaveWithAnimation()
+    {
+        // Show and fade in the loading circle
+        if (loadingCircle != null)
+        {
+            // Reset values
+            loadingCircle.fillAmount = 0;
+            loadingCircle.gameObject.SetActive(true);
+            loadingCircle.DOFade(1f, fadeDuration);
+            
+            // Start infinite rotation
+            loadingCircle.transform.DORotate(new Vector3(0, 0, -360), rotationDuration, RotateMode.LocalAxisAdd)
+                .SetEase(Ease.Linear)
+                .SetLoops(-1, LoopType.Restart);
+            
+            // Animate fillAmount from 0 to 1 in a loop
+            loadingCircle.DOFillAmount(1, fillAnimationDuration)
+                .SetEase(Ease.InOutQuad)
+                .SetLoops(-1, LoopType.Restart);
+        }
+
+        // Create save data
         SaveData saveData = CreateSaveDataGameObject();
 
-        
+        // Save the data
         BinaryFormatter bf = new BinaryFormatter();
         FileStream fileStream = File.Create(Application.persistentDataPath + "Save.txt");
         bf.Serialize(fileStream, saveData);
         fileStream.Close();
+
+        // Wait a minimum time so the animation is visible
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade out and hide the loading circle
+        if (loadingCircle != null)
+        {
+            loadingCircle.DOFade(0f, fadeDuration).OnComplete(() => 
+            {
+                loadingCircle.gameObject.SetActive(false);
+                loadingCircle.transform.DOKill();
+                loadingCircle.DOKill(); // Stop the fill animation
+                loadingCircle.fillAmount = 0; // Reset for next time
+            });
+        }
     }
 
     private SaveData CreateSaveDataGameObject()
@@ -90,19 +142,21 @@ public class SavingSystem : MonoBehaviour
 
         foreach (Item item in Inventory.InventoryEvents.GetAllItems())
         {
-            if (saveData.inventory.ContainsKey(item.Id))
+            if (item == null || string.IsNullOrEmpty(item.Id))
+            {
+                Debug.LogWarning($"Skipping invalid item in inventory: {(item == null ? "NULL" : item.name)}");
+                continue;
+            }
+            
+            if (!saveData.inventory.TryAdd(item.Id, 1))
             {
                 saveData.inventory[item.Id] += 1;
             }
-            else
-            {
-                saveData.inventory[item.Id] = 1;
-            }
+
             if(item.name == "Key")
             {
                 saveData.arm = true;
             }
-            
         }
 
         //TODO: saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
