@@ -29,6 +29,8 @@ namespace StarterAssets
         private Coroutine _crouchTransitionRoutine;
         private Vector2 _bufferedMoveInput;
 
+        [SerializeField] private Animator mainAnimator;
+        [SerializeField] private Animator shadowAnimator;
         public void OnMove(InputValue value)
         {
             Vector2 inputValue = value.Get<Vector2>();
@@ -109,8 +111,8 @@ namespace StarterAssets
                 return;
             
             // Only allow crouch/stand when not moving (but buffer will handle held inputs)
-            if (move.magnitude > 0.1f && !_isTransitioning)
-                return;
+            //if (move.magnitude > 0.1f && !_isTransitioning)
+               // return;
 
             // If a transition is already running, stop it
             if (_crouchTransitionRoutine != null)
@@ -135,6 +137,8 @@ namespace StarterAssets
                 // Stand up
                 crouch = false;
                 CameraSwitch.CameraEvents.SwitchCameraToDefaultWithTime(0.75f);
+                mainAnimator.SetBool("Crouch", false);
+                shadowAnimator.SetBool("Crouch", false);
                 yield return new WaitForSeconds(1.5f);
             }
             else
@@ -142,6 +146,8 @@ namespace StarterAssets
                 // Crouch down
                 crouch = true;
                 CameraSwitch.CameraEvents.SwitchCamera(crouchCamera);
+                mainAnimator.SetBool("Crouch", true);
+                shadowAnimator.SetBool("Crouch", true);
                 yield return new WaitForSeconds(0.75f);
             }
 
