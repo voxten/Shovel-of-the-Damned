@@ -1973,6 +1973,8 @@ MonoBehaviour:
   cursorLocked: 1
   cursorInputForLook: 1
   canMove: 1
+  mainAnimator: {fileID: 2591627493079020748}
+  shadowAnimator: {fileID: 7442474590510442413}
 --- !u!114 &3446643986100082650
 MonoBehaviour:
   m_ObjectHideFlags: 0

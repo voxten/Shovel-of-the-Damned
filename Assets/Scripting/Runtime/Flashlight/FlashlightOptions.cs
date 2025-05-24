@@ -127,8 +127,9 @@ public class FlashlightOptions : MonoBehaviour
 
     private void ChangeBattery()
     {
-        if (Inventory.InventoryEvents.FindItem(itemBattery) && _batteryLevel <= 5f)
+        if (Inventory.InventoryEvents.FindItem(itemBattery) && _batteryLevel <= 25f)
         {
+            SoundManager.PlaySound3D(Sound.FlashlightBattery, transform, null, 0.4f);
             Inventory.InventoryEvents.RemoveItem(itemBattery);
             _tutorialCompleted = true;
             TutorialManager.TutorialManagerEvents.stopTutorial();

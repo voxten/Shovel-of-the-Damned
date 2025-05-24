@@ -10,7 +10,6 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private Button loadButton;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button quitButton;
-    [SerializeField] private AudioListener audioListener;
     private bool _isOn;
     
     private void OnEnable()
@@ -47,7 +46,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
         FirstPersonController.PlayerEvents.ToggleMoveCamera(true);
         Utilitis.SetCursorState(true);
-        audioListener.enabled = true;
+        AudioListener.pause = false;
         _isOn = false;
     }
 
@@ -57,7 +56,7 @@ public class PauseManager : MonoBehaviour
         FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
         Time.timeScale = 0f;
         Utilitis.SetCursorState(false);
-        audioListener.enabled = false;
+        AudioListener.pause = true;
         _isOn = true;
     }
 

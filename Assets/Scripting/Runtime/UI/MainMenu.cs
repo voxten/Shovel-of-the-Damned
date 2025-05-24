@@ -33,7 +33,12 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private CanvasGroup fadeCanvas;
     [SerializeField] private CanvasGroup gameInFade;
-    
+
+    private void Awake()
+    {
+        AudioListener.pause = false;
+    }
+
     private void OnEnable()
     {
         _playButton.onClick.AddListener(Play);

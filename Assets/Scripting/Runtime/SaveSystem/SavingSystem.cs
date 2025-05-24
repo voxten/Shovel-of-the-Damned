@@ -271,6 +271,7 @@ public class SavingSystem : MonoBehaviour
         {
             FindObjectOfType<MorgueDoorCorrect>().isFinished = true;
         }
+        FindFirstObjectByType<EnemyAI>(FindObjectsInactive.Include).gameObject.SetActive(true);
     }
 
     private List<string> FindAllPickable()

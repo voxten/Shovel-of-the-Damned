@@ -8,6 +8,8 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.CompareTag("Player") && !enemyAI.GetIsInVent())
         {
+            FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include).gameObject.SetActive(false);
+            FindFirstObjectByType<UsingFlashLight>(FindObjectsInactive.Include).enabled = false;
             enemyAI.SetAttackState();
         }
     }
