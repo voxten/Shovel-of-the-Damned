@@ -4404,6 +4404,58 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3903797947610601646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 252519163690258857}
+  - component: {fileID: 3770460672344608717}
+  m_Layer: 0
+  m_Name: FlashlightOptions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &252519163690258857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903797947610601646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6865535033232221731}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3770460672344608717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903797947610601646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e9eb69f9076a840a25bffc01ca29b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showedBateryLevel: {fileID: 709324026695281527}
+  itemBattery: {fileID: 11400000, guid: 9532b382bd95d8746803addac442bc71, type: 2}
+  mainLight: {fileID: 5356385833510219781}
+  lightUV: {fileID: 7743500893901111453}
+  coneLight: {fileID: 1957101207014933157}
+  enemyAI: {fileID: 0}
+  tutorialObject: {fileID: 11400000, guid: f7643b9dc7766a7419b37f438abc84fd, type: 2}
+  usingFlashLight: {fileID: 2897556127942281021}
 --- !u!1 &3908256507671476167
 GameObject:
   m_ObjectHideFlags: 0
@@ -9817,6 +9869,7 @@ Transform:
   - {fileID: 2463077310195422498}
   - {fileID: 4351308517461560288}
   - {fileID: 201563397408952943}
+  - {fileID: 252519163690258857}
   m_Father: {fileID: 783991543774749641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2972141983051399751
@@ -10596,9 +10649,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7030219592342931679, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4943753547013840827}
-    - targetCorrespondingSourceObject: {fileID: -7030219592342931679, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9149894168426563588}
   m_SourcePrefab: {fileID: 100100000, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
 --- !u!4 &201563397408952943 stripped
 Transform:
@@ -10637,26 +10687,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7684625086359004581, guid: 7ce5654980b1a764d959c96613ef2bbe, type: 3}
---- !u!114 &9149894168426563588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957101207014933157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e9eb69f9076a840a25bffc01ca29b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showedBateryLevel: {fileID: 709324026695281527}
-  itemBattery: {fileID: 11400000, guid: 9532b382bd95d8746803addac442bc71, type: 2}
-  mainLight: {fileID: 5356385833510219781}
-  lightUV: {fileID: 7743500893901111453}
-  coneLight: {fileID: 1957101207014933157}
-  enemyAI: {fileID: 0}
-  tutorialObject: {fileID: 11400000, guid: f7643b9dc7766a7419b37f438abc84fd, type: 2}
-  usingFlashLight: {fileID: 2897556127942281021}
 --- !u!1001 &1210928298705657853
 PrefabInstance:
   m_ObjectHideFlags: 0

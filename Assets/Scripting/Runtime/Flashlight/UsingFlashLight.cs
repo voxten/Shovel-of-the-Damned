@@ -23,7 +23,7 @@ public class UsingFlashLight : MonoBehaviour
 
     private void Awake()
     {
-        _flashlightOptions = flashlightObject.GetComponent<FlashlightOptions>();
+        _flashlightOptions = FindFirstObjectByType<FlashlightOptions>();
     }
 
     private void Update()
