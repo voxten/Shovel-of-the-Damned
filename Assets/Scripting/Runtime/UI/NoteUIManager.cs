@@ -19,6 +19,9 @@ public class NoteUIManager : MonoBehaviour
     [SerializeField] private Image pictureImage;
     [SerializeField] private Button closePictureButton;
     
+    [SerializeField] private TutorialObject tutorialObject;
+    private bool _firstTime = true;
+    
     private bool _isOn;
     private int _currentIndex;
 
@@ -58,6 +61,7 @@ public class NoteUIManager : MonoBehaviour
 
     private void OpenNote(NoteItem noteItem)
     {
+        
         if (noteItem.noteContent != null)
         {
             TutorialManager.TutorialManagerEvents.stopTutorial();
@@ -144,6 +148,11 @@ public class NoteUIManager : MonoBehaviour
         nextButton.onClick.RemoveAllListeners();
         picturePanel.SetActive(false);
         notePanel.SetActive(false);
+        if (_firstTime)
+        {
+            TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);
+            _firstTime = false;
+        }
         ToggleUtils(false);
     }
     

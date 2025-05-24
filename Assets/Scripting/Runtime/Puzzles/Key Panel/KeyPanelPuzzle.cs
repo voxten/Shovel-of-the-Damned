@@ -50,11 +50,19 @@ public class KeyPanelPuzzle : PuzzleObject
             {
                 if (PlayerPassCode == _accessCardPairs[i].upgradeCode)
                 {
-                    ApprovedCode("Correct code... Now I need to insert card");
-                    OnCardInsert();
-                    passCodeText.text = "Card...";
-                    //QuitPuzzle();
+                    if (Inventory.InventoryEvents.GetAccessCard())
+                    {
+                        ApprovedCode("Correct code... Now I need to insert card");
+                        OnCardInsert();
+                        passCodeText.text = "Card...";
+                        InteractionSystem.InteractionEvents.ExitPuzzleInteraction();
+                        QuitPuzzle();
+                        return;
+                    }
+                    ApprovedCode("Correct code... But I need card for it");
+                    ClearPasscode();
                     return;
+
                 }
             }
             DeniedCode("Incorrect...");  
