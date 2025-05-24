@@ -58,22 +58,6 @@ public class SoundManager : MonoBehaviour
         _onStopSound3D -= Stop3DAudioShot; // Unregister
     }
 
-    private void AddAudioSource()
-    {
-        Transform sfxTransform = transform.Find("SFX");
-        Transform musicTransform = transform.Find("Music");
-
-        if (sfxTransform != null)
-            mainAudio = sfxTransform.GetComponent<AudioSource>();
-        else
-            Debug.LogWarning("Nie znaleziono obiektu SFX!");
-
-        if (musicTransform != null)
-            musicAudio = musicTransform.GetComponent<AudioSource>();
-        else
-            Debug.LogWarning("Nie znaleziono obiektu Music!");
-    }
-
     public static void PlaySound(Sound type, Vector2? pitchRange = null, Vector2? volumeRange = null) 
     {
         if (_onPlaySound == null) Debug.LogError("There is no SoundManager in the scene");

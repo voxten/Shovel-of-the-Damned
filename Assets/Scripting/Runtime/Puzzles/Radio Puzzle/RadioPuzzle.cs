@@ -21,9 +21,19 @@ public class RadioPuzzle : PuzzleObject
 
     private void Awake()
     {
-        SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, null, noiseVolume);
         _radioLoopCoroutine = StartCoroutine(LoopRadio());
-        
+    }
+
+    private void Start()
+    {
+        if (isAfterLoad)
+        {
+            if (isFinished)
+            {
+                GetComponent<PuzzleInteraction>().puzzleCollider.enabled = false;
+            }
+        }
+        SoundManager.PlaySound3D(Sound.RadioNoiseLoop, transform, null, noiseVolume);
     }
 
     private float GetAudioClipLength(Sound type)
@@ -101,7 +111,7 @@ public class RadioPuzzle : PuzzleObject
             }
         }
         
-        Debug.Log(count + " radio scrolls are finished");
+        //Debug.Log(count + " radio scrolls are finished");
 
         if (count == 2)
         {

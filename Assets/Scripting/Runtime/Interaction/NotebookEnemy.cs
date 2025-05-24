@@ -17,6 +17,7 @@ public class NotebookEnemy : MonoBehaviour
             if (item)
             {
                 enemyAI.gameObject.SetActive(true);
+                TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);
                 _wasActivated = true;
             }
         }

@@ -43,4 +43,5 @@
     MorgueDoorKeyTry,
     MorgueDoorKey,
     MorgueDrawer,
+    FlashlightBattery,
 }

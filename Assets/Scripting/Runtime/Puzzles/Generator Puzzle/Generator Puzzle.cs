@@ -20,9 +20,8 @@ public class GeneratorPuzzle : PuzzleObject
             SetWarningLed();
             switches[0].ChangeLedState();
             switches[2].ChangeLedState();
-            SoundManager.PlaySound3D(Sound.LedOn, batteryLedLights[0].transform);
-            SoundManager.PlaySound3D(Sound.LedOn, fuelLedLights[0].transform);
-            SoundManager.PlaySound3D(Sound.GeneratorPuzzleStart, transform);
+            SoundManager.PlaySound3D(finishAudioClip, transform, null, 0.5f);
+            GetComponent<PuzzleInteraction>().puzzleCollider.enabled = false;
         }
     }
 

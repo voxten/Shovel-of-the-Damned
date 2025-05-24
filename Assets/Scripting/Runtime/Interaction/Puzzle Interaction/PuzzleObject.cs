@@ -5,7 +5,8 @@ public abstract class PuzzleObject : MonoBehaviour
 {
     [Header("Finishing Puzzle Parameters")]
     [SerializeField] private float finishingTime;
-    [SerializeField] private Sound finishAudioClip;
+    [SerializeField] protected Sound finishAudioClip;
+    [SerializeField] protected float finishAudioVolume = 1f;
     [SerializeField] private bool customFinish;
     [SerializeField] private GameObject buttonPanel;
     public bool isFinished;
@@ -41,6 +42,6 @@ public abstract class PuzzleObject : MonoBehaviour
             buttonPanel.SetActive(false);
             GetComponent<PuzzleInteraction>().puzzleCollider.enabled = false;
         }
-        SoundManager.PlaySound3D(finishAudioClip,transform);
+        SoundManager.PlaySound3D(finishAudioClip,transform, null, finishAudioVolume);
     }
 }
