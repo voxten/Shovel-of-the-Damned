@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using StarterAssets;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -30,6 +32,8 @@ public class EnemyAI : MonoBehaviour
     private bool _isPlayerVisible;
     private bool _isEnemyFear;
     private bool _isPlayerKilled;
+
+    private ZoneTrigger _currentPlayerZone;
     
     private SkinnedMeshRenderer _enemySkinnedMeshRenderer;
     private Animator _enemyAnimator;
@@ -44,6 +48,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float cubeMoveSpeed = 5f;
     [SerializeField] private float cubeRotationSpeed = 5f;
     [SerializeField] private float pointReachedThreshold = 0.1f;
+    [SerializeField] private ZoneTrigger basicZoneTrigger;
 
     private GameObject _mainCube;
     private int _currentPointIndex;
@@ -75,9 +80,9 @@ public class EnemyAI : MonoBehaviour
         _lastSpeed = _enemyAgent.speed;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        SetDestination(ventPoints[0].gameObject);
+        SetDestination(player.gameObject);
     }
     
     private void Update()
@@ -97,10 +102,13 @@ public class EnemyAI : MonoBehaviour
         Vent randomVent = null;
         int attempts = 0;
         const int maxAttempts = 10;
+
+        if (_currentPlayerZone == null)
+            _currentPlayerZone = basicZoneTrigger;
         
         while (attempts < maxAttempts)
         {
-            randomVent = ventPoints[Random.Range(0, ventPoints.Length)];
+            randomVent = _currentPlayerZone.ventPoints[Random.Range(0, _currentPlayerZone.ventPoints.Count)];
             if (randomVent.Points.Count > 0 && randomVent.Points[0] != null)
             {
                 break;
@@ -141,6 +149,11 @@ public class EnemyAI : MonoBehaviour
         _cubeMovementCoroutine = null;
         _isEnemyInVents = false;
         _currentState = AIState.MovingOutVent;
+    }
+
+    public void SetCurrentZone(ZoneTrigger zoneTrigger)
+    {
+        _currentPlayerZone = zoneTrigger;
     }
     
     public void StopAllCouroutines()
@@ -459,7 +472,7 @@ public class EnemyAI : MonoBehaviour
         _isEnemyInVents = true;
         _enemySkinnedMeshRenderer.enabled = false;
         _collider.enabled = false;
-        //TeleportEnemy(_currentVentPoint);
+
         SpawnMainCube();
         _currentCoroutine = null;
     }
