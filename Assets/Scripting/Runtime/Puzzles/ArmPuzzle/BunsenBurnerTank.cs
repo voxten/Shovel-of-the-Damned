@@ -52,7 +52,7 @@ public class BunsenBurnerTank : InteractableObject
     private void StopFire()
     {
         isOn = false;
-        SoundManager.StopSound(Sound.BunsenLoop);
+        SoundManager.StopSound3D(Sound.BunsenLoop, burner.transform);
         flameParticles.SetActive(false);
         lightParticles.SetActive(false);
     }

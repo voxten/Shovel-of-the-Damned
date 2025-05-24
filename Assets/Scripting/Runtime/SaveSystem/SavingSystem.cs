@@ -105,7 +105,7 @@ public class SavingSystem : MonoBehaviour
             
         }
 
-        //saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
+        //TODO: saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
 
         saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
         saveData.generator = FindObjectOfType<GeneratorPuzzle>().isFinished;
@@ -136,8 +136,8 @@ public class SavingSystem : MonoBehaviour
         if(File.Exists(Application.persistentDataPath + "Save.txt"))
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.LoadScene("MainScene");
-
+            SceneLoader.SceneEvents.AnimateLoadScene("MainScene");
+            Utilitis.SetCursorState(true);
         }
         else
         {
