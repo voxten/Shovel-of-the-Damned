@@ -10,6 +10,8 @@ public class MorgueDoorCorrect : InteractableObject
     [SerializeField] private float drawerAnimationDuration = 1f;
     [SerializeField] private Ease doorEaseType = Ease.OutBack;
     [SerializeField] private Ease drawerEaseType = Ease.OutSine;
+    public bool isFinished;
+
     
     private GameObject _morgueDoorObject;
     private Collider _morgueCollider;
@@ -26,6 +28,23 @@ public class MorgueDoorCorrect : InteractableObject
         _morgueCollider = GetComponent<Collider>();
     }
 
+    private void Start()
+    {
+        if (isFinished)
+        {
+            _morgueDoorObject.transform.DOLocalRotate(
+                new Vector3(0, _morgueDoorYMax, 0),
+                0,
+                RotateMode.Fast
+            ).SetEase(doorEaseType);
+
+            morgueTakhtObject.transform.DOLocalMoveX(
+                _takhtXMax,
+                0
+            ).SetEase(drawerEaseType);
+        }
+    }
+
     public override bool Interact()
     {
         if (Inventory.InventoryEvents.FindItem(morgueKey))
@@ -34,6 +53,8 @@ public class MorgueDoorCorrect : InteractableObject
             OpenDoor();
             SoundManager.PlaySound3D(Sound.MorgueDoorKey, transform);
             Narration.DisplayText?.Invoke("It worked...");
+            isFinished = true;
+            SavingSystem.SavingSystemEvents.Save();
         }
         else
         {

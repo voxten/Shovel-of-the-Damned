@@ -125,6 +125,8 @@ public class SavingSystem : MonoBehaviour
             saveData.armRotationW = armTransform.rotation.w;
         }
 
+        saveData.morgue = FindObjectOfType<MorgueDoorCorrect>().isFinished;
+
         //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
     }
@@ -165,8 +167,9 @@ public class SavingSystem : MonoBehaviour
         cameraTransform.rotation = new Quaternion(saveData.cameraRotationX, saveData.cameraRotationY, saveData.cameraRotationZ, saveData.cameraRotationW);
 
         DiasablePckable(saveData.pickabelsIDs);
+        DiasablePckable(saveData.pickabelsIDs);
 
-        foreach(var item in saveData.inventory)
+        foreach (var item in saveData.inventory)
         {
             Item item1 = FindItemById(item.Key);
             if (item1 != null)
@@ -209,7 +212,10 @@ public class SavingSystem : MonoBehaviour
             arm.GetComponentInChildren<IceMelting>().gameObject.SetActive(false);
             //arm.GetComponentInChildren<PickItem>().gameObject.SetActive(false);
         }
-
+        if (saveData.morgue)
+        {
+            FindObjectOfType<MorgueDoorCorrect>().isFinished = true;
+        }
     }
 
     private List<string> FindAllPickable()
@@ -244,10 +250,12 @@ public class SavingSystem : MonoBehaviour
                 if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
                 {
                     int index = pickableIDs.IndexOf(pickItem.ID);
+
                     if(index != -1)
                     {
                         obj.SetActive(false);
                         pickableIDs.RemoveAt(index);
+
                     }
                 }
             }
