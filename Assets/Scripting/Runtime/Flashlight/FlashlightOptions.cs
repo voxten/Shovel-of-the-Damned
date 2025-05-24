@@ -102,7 +102,7 @@ public class FlashlightOptions : MonoBehaviour
             _batteryLevel -= 0.05f;
         }
         
-        int toShow = System.Convert.ToInt32(System.Math.Floor(_batteryLevel));
+        int toShow = Convert.ToInt32(Math.Floor(_batteryLevel));
         showedBateryLevel.text = toShow + "%";
         
         if (_batteryLevel < 0.0)
@@ -118,7 +118,7 @@ public class FlashlightOptions : MonoBehaviour
 
         if (_tutorialCompleted) return;
 
-        if (_batteryLevel < 5.00 && !_isOnce)
+        if (_batteryLevel < 25.00 && !_isOnce)
         {
             _isOnce = true;
             TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);

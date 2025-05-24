@@ -15,6 +15,9 @@ public class RadioPuzzle : PuzzleObject
     private Coroutine _codePlayCoroutine;
     private Sound _currentSecondarySound = Sound.None;
     private bool _isCodePlaying;
+    private Outline _currentOutline;
+    
+    [SerializeField] private TutorialObject tutorialObject;
 
     private void Awake()
     {
@@ -53,6 +56,38 @@ public class RadioPuzzle : PuzzleObject
     private bool GetIsFinished()
     {
         return isFinished;
+    }
+
+    public override void OpenPuzzle()
+    {
+        base.OpenPuzzle();
+        TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);
+        foreach (var scroll in radioScrolls)
+        {
+            _currentOutline = scroll.gameObject.GetComponent<Outline>();
+            if (_currentOutline == null)
+            {
+                _currentOutline = scroll.gameObject.AddComponent<Outline>();
+            }
+            _currentOutline.OutlineMode = Outline.Mode.OutlineVisible;
+            _currentOutline.OutlineColor = Color.green;
+            _currentOutline.OutlineWidth = 2f;
+            _currentOutline.enabled = true;
+        }
+    }
+
+    public override void QuitPuzzle()
+    {
+        base.QuitPuzzle();
+        TutorialManager.TutorialManagerEvents.stopTutorial();
+        foreach (var scroll in radioScrolls)
+        {
+            _currentOutline = scroll.gameObject.GetComponent<Outline>();
+            if (_currentOutline != null)
+            {
+                 Destroy(_currentOutline);
+            }
+        }
     }
 
     private void CheckNeedles()
