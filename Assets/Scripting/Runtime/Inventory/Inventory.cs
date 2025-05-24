@@ -39,14 +39,14 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        items.Clear();
         if (!shouldGetStartupItems) return;
-        
         foreach (var item in startupItems)
         {
             items.Add(item);
         }
     }
-    
+
     private void AnimateIcon()
     {
         if (iconImage == null) return;
