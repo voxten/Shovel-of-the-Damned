@@ -38,6 +38,7 @@ public class SaveData
     public bool radio;
     public bool generator;
     public bool arm;
+    public bool morgue;
 
     //Arm Puzle
     public float armPositionX;
