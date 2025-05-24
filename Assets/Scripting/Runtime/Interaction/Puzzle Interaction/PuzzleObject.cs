@@ -14,6 +14,7 @@ public abstract class PuzzleObject : MonoBehaviour
     // function which indicates what should be done after entering a puzzle
     public virtual void OpenPuzzle()
     {
+        FindFirstObjectByType<FlashlightOptions>().enabled = false;
         buttonPanel.SetActive(true);
     }
     
@@ -30,6 +31,7 @@ public abstract class PuzzleObject : MonoBehaviour
     public virtual void QuitPuzzle()
     {
         buttonPanel.SetActive(false);
+        FindFirstObjectByType<FlashlightOptions>().enabled = true;
     }
     
     private IEnumerator WaitForEndOfPuzzle(float time)
