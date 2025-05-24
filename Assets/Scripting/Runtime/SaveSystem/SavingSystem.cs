@@ -105,7 +105,7 @@ public class SavingSystem : MonoBehaviour
             
         }
 
-        saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
+        //saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
 
         saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
         saveData.generator = FindObjectOfType<GeneratorPuzzle>().isFinished;
@@ -151,8 +151,8 @@ public class SavingSystem : MonoBehaviour
         GameObject cameraObj = GameObject.FindWithTag("MainCamera");
         Transform playerTransform = playerObj.transform;
         Transform cameraTransform = cameraObj.transform;
-        NoteItem note = new NoteItem();
-        NoteUIManager.NoteActions.OpenNote(note);
+        //NoteItem note = new NoteItem();
+        //NoteUIManager.NoteActions.OpenNote(note);
         SceneManager.sceneLoaded -= OnSceneLoaded;
         BinaryFormatter bf = new BinaryFormatter();
         FileStream fileStream = File.Open(Application.persistentDataPath + "Save.txt", FileMode.Open);
@@ -190,7 +190,7 @@ public class SavingSystem : MonoBehaviour
             
         }
 
-        FlashlightOptions.FlashlightOptionsEvents.SetBatteryLevel(saveData.batteryLevel);
+        //FlashlightOptions.FlashlightOptionsEvents.SetBatteryLevel(saveData.batteryLevel);
 
         if (saveData.radio)
         {

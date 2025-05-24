@@ -86,6 +86,7 @@ public class KeyPanelInsertCard : InteractableObject
                     keyPanelPuzzle.ClearPasscode();
                     _isInserting = false;
                     _collider.enabled = false;
+                    SavingSystem.SavingSystemEvents.Save();
                 });
                 return true;
             }
