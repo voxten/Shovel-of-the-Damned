@@ -6380,7 +6380,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 151241378, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -9394,8 +9394,9 @@ MonoBehaviour:
   playerTransform: {fileID: 2724454254489914815}
   cameraTransform: {fileID: 6865535033232221731}
   loadingCircle: {fileID: 8286307227575301453}
-  rotationDuration: 1
-  fadeDuration: 0.3
+  rotationDuration: 5
+  fadeDuration: 5
+  fillAnimationDuration: 0.8
 --- !u!1 &8520998098250026270
 GameObject:
   m_ObjectHideFlags: 0
