@@ -7727,7 +7727,7 @@ GameObject:
   - component: {fileID: 8123000924948136612}
   - component: {fileID: 4411930023435660266}
   - component: {fileID: 4129408220316700234}
-  - component: {fileID: 3984614929252975378}
+  - component: {fileID: 138361712286451131}
   m_Layer: 5
   m_Name: Back To Menu Button
   m_TagString: Untagged
@@ -7807,7 +7807,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3984614929252975378
+--- !u!114 &138361712286451131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7816,11 +7816,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6765570833389614784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced4c2ad35de3ef4e9496dcb4bba2b69, type: 3}
+  m_Script: {fileID: 11500000, guid: 40c6da3b90bc8cc40849ab1224a9e532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelToClose: {fileID: 0}
-  panelToOpen: {fileID: 0}
 --- !u!1 &6771756992256797963
 GameObject:
   m_ObjectHideFlags: 0
@@ -9179,6 +9177,7 @@ GameObject:
   - component: {fileID: 9189528149447985238}
   - component: {fileID: 7719873512610377743}
   - component: {fileID: 2897556127942281021}
+  - component: {fileID: 3705929041225723686}
   m_Layer: 0
   m_Name: First Person Controller
   m_TagString: Untagged
@@ -9304,6 +9303,20 @@ MonoBehaviour:
   textPrg: {fileID: 712994858875200598}
   playerObject: {fileID: 1707123168352649269}
   canActivate: 1
+--- !u!114 &3705929041225723686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411381123255043943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9766e872bbb48478771f933b95717f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 2724454254489914815}
+  cameraTransform: {fileID: 6865535033232221731}
 --- !u!1 &8520998098250026270
 GameObject:
   m_ObjectHideFlags: 0
@@ -9315,7 +9328,7 @@ GameObject:
   - component: {fileID: 4939159873813553669}
   - component: {fileID: 8386393242064508823}
   - component: {fileID: 7256572093675800134}
-  - component: {fileID: 3254827765924320198}
+  - component: {fileID: 8168140451190602682}
   m_Layer: 5
   m_Name: Load Button
   m_TagString: Untagged
@@ -9395,7 +9408,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3254827765924320198
+--- !u!114 &8168140451190602682
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9404,10 +9417,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8520998098250026270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b6c49f869ee762439add180666775be, type: 3}
+  m_Script: {fileID: 11500000, guid: 8638c55e92790684081391bd70732234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuMusic: {fileID: 0}
 --- !u!1 &8578401347787676093
 GameObject:
   m_ObjectHideFlags: 0

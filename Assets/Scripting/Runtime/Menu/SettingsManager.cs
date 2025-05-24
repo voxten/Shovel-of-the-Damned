@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using System.Linq;
+using System.IO;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class SettingsManager : MonoBehaviour
     [Header("Apply Settings")]
     [SerializeField] private Button applyResolutionButton;
     
+    [Header("Continue Button")]
+    [SerializeField] private Button continueButton;
+    
     private enum ScreenMode { Fullscreen, Windowed, Borderless }
     private ScreenMode _currentMode;
 
@@ -51,6 +55,12 @@ public class SettingsManager : MonoBehaviour
         AssignUIEvents();
         LoadResolutionAndRefreshRate();
         LoadQualityLevel();
+        CheckContinueButton();
+    }
+
+    private void CheckContinueButton()
+    {
+        continueButton.gameObject.SetActive(File.Exists(Application.persistentDataPath + "Save.txt"));
     }
 
     private void AssignUIEvents()

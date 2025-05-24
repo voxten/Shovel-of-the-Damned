@@ -134,6 +134,11 @@ namespace StarterAssets
 			PlayerEvents.CheckCrouch -= CheckCrouch;
 		}
 
+		private void Awake()
+		{
+			Utilitis.SetCursorState(true);
+		}
+
 		private void Start()
 		{
 			_controller = GetComponent<CharacterController>();
