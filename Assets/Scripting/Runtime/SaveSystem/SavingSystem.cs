@@ -159,7 +159,7 @@ public class SavingSystem : MonoBehaviour
             }
         }
 
-        //TODO: saveData.batteryLevel = FlashlightOptions.FlashlightOptionsEvents.GetBatteryLevel();
+        saveData.batteryLevel = FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include).batteryLevel;
 
         saveData.radio = FindObjectOfType<RadioPuzzle>().isFinished;
         saveData.generator = FindObjectOfType<GeneratorPuzzle>().isFinished;
@@ -245,7 +245,7 @@ public class SavingSystem : MonoBehaviour
         }
         Inventory.InventoryEvents.RemoveStartupItems();
 
-        //FlashlightOptions.FlashlightOptionsEvents.SetBatteryLevel(saveData.batteryLevel);
+        FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include).batteryLevel = saveData.batteryLevel;
 
         if (saveData.radio)
         {
