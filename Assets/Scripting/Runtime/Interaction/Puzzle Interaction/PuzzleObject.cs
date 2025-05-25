@@ -11,6 +11,8 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private GameObject buttonPanel;
     public bool isFinished;
     public bool isAfterLoad;
+    
+    private Coroutine _currentCoroutine;
 
     // function which indicates what should be done after entering a puzzle
     public virtual void OpenPuzzle()
@@ -31,14 +33,15 @@ public abstract class PuzzleObject : MonoBehaviour
     // function which indicates what should be done after we quit puzzle without finishing
     public virtual void QuitPuzzle()
     {
-        
-        StartCoroutine(WaitAfterExit());
+        if (_currentCoroutine != null)
+            StopCoroutine(_currentCoroutine);
+        _currentCoroutine = StartCoroutine(WaitAfterExit());
     }
 
     private IEnumerator WaitAfterExit()
     {
         buttonPanel.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1);
         FindFirstObjectByType<FlashlightOptions>().inPuzzle = false;
     }
     
