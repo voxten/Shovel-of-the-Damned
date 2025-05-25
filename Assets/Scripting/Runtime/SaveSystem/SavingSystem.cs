@@ -202,8 +202,8 @@ public class SavingSystem : MonoBehaviour
                 break;
             default: break;
         }
-        
 
+        saveData.flashlightTutorial = FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include).tutorialCompleted;
         //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
     }
@@ -298,6 +298,11 @@ public class SavingSystem : MonoBehaviour
 
         AccessCardItem accessCard = (AccessCardItem)Inventory.InventoryEvents.GetAccessCard();
         accessCard.SetNewAccessCard(accessCardData.accessCards[saveData.cardLevel]);
+
+        FlashlightOptions flashlightOptions = FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include);
+        flashlightOptions.tutorialCompleted = saveData.flashlightTutorial;
+        flashlightOptions.isOnce = saveData.flashlightTutorial;
+
     }
 
     private List<string> FindAllPickable()

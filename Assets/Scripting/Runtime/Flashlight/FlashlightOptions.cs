@@ -24,8 +24,8 @@ public class FlashlightOptions : MonoBehaviour
     private bool _isEnemyInArea;
     
     [SerializeField] private TutorialObject tutorialObject;
-    private bool _tutorialCompleted;
-    private bool _isOnce;
+    public bool tutorialCompleted;
+    public bool isOnce;
     
     [SerializeField] private UsingFlashLight usingFlashLight;
 
@@ -40,6 +40,16 @@ public class FlashlightOptions : MonoBehaviour
         public static Action<float> SetBatteryLevel;
     }
 
+    private void OnEnable()
+    {
+        showedBateryLevel.gameObject.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        mainLight.enabled = false;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1) && batteryLevel > 25.00 && lightUV.intensity == 0.0f)
@@ -51,9 +61,8 @@ public class FlashlightOptions : MonoBehaviour
         {
             ChangeBattery();
         }
-        
-        if (mainLight.enabled)
-            LowerBatteryState();
+
+        LowerBatteryState();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -85,7 +94,7 @@ public class FlashlightOptions : MonoBehaviour
         int toShow = Convert.ToInt32(Math.Floor(batteryLevel));
         showedBateryLevel.text = toShow + "%";
         
-        if (batteryLevel < 0.0)
+        if (batteryLevel <= 0.0)
         {
             mainLight.enabled = false;
             showedBateryLevel.text = "0%";
@@ -96,11 +105,11 @@ public class FlashlightOptions : MonoBehaviour
             mainLight.enabled = true;
         }
 
-        if (_tutorialCompleted) return;
+        if (tutorialCompleted) return;
 
-        if (batteryLevel < 25.00 && !_isOnce)
+        if (batteryLevel < 25.00 && !isOnce)
         {
-            _isOnce = true;
+            isOnce = true;
             TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);
         }
     }
@@ -111,7 +120,7 @@ public class FlashlightOptions : MonoBehaviour
         {
             SoundManager.PlaySound3D(Sound.FlashlightBattery, transform, null, 0.4f);
             Inventory.InventoryEvents.RemoveItem(itemBattery);
-            _tutorialCompleted = true;
+            tutorialCompleted = true;
             TutorialManager.TutorialManagerEvents.stopTutorial();
             batteryLevel = 100.00f; 
             mainLight.enabled = true;
