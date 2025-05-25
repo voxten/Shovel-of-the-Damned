@@ -24,12 +24,14 @@ public class PlayerDeathUIPlayerDeathUIManager : MonoBehaviour
     {
         DeathEvents.KillPlayer += KillPlayer;
         DeathEvents.GetIsPlayerDead += GetIsPlayerDead;
+        DeathEvents.SetIsPlayerDead += SetIsPlayerDead;
     }
 
     private void OnDisable()
     {
         DeathEvents.KillPlayer -= KillPlayer;
         DeathEvents.GetIsPlayerDead -= GetIsPlayerDead;
+        DeathEvents.SetIsPlayerDead -= SetIsPlayerDead;
         
         // Stop any running fade coroutine when disabled
         if (_fadeCoroutine != null)
@@ -74,6 +76,11 @@ public class PlayerDeathUIPlayerDeathUIManager : MonoBehaviour
     {
         return _playerIsDead;
     }
+
+    private void SetIsPlayerDead()
+    {
+        _playerIsDead = true;
+    }
     
     private void SetButtons()
     {
@@ -97,7 +104,8 @@ public class PlayerDeathUIPlayerDeathUIManager : MonoBehaviour
 
     private void LoadLastSave()
     {
-        // TODO: Add load possibility
+        Time.timeScale = 1f;
+        SavingSystem.SavingSystemEvents.Load();
     }
 
     private void QuitGame()
@@ -109,5 +117,6 @@ public class PlayerDeathUIPlayerDeathUIManager : MonoBehaviour
     {
         public static Action KillPlayer;
         public static Func<bool> GetIsPlayerDead;
+        public static Action SetIsPlayerDead;
     }
 }

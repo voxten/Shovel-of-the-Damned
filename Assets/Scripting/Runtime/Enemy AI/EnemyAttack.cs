@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private EnemyAI enemyAI;
+    [SerializeField] private FinalTrigger finalTrigger;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -10,7 +11,7 @@ public class EnemyAttack : MonoBehaviour
         {
             FindFirstObjectByType<FlashlightOptions>(FindObjectsInactive.Include).gameObject.SetActive(false);
             FindFirstObjectByType<UsingFlashLight>(FindObjectsInactive.Include).enabled = false;
-            enemyAI.SetAttackState();
+            enemyAI.SetAttackState(finalTrigger.isTriggered ? "final" : "attack");
         }
     }
 }

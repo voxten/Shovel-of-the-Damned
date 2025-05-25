@@ -67,7 +67,7 @@ public class EnemyAI : MonoBehaviour
     private float _lastSpeed;
     private Coroutine _stepsCoroutine;
     
-    private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear, Attack }
+    private enum AIState { MovingToVent, MovingOutVent, Searching, Chasing, Fear, Attack, Idle }
     private AIState _currentState = AIState.MovingToVent;
 
     private void Awake()
@@ -139,11 +139,11 @@ public class EnemyAI : MonoBehaviour
         _cubeMovementCoroutine = StartCoroutine(MoveCubeThroughPoints(randomVent));
     }
 
-    public void SetAttackState()
+    public void SetAttackState(string state)
     {
         _currentCoroutine = null;
         _currentState = AIState.Attack;
-        _currentCoroutine = StartCoroutine(AttackRoutine());
+        _currentCoroutine = StartCoroutine(AttackRoutine(state));
     }
     
     public void SetVentOutState(Vent vent)
@@ -170,6 +170,40 @@ public class EnemyAI : MonoBehaviour
     public bool GetIsInVent()
     {
         return _isEnemyInVents;
+    }
+    
+    public void SetIdleState(Vent transformPoint)
+    {
+        // If in vents, teleport out immediately without sounds
+        if (_isEnemyInVents)
+        {
+            _currentVentPoint = transformPoint;
+            StopCoroutine(_cubeMovementCoroutine);
+            _cubeMovementCoroutine = null;
+            _isEnemyInVents = false;
+            TeleportEnemy(transformPoint, true); // Silent teleport
+            _enemySkinnedMeshRenderer.enabled = true;
+            _collider.enabled = true;
+        }
+
+        // Stop all current actions
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+            _currentCoroutine = null;
+        }
+
+        // Set to idle state
+        _currentState = AIState.Idle;
+        _enemyAgent.isStopped = true;
+        _enemyAgent.speed = 0f;
+
+        // Stop any movement sounds
+        if (_stepsCoroutine != null)
+        {
+            StopCoroutine(_stepsCoroutine);
+            _stepsCoroutine = null;
+        }
     }
 
     private IEnumerator MoveCubeThroughPoints(Vent vent)
@@ -303,6 +337,10 @@ public class EnemyAI : MonoBehaviour
             case AIState.Fear:
                 _currentCoroutine = StartCoroutine(FearRoutine());
                 break;
+            
+            case AIState.Idle:
+                // Do nothing - enemy just stands there
+                break;
         }
         
         CheckPlayerVisibility();
@@ -381,13 +419,17 @@ public class EnemyAI : MonoBehaviour
         _isPlayerVisible = false;
     }
 
-    private void TeleportEnemy(Vent vent)
+    private void TeleportEnemy(Vent vent, bool silent = false)
     {
         transform.position = vent.transform.position;
-        _enemyAgent.speed = runSpeed; // Set to run speed when coming out of vent
         _enemyAnimator.SetTrigger("ClimbOut");
-        _currentState = AIState.MovingOutVent;
-        SetDestination(GetRunAwayDestination());
+        if (!silent)
+        {
+            _enemyAgent.speed = runSpeed; // Set to run speed when coming out of vent
+            _enemyAnimator.SetTrigger("ClimbOut");
+            _currentState = AIState.MovingOutVent;
+            SetDestination(GetRunAwayDestination());
+        }
     }
 
     private Vector3 GetRunAwayDestination()
@@ -527,7 +569,7 @@ public class EnemyAI : MonoBehaviour
         _currentCoroutine = null;
     }
     
-    private IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine(string state)
     {
         _enemyAgent.isStopped = true;
         _enemyAgent.speed = 0f;
@@ -543,9 +585,16 @@ public class EnemyAI : MonoBehaviour
         CameraSwitch.CameraEvents.SwitchCamera(lastAttackCamera);
         
         yield return new WaitForSeconds(1f);
-
-        PlayerDeathUIPlayerDeathUIManager.DeathEvents.KillPlayer();
         
+        switch (state)
+        {
+            case "final":
+                FinalTrigger.FinalEvents.EndGame();
+                break;
+            case "attack":
+                PlayerDeathUIPlayerDeathUIManager.DeathEvents.KillPlayer();
+                break;
+        }
         _currentCoroutine = null;
     }
     

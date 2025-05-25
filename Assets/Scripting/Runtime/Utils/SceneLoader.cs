@@ -52,7 +52,7 @@ public class SceneLoader : MonoBehaviour
                     {
                         // Fade out (optional - if you want to fade out after the new scene is loaded)
                         _canvasGroup.DOFade(0f, fadeDuration)
-                            .OnComplete(() => { loadingScreen.SetActive(false); });
+                            .OnComplete(() => { loadingScreen.SetActive(false); Utilitis.SetCursorState(false); });
                     };
             });
     }

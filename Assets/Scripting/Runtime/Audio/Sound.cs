@@ -44,4 +44,5 @@
     MorgueDoorKey,
     MorgueDrawer,
     FlashlightBattery,
+    IndustrialLightOff,
 }
