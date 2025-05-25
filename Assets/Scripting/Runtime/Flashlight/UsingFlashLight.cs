@@ -10,11 +10,11 @@ public class UsingFlashLight : MonoBehaviour
     [SerializeField] private Item itemFlashlight;
     [SerializeField] private TwoBoneIKConstraint handIK;
     [SerializeField] private TwoBoneIKConstraint ShadowHandIK;
-    [SerializeField] private Light mainLight;
     [SerializeField] private Light lightUV;
     [SerializeField] private GameObject textPrg;
     [SerializeField] private GameObject playerObject;
-    
+    public bool mainLight;
+
     public bool canActivate = true;
 
     private const float weightSpeed = 1.5f;
@@ -24,6 +24,7 @@ public class UsingFlashLight : MonoBehaviour
     private void Awake()
     {
         _flashlightOptions = FindFirstObjectByType<FlashlightOptions>();
+        _flashlightOptions.enabled = false;
     }
 
     private void Update()
@@ -58,7 +59,7 @@ public class UsingFlashLight : MonoBehaviour
 
     private void ToggleFlashlight()
     {
-        if (!mainLight.enabled)
+        if (!mainLight)
         {
             ToggleLight(true);
             SoundManager.PlaySound3D(Sound.FlashlightOn, playerObject.transform, null, 0.4f);
@@ -72,8 +73,8 @@ public class UsingFlashLight : MonoBehaviour
 
     private void ToggleLight(bool state)
     {
+        mainLight = state;
         _flashlightOptions.enabled = state;
-        mainLight.enabled = state;
         textPrg.SetActive(state);
         _active = state;
     }

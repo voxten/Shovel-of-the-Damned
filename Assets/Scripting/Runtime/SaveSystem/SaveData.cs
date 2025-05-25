@@ -33,6 +33,8 @@ public class SaveData
 
     //Battery level
     public float batteryLevel;
+    //Flashlight tutorial
+    public bool flashlightTutorial;
 
     //Puzzles
     public bool radio;
