@@ -19,7 +19,7 @@ public class FlashlightOptions : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] private EnemyAI enemyAI;
 
-    private float _batteryLevel;
+    public float batteryLevel;
     private float _lastLowerTime;
     private bool _isEnemyInArea;
     
@@ -39,30 +39,10 @@ public class FlashlightOptions : MonoBehaviour
         public static Func<float> GetBatteryLevel;
         public static Action<float> SetBatteryLevel;
     }
-    private void OnEnable()
-    {
-        FlashlightOptionsEvents.GetBatteryLevel += GetBatteryLevel;
-        FlashlightOptionsEvents.SetBatteryLevel += SetBatteryLevel;
-    }
-
-    private void OnDisable()
-    {
-        FlashlightOptionsEvents.GetBatteryLevel -= GetBatteryLevel;
-        FlashlightOptionsEvents.SetBatteryLevel -= SetBatteryLevel;
-    }
-
-    private float GetBatteryLevel()
-    {
-        return _batteryLevel;
-    }
-    private void SetBatteryLevel(float batteryLevel)
-    {
-        _batteryLevel = batteryLevel;
-    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && _batteryLevel > 25.00 && lightUV.intensity == 0.0f)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && batteryLevel > 25.00 && lightUV.intensity == 0.0f)
         {
             ActiveUV();
         }
@@ -99,13 +79,13 @@ public class FlashlightOptions : MonoBehaviour
         if (Time.time - _lastLowerTime > 0.1f)
         {
             _lastLowerTime = Time.time;
-            _batteryLevel -= 0.05f;
+            batteryLevel -= 0.05f;
         }
         
-        int toShow = Convert.ToInt32(Math.Floor(_batteryLevel));
+        int toShow = Convert.ToInt32(Math.Floor(batteryLevel));
         showedBateryLevel.text = toShow + "%";
         
-        if (_batteryLevel < 0.0)
+        if (batteryLevel < 0.0)
         {
             mainLight.enabled = false;
             showedBateryLevel.text = "0%";
@@ -118,7 +98,7 @@ public class FlashlightOptions : MonoBehaviour
 
         if (_tutorialCompleted) return;
 
-        if (_batteryLevel < 25.00 && !_isOnce)
+        if (batteryLevel < 25.00 && !_isOnce)
         {
             _isOnce = true;
             TutorialManager.TutorialManagerEvents.startTutorial(tutorialObject);
@@ -127,20 +107,20 @@ public class FlashlightOptions : MonoBehaviour
 
     private void ChangeBattery()
     {
-        if (Inventory.InventoryEvents.FindItem(itemBattery) && _batteryLevel <= 25f)
+        if (Inventory.InventoryEvents.FindItem(itemBattery) && batteryLevel <= 25f)
         {
             SoundManager.PlaySound3D(Sound.FlashlightBattery, transform, null, 0.4f);
             Inventory.InventoryEvents.RemoveItem(itemBattery);
             _tutorialCompleted = true;
             TutorialManager.TutorialManagerEvents.stopTutorial();
-            _batteryLevel = 100.00f; 
+            batteryLevel = 100.00f; 
             mainLight.enabled = true;
         }
     }
 
     private void ActiveUV()
     {
-        _batteryLevel -= 25.0f;
+        batteryLevel -= 25.0f;
         
         if(_isEnemyInArea)
             FearEnemy();
