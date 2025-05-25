@@ -17,10 +17,14 @@ public class KeyPanelInsertCard : InteractableObject
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float moveDuration = 1f;
 
+    [SerializeField] private EnemyAI enemyAI;
+
     private float _insertStartY = 0.2f;
     private float _insertEndY = -0.05f;
 
     private bool _isInserting;
+
+    private bool _firstTime = true;
 
     private void Awake()
     {
@@ -86,6 +90,11 @@ public class KeyPanelInsertCard : InteractableObject
                     keyPanelPuzzle.ClearPasscode();
                     _isInserting = false;
                     _collider.enabled = false;
+                    if (_firstTime)
+                    {
+                        enemyAI.gameObject.SetActive(true);
+                        _firstTime = false;
+                    }
                     SavingSystem.SavingSystemEvents.Save();
                 });
                 return true;
