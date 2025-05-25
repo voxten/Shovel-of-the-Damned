@@ -19,6 +19,8 @@ public class FlashlightOptions : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] private EnemyAI enemyAI;
 
+    public bool inPuzzle;
+
     public float batteryLevel;
     private float _lastLowerTime;
     private bool _isEnemyInArea;
@@ -52,7 +54,7 @@ public class FlashlightOptions : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && batteryLevel > 25.00 && lightUV.intensity == 0.0f)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && batteryLevel > 25.00 && lightUV.intensity == 0.0f && !inPuzzle)
         {
             ActiveUV();
         }
