@@ -20,7 +20,7 @@ public class InventoryUIManager : MonoBehaviour
     private void Update()
     {
         if (PlayerDeathUIPlayerDeathUIManager.DeathEvents.GetIsPlayerDead()) return;
-        if (Input.GetKeyDown(KeyCode.Tab) && !NoteUIManager.NoteActions.GetIsOn() && !PauseManager.PauseEvents.GetIsOn())
+        if (Input.GetKeyDown(KeyCode.Tab) && !NoteUIManager.NoteActions.GetIsOn() && !PauseManager.PauseEvents.GetIsOn() && !InteractionSystem.InteractionEvents.CheckPuzzleInteraction() && Inventory.InventoryEvents.GetAllItems().Count > 0)
         {
             inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);
             _isOn = inventoryUI.gameObject.activeSelf;

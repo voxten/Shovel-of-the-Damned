@@ -69,7 +69,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: bff1d69fe2d5cac45b2c52c20d079134, type: 3}
     type: 12
   - clip:
-    - {fileID: 8300000, guid: bbf9b668fd4996f4f99e9e8e47544b67, type: 3}
+    - {fileID: 8300000, guid: 7867c2a9b9e109143a8b5086be78f97b, type: 3}
     type: 13
   - clip:
     - {fileID: 8300000, guid: b19d8c623deee0643ae391d954046c87, type: 3}

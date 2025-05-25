@@ -79,7 +79,7 @@ public class FlashlightOptions : MonoBehaviour
         if (Time.time - _lastLowerTime > 0.1f)
         {
             _lastLowerTime = Time.time;
-            batteryLevel -= 0.05f;
+            batteryLevel -= 0.02f;
         }
         
         int toShow = Convert.ToInt32(Math.Floor(batteryLevel));
