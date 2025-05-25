@@ -16,6 +16,7 @@ public class AccessCardItem : Item
     {
         var accessCardDataPair = accessCardData.accessCards[0];
         cardPair = accessCardDataPair;
+        itemName = accessCardDataPair.description;
     }
 }
 

@@ -19,6 +19,7 @@ public class SavingSystem : MonoBehaviour
     [SerializeField] private float rotationDuration = 1f;
     [SerializeField] private float fadeDuration = 0.3f;
     [SerializeField] private float fillAnimationDuration = 0.8f;
+    [SerializeField] private AccessCardData accessCardData;
 
     private void Start()
     {
@@ -181,6 +182,28 @@ public class SavingSystem : MonoBehaviour
 
         saveData.morgue = FindObjectOfType<MorgueDoorCorrect>().isFinished;
 
+        AccessCardItem accessCard = (AccessCardItem)Inventory.InventoryEvents.GetAccessCard();
+        switch (accessCard.cardPair.cardType)
+        {
+            case AccessCardType.Level0:
+                saveData.cardLevel = 0;
+                break;
+            case AccessCardType.Level1: 
+                saveData.cardLevel = 1;
+                break;
+            case AccessCardType.Level2:
+                saveData.cardLevel = 2;
+                break;
+            case AccessCardType.Level3:
+                saveData.cardLevel = 3;
+                break;
+            case AccessCardType.Level4:
+                saveData.cardLevel = 4;
+                break;
+            default: break;
+        }
+        
+
         //Debug.Log(saveData.pickabelsIDs[0]);
         return saveData;
     }
@@ -272,6 +295,9 @@ public class SavingSystem : MonoBehaviour
             FindObjectOfType<MorgueDoorCorrect>().isFinished = true;
         }
         FindFirstObjectByType<EnemyAI>(FindObjectsInactive.Include).gameObject.SetActive(true);
+
+        AccessCardItem accessCard = (AccessCardItem)Inventory.InventoryEvents.GetAccessCard();
+        accessCard.SetNewAccessCard(accessCardData.accessCards[saveData.cardLevel]);
     }
 
     private List<string> FindAllPickable()
