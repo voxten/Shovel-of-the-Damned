@@ -9,6 +9,8 @@ public class DoorTrigger : MonoBehaviour
     [SerializeField] private GameObject doorObject;
     [SerializeField] private float animationDuration = 1f;
     [SerializeField] private TextMeshPro[] numberTexts;
+
+    public bool canOpen = true;
     
     private Color _approvedColor = Color.green;
     private Color _deniedColor = Color.red;
@@ -30,6 +32,8 @@ public class DoorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!canOpen) return;
+        
         if (other.CompareTag("Player"))
         {
             var card = Inventory.InventoryEvents.GetAccessCard();
