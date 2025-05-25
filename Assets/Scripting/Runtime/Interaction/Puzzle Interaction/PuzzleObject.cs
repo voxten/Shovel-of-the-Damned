@@ -15,7 +15,7 @@ public abstract class PuzzleObject : MonoBehaviour
     // function which indicates what should be done after entering a puzzle
     public virtual void OpenPuzzle()
     {
-        FindFirstObjectByType<FlashlightOptions>().enabled = false;
+        FindFirstObjectByType<FlashlightOptions>().inPuzzle = true;
         buttonPanel.SetActive(true);
     }
     
@@ -31,8 +31,15 @@ public abstract class PuzzleObject : MonoBehaviour
     // function which indicates what should be done after we quit puzzle without finishing
     public virtual void QuitPuzzle()
     {
+        
+        StartCoroutine(WaitAfterExit());
+    }
+
+    private IEnumerator WaitAfterExit()
+    {
         buttonPanel.SetActive(false);
-        FindFirstObjectByType<FlashlightOptions>().enabled = true;
+        yield return new WaitForSeconds(0.5f);
+        FindFirstObjectByType<FlashlightOptions>().inPuzzle = false;
     }
     
     private IEnumerator WaitForEndOfPuzzle(float time)
