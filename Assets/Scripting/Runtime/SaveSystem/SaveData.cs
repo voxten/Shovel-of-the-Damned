@@ -49,4 +49,7 @@ public class SaveData
     public float armRotationY;
     public float armRotationZ;
     public float armRotationW;
+
+    //Card
+    public int cardLevel;
 }

@@ -20,7 +20,7 @@ public class PickAccessCard : InteractableObject
         {
             base.Interact();
             SoundManager.PlaySound3D(Sound.Pickup, transform);
-            Inventory.InventoryEvents.AddItem(item);
+            
             gameObject.SetActive(false);
             _isFirst = false;
             _collider.enabled = false;
@@ -28,6 +28,7 @@ public class PickAccessCard : InteractableObject
             {
                 accessCard.ResetAccessCard(accessCardData);
             }
+            Inventory.InventoryEvents.AddItem(item);
         }
         return true;
     }
