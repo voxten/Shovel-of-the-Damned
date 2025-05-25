@@ -43,6 +43,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private CinemachineCamera firstAttackCamera;
     [SerializeField] private CinemachineCamera lastAttackCamera;
     
+    [Header("First Encounter")]
+    [SerializeField] private Vent firstVent;
+    private bool _firstTime = true;
+    
     [Header("Main Cube Settings")]
     [SerializeField] private GameObject mainCubePrefab;
     [SerializeField] private float cubeMoveSpeed = 5f;
@@ -113,7 +117,16 @@ public class EnemyAI : MonoBehaviour
         
         while (attempts < maxAttempts)
         {
-            randomVent = _currentPlayerZone.ventPoints[Random.Range(0, _currentPlayerZone.ventPoints.Count)];
+            if (_firstTime)
+            {
+                randomVent = firstVent;
+                _firstTime = false;
+            }
+            else
+            {
+                randomVent = _currentPlayerZone.ventPoints[Random.Range(0, _currentPlayerZone.ventPoints.Count)];
+            }
+            
             if (randomVent.Points.Count > 0 && randomVent.Points[0] != null)
             {
                 break;
@@ -150,7 +163,10 @@ public class EnemyAI : MonoBehaviour
     {
         _currentCoroutine = null;
         _currentVentPoint = vent;
-        StopCoroutine(_cubeMovementCoroutine);
+        
+        if (_cubeMovementCoroutine != null)
+            StopCoroutine(_cubeMovementCoroutine);
+        
         _cubeMovementCoroutine = null;
         _isEnemyInVents = false;
         _currentState = AIState.MovingOutVent;
@@ -577,11 +593,11 @@ public class EnemyAI : MonoBehaviour
         _enemyAnimator.SetTrigger("Attack");
         _isPlayerKilled = true;
         FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
+        FirstPersonController.PlayerEvents.TogglePlayerModel();
         CameraSwitch.CameraEvents.SwitchCamera(firstAttackCamera);
         
         yield return new WaitForSeconds(1f);
         
-        FirstPersonController.PlayerEvents.TogglePlayerModel();
         CameraSwitch.CameraEvents.SwitchCamera(lastAttackCamera);
         
         yield return new WaitForSeconds(1f);

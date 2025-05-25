@@ -9,7 +9,6 @@ public class VentOut : MonoBehaviour
     {
         if (other.CompareTag("VentEnemy"))
         {
-            Debug.Log("Entered VentOut");
             enemyAI.SetVentOutState(vent);
         }
     }
