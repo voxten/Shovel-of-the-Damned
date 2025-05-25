@@ -46,6 +46,7 @@ public class InteractionSystem : MonoBehaviour
         InteractionEvents.SetInteractionView += SetInteractionView;
         InteractionEvents.TogglePuzzleCollider += TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon += DisableInteractionIcon;
+        InteractionEvents.CheckPuzzleInteraction += CheckPuzzleInteraction;
         DragObject.DragEvents.ObjectDropped += OnObjectDropped;
     }
 
@@ -55,6 +56,7 @@ public class InteractionSystem : MonoBehaviour
         InteractionEvents.SetInteractionView -= SetInteractionView;
         InteractionEvents.TogglePuzzleCollider -= TogglePuzzleCollider;
         InteractionEvents.DisableInteractionIcon -= DisableInteractionIcon;
+        InteractionEvents.CheckPuzzleInteraction -= CheckPuzzleInteraction;
         DragObject.DragEvents.ObjectDropped -= OnObjectDropped;
     }
 
@@ -85,10 +87,6 @@ public class InteractionSystem : MonoBehaviour
                         _isInRange = true;
                         shouldShowIcon = true;
                     }
-                }
-                else if (_currentInteractable is NewCableEndPoint cableEndPoint)
-                {
-                    shouldShowIcon = cableEndPoint.GetCable() != null;
                 }
                 else
                 {
@@ -228,14 +226,6 @@ public class InteractionSystem : MonoBehaviour
     {
         return _isInteractingPuzzle;
     }
-    
-    public static class InteractionEvents 
-    {
-        public static Action ExitPuzzleInteraction;
-        public static Action<bool> SetInteractionView;
-        public static Action TogglePuzzleCollider;
-        public static Action DisableInteractionIcon;
-    }
 
     private void HighlightObject(GameObject obj)
     {
@@ -268,5 +258,19 @@ public class InteractionSystem : MonoBehaviour
     private void OnObjectDropped()
     {
         RemoveHighlight();
+    }
+
+    private bool CheckPuzzleInteraction()
+    {
+        return _puzzleInteraction != null;
+    }
+    
+    public static class InteractionEvents 
+    {
+        public static Action ExitPuzzleInteraction;
+        public static Action<bool> SetInteractionView;
+        public static Action TogglePuzzleCollider;
+        public static Func<bool> CheckPuzzleInteraction;
+        public static Action DisableInteractionIcon;
     }
 }

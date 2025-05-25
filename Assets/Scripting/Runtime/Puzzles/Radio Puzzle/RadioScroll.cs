@@ -44,7 +44,7 @@ public class RadioScroll : MonoBehaviour
 
             if (Mathf.Abs(scrollInput) > 0.01f)
             {
-                SoundManager.PlaySound3D(Sound.RadioTuner, transform);
+                SoundManager.PlaySound3D(Sound.RadioTuner, transform, null, 0.6f);
                 transform.Rotate(0f, -scrollInput * 1000f, 0f);
                 
                 float newPos = needle.transform.localPosition.z + scrollInput * 0.05f;

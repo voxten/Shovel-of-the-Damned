@@ -60,7 +60,8 @@ public class SettingsManager : MonoBehaviour
 
     private void CheckContinueButton()
     {
-        continueButton.gameObject.SetActive(File.Exists(Application.persistentDataPath + "Save.txt"));
+        if (continueButton != null)
+            continueButton.gameObject.SetActive(File.Exists(Application.persistentDataPath + "Save.txt"));
     }
 
     private void AssignUIEvents()

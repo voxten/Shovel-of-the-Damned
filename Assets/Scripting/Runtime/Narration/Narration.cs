@@ -29,7 +29,6 @@ public class Narration : MonoBehaviour
 
     private void Start() 
     {
-        Invoke(nameof(StartDialog), 2);
         fade.DOFade(0, 1).SetEase(Ease.OutExpo).SetDelay(.5f);
     }
 
@@ -46,11 +45,6 @@ public class Narration : MonoBehaviour
             _currentSequence.Kill();
             _currentSequence = null;
         }
-    }
-
-    private void StartDialog() 
-    {
-        DisplayText?.Invoke("I have to make it in time...");
     }
 
     private void UpdateText(string content) 

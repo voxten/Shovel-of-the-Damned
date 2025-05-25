@@ -191,8 +191,7 @@ public class InventoryUI : MonoBehaviour
 
         UpdateInventoryDisplay(itemOccurrences);
     }
-
-
+    
     private void UpdateInventoryDisplay(Dictionary<Item, int> itemOccurrences)
     {
         var displayCount = Mathf.Min(_itemList.Count, VisibleItemsCount);

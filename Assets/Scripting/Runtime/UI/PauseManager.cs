@@ -25,7 +25,7 @@ public class PauseManager : MonoBehaviour
     private void Update()
     {
         if (PlayerDeathUIPlayerDeathUIManager.DeathEvents.GetIsPlayerDead()) return;
-        if (Input.GetKeyDown(KeyCode.Escape) && !NoteUIManager.NoteActions.GetIsOn() && !InventoryUIManager.InventoryUIEvents.GetIsOn())
+        if (Input.GetKeyDown(KeyCode.Escape) && !NoteUIManager.NoteActions.GetIsOn() && !InventoryUIManager.InventoryUIEvents.GetIsOn() && !InteractionSystem.InteractionEvents.CheckPuzzleInteraction())
         {
             if (_isOn)
             {
