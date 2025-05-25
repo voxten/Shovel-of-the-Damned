@@ -149,7 +149,7 @@ public class InteractionSystem : MonoBehaviour
         _puzzleInteraction.EndInteract();
         TogglePuzzleCollider();
         SetInteractionView(false);
-        coneObject.SetActive(true);
+        coneObject.GetComponent<Collider>().enabled = true;
         DisableInteractionIcon();
         _puzzleInteraction = null;
     }
@@ -165,7 +165,7 @@ public class InteractionSystem : MonoBehaviour
                     _puzzleInteraction = puzzleInteraction;
                     if (_puzzleInteraction.puzzleObject.isFinished) return;
                     TogglePuzzleCollider();
-                    coneObject.SetActive(false);
+                    coneObject.GetComponent<Collider>().enabled = false;
                     SetInteractionView(true);
                 }
             }
