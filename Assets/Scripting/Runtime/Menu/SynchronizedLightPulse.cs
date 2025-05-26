@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SynchronizedLightPulse : MonoBehaviour
@@ -10,6 +11,11 @@ public class SynchronizedLightPulse : MonoBehaviour
 
     [SerializeField] private float pulseSpeed = 1f;
     private float _timer;
+
+    private void Awake()
+    {
+        Utilitis.SetCursorState(false);
+    }
 
     private void Update()
     {
