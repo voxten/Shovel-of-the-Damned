@@ -8,6 +8,7 @@ public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private TextMeshProUGUI tutorialText;
+    [SerializeField] private TutorialObject tutorialRotateObject;
     private CanvasGroup _tutorialCanvasGroup;
 
     private Coroutine _currentTutorialRoutine;
@@ -23,12 +24,14 @@ public class TutorialManager : MonoBehaviour
     private void OnEnable()
     {
         TutorialManagerEvents.startTutorial += StartTutorial;
+        TutorialManagerEvents.startRotateTutorial += StartRotateTutorial;
         TutorialManagerEvents.stopTutorial += StopTutorial;
     }
 
     private void OnDisable()
     {
         TutorialManagerEvents.startTutorial -= StartTutorial;
+        TutorialManagerEvents.startRotateTutorial -= StartRotateTutorial;
         TutorialManagerEvents.stopTutorial -= StopTutorial;
         Cleanup();
     }
@@ -57,6 +60,15 @@ public class TutorialManager : MonoBehaviour
         
         // Start new tutorial
         _currentTutorialRoutine = StartCoroutine(AnimateTutorial(tutorialObject));
+    }
+    
+    private void StartRotateTutorial()
+    {
+        // Clean up any existing tutorial first
+        Cleanup();
+        
+        // Start new tutorial
+        _currentTutorialRoutine = StartCoroutine(AnimateTutorial(tutorialRotateObject));
     }
 
     private IEnumerator AnimateTutorial(TutorialObject tutorialObject)
@@ -109,5 +121,6 @@ public class TutorialManager : MonoBehaviour
     {
         public static Action<TutorialObject> startTutorial;
         public static Action stopTutorial;
+        public static Action startRotateTutorial;
     }
 }

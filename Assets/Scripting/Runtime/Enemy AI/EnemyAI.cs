@@ -47,6 +47,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Vent firstVent;
     private bool _firstTime = true;
     
+    [Header("Chase Settings")]
+    [SerializeField] private float chaseDurationAfterLost = 5f; // Enemy chases for 5s after losing sight
+    private float _chaseCooldownTimer;
+    private bool _isInChaseCooldown;
+    
     [Header("Main Cube Settings")]
     [SerializeField] private GameObject mainCubePrefab;
     [SerializeField] private float cubeMoveSpeed = 5f;
@@ -294,6 +299,16 @@ public class EnemyAI : MonoBehaviour
 
         if (_isEnemyInVents) return;
         
+        if (_isInChaseCooldown && !_isPlayerVisible)
+        {
+            _chaseCooldownTimer -= Time.deltaTime;
+            if (_chaseCooldownTimer <= 0)
+            {
+                Debug.Log("IsInChaseCooldown false");
+                _isInChaseCooldown = false;
+            }
+        }
+        
         if (_isEnemyFear)
         {
             if (_currentState != AIState.MovingToVent)
@@ -338,12 +353,13 @@ public class EnemyAI : MonoBehaviour
                 break;
                 
             case AIState.Chasing:
-                if (_isPlayerVisible)
+                if (_isPlayerVisible || _isInChaseCooldown)
                 {
-                    FollowPlayer();
+                    FollowPlayer(); // Keep chasing while player is visible OR during cooldown
                 }
                 else
                 {
+                    // Player hasn't been visible for chaseDurationAfterLost seconds
                     _currentState = AIState.Searching;
                     _currentSearchPointIndex = 0;
                     MoveToRandomNearbyPoint();
@@ -413,25 +429,25 @@ public class EnemyAI : MonoBehaviour
 
         Vector3 directionToPlayer = player.transform.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
-        
-        // Check if player is within detection range
+    
+        // Check if player is within detection range and field of view
         if (distanceToPlayer <= playerDetectionRange)
         {
-            // Check if player is within field of view
             float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-            
             if (angleToPlayer <= playerDetectionAngle * 0.5f)
             {
                 // Raycast to check line of sight
                 if (Physics.Raycast(transform.position, directionToPlayer.normalized, out var hit, playerDetectionRange))
                 {
-                    Debug.Log("In Raycast");
                     _isPlayerVisible = true;
+                    _chaseCooldownTimer = chaseDurationAfterLost; // Reset timer when player is visible
                     _currentState = AIState.Chasing;
+                    _isInChaseCooldown = true;
                     return;
                 }
             }
         }
+    
         _isPlayerVisible = false;
     }
 
@@ -479,7 +495,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (_enemyAgent.isStopped)
             _enemyAgent.isStopped = false;
-        
+    
         _enemyAgent.speed = runSpeed;
         
         SetDestination(player.gameObject);
