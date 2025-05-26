@@ -848,6 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAI: {fileID: 3345651475472929162}
+  finalTrigger: {fileID: 0}
 --- !u!1 &8043970298173702553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,7 +2908,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
   searchRadius: 10
   searchPointsCount: 3
   playerDetectionRange: 7.5
@@ -2915,11 +2915,13 @@ MonoBehaviour:
   fearDuration: 3
   climbInDuration: 1.5
   climbOutDuration: 1.5
-  walkSpeed: 0.8
-  runSpeed: 1.5
+  walkSpeed: 1.5
+  runSpeed: 3
   player: {fileID: 0}
   firstAttackCamera: {fileID: 4113887546910465915}
   lastAttackCamera: {fileID: 1864582299395500564}
+  firstVent: {fileID: 0}
+  chaseDurationAfterLost: 5
   mainCubePrefab: {fileID: 7700311665861587848, guid: a85a7a4fae75396449f5663e19630774, type: 3}
   cubeMoveSpeed: 5
   cubeRotationSpeed: 5

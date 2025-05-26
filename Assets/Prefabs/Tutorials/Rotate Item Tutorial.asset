@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3ca34667f9f4644a0c62a5053f6f05, type: 3}
   m_Name: Rotate Item Tutorial
   m_EditorClassIdentifier: 
-  keyCode: 114
-  tutorialDescription: Press and hold (R) key then use Mouse to be able to rotate
+  keyCode: 104
+  tutorialDescription: Press and hold (H) key then use Mouse to be able to rotate
     item
