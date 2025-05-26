@@ -291,44 +291,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6f35b159584b4c45aa1e51989d5c907, type: 3}
   m_PrefabInstance: {fileID: 3379457739675202208}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &858898952 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1062002505013284113, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-  m_PrefabInstance: {fileID: 1719802639}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1225450697 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5150001132596075621, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-  m_PrefabInstance: {fileID: 1719802639}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1279090672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6f35b159584b4c45aa1e51989d5c907, type: 3}
   m_PrefabInstance: {fileID: 4508395875960111348}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1396455003 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6492279339890690470, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-  m_PrefabInstance: {fileID: 1719802639}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1427376873 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6f35b159584b4c45aa1e51989d5c907, type: 3}
@@ -481,18 +448,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1916240440473574137, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-      propertyPath: qualityLabel
-      value: 
-      objectReference: {fileID: 1225450697}
-    - target: {fileID: 1916240440473574137, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-      propertyPath: nextQualityButton
-      value: 
-      objectReference: {fileID: 1396455003}
-    - target: {fileID: 1916240440473574137, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
-      propertyPath: prevQualityButton
-      value: 
-      objectReference: {fileID: 858898952}
     - target: {fileID: 8095297693252764322, guid: e69b768d858b45247b0a2c00d8357972, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -11938,8 +11893,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2041680869}
-  - {fileID: 1719802639}
   - {fileID: 2102386983}
   - {fileID: 92538800}
   - {fileID: 1728784573}
   - {fileID: 1437875517}
+  - {fileID: 1719802639}
