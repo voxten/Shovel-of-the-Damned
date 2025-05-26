@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: UV Tutorial
   m_EditorClassIdentifier: 
   keyCode: 324
-  tutorialDescription: Press (Right Mouse Button) key to use UV!!!!!
+  tutorialDescription: Press (Right Mouse Button) key to use UV!!!!! Remember that
+    you need at least 25% on flashlight

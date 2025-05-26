@@ -26,6 +26,8 @@ public class DragObject : MonoBehaviour
     
     private bool _isObjectMoving;
 
+    private bool _firstTime = true;
+
     private void Start()
     {
         _playerCamera = Camera.main;
@@ -55,6 +57,12 @@ public class DragObject : MonoBehaviour
             // Check if object is still moving
             _isObjectMoving = Vector3.Distance(_pickedObject.position,
                 _playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2))) > 0.1f;
+            
+            if (_firstTime)
+            {
+                TutorialManager.TutorialManagerEvents.startRotateTutorial();
+                _firstTime = false;
+            }
             
             if (Input.GetKey(KeyCode.R) && !_isObjectMoving)
             {
