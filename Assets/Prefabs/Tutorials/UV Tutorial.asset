@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3ca34667f9f4644a0c62a5053f6f05, type: 3}
   m_Name: UV Tutorial
   m_EditorClassIdentifier: 
-  keyCode: 324
-  tutorialDescription: Press (Right Mouse Button) key to use UV!!!!! Remember that
-    you need at least 25% on flashlight
+  keyCode: 32
+  tutorialDescription: Press (Space Button) key to use UV!!!!! Remember that you
+    need at least 25% on flashlight
