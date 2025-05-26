@@ -64,7 +64,7 @@ public class DragObject : MonoBehaviour
                 _firstTime = false;
             }
             
-            if (Input.GetKey(KeyCode.R) && !_isObjectMoving)
+            if (Input.GetKey(KeyCode.H) && !_isObjectMoving)
             {
                 // Right-click for rotation (only if the object is not moving)
                 FirstPersonController.PlayerEvents.ToggleMoveCamera(false);

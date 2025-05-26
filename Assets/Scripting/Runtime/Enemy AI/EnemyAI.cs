@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using StarterAssets;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -131,7 +132,7 @@ public class EnemyAI : MonoBehaviour
             {
                 randomVent = _currentPlayerZone.ventPoints[Random.Range(0, _currentPlayerZone.ventPoints.Count)];
             }
-            
+
             if (randomVent.Points.Count > 0 && randomVent.Points[0] != null)
             {
                 break;
@@ -453,7 +454,7 @@ public class EnemyAI : MonoBehaviour
 
     private void TeleportEnemy(Vent vent, bool silent = false)
     {
-        transform.position = vent.transform.position;
+        _enemyAgent.Warp(vent.transform.position);
         _enemyAnimator.SetTrigger("ClimbOut");
         if (!silent)
         {
@@ -505,7 +506,7 @@ public class EnemyAI : MonoBehaviour
     {
         while (true)
         {
-            SoundManager.PlaySound3D(Sound.EnemyStepsRun, transform, 100);
+            SoundManager.PlaySound3D(Sound.EnemyStepsRun, transform, 60);
             yield return new WaitForSeconds(3);
         }
     }
@@ -514,7 +515,7 @@ public class EnemyAI : MonoBehaviour
     {
         while (true)
         {
-            SoundManager.PlaySound3D(Sound.EnemySteps, transform, 100);
+            SoundManager.PlaySound3D(Sound.EnemySteps, transform, 60);
             yield return new WaitForSeconds(1);
         }
     }
@@ -523,7 +524,38 @@ public class EnemyAI : MonoBehaviour
     {
         Vent nearestVent = null;
         float minDistance = float.MaxValue;
+    
+        // First pass: find all reachable vents and their distances
+        List<(Vent vent, float distance)> reachableVents = new List<(Vent, float)>();
+    
+        foreach (Vent vent in ventPoints)
+        {
+            float distance = Vector3.Distance(transform.position, vent.transform.position);
         
+            // Check if the vent is reachable
+            NavMeshPath path = new NavMeshPath();
+            if (_enemyAgent.CalculatePath(vent.transform.position, path) && path.status == NavMeshPathStatus.PathComplete)
+            {
+                reachableVents.Add((vent, distance));
+            
+                // Track the nearest reachable vent
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestVent = vent;
+                }
+            }
+        }
+    
+        // If we found at least one reachable vent, return the nearest one
+        if (nearestVent != null)
+        {
+            return nearestVent;
+        }
+    
+        // Fallback: if no reachable vents found (shouldn't happen in normal gameplay), 
+        // return the geometrically nearest vent regardless of reachability
+        minDistance = float.MaxValue;
         foreach (Vent vent in ventPoints)
         {
             float distance = Vector3.Distance(transform.position, vent.transform.position);
@@ -533,7 +565,7 @@ public class EnemyAI : MonoBehaviour
                 nearestVent = vent;
             }
         }
-        
+    
         return nearestVent;
     }
 
