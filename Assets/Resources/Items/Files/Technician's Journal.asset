@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9ae0604bc169641a215002412cccae, type: 3}
   m_Name: Technician's Journal
   m_EditorClassIdentifier: 
-  id: 48be8304253840769e1da3f453f7a239
   itemIcon: {fileID: 1416127957, guid: 4754d51dc87c1f04a91f7d36afd0f722, type: 3}
   itemName: Technician's Journal
   itemDescription: File found in the technical room
   itemType: 2
+  Id: 3abb435d-6350-430b-b122-41b527bc02dc
   noteContent:
-  - "They got Michael a radio. At least now he has something to help him unwind a
-    bit during his breaks. And good for him \u2014 he deserved it. That guy seems
-    to live for work these days. He\u2019s handling the entire shift on his own."
+  - "They got Michael a radio. Piekarczyk is DEAF, so he couldn\u2019t even hear
+    it anyway. At least now he has something to help him unwind a bit during his
+    breaks. And good for him \u2014 he deserved it. That guy seems to live for work
+    these days. He\u2019s handling the entire shift on his own."
   - "Paul and I try not to bother him when he finally gets a rest. But how much longer
     can this go on? If something goes wrong, if Michael misses something, it could
     lead to a serious failure. And we can\u2019t afford to lose the generators.\n"

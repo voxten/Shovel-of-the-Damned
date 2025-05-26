@@ -323,7 +323,7 @@ public class SavingSystem : MonoBehaviour
                 PickItem pickItem = obj.GetComponent<PickItem>();
                 if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
                 {
-                    pickable.Add(pickItem.ID); // Dodaj ID aktywnych przedmiotów
+                    pickable.Add(pickItem.ID); // Dodaj ID aktywnych przedmiotï¿½w
                 }
             }
         }
@@ -341,7 +341,7 @@ public class SavingSystem : MonoBehaviour
                 PickItem pickItem = obj.GetComponent<PickItem>();
                 if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
                 {
-                    if (!pickableIDs.Contains(pickItem.ID)) // Wy³¹cz przedmioty, których ID nie ma na liœcie
+                    if (!pickableIDs.Contains(pickItem.ID)) // Wylacz przedmioty, ktorych ID nie ma na liicie
                     {
                         obj.SetActive(false);
                     }
