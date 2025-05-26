@@ -224,6 +224,13 @@ public class SavingSystem : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        RefreshPickableList();
+        PickAccessCard pickAccessCard = FindFirstObjectByType<PickAccessCard>(FindObjectsInactive.Exclude);
+        if(pickAccessCard != null)
+        {
+            pickAccessCard.gameObject.SetActive(false);
+        }
+
         GameObject playerObj = GameObject.FindWithTag("Player");
         GameObject cameraObj = GameObject.FindWithTag("MainCamera");
         Transform playerTransform = playerObj.transform;
@@ -243,7 +250,6 @@ public class SavingSystem : MonoBehaviour
         cameraTransform.position = new Vector3(saveData.cameraPositionX, saveData.cameraPositionY, saveData.cameraPositionZ);
         cameraTransform.rotation = new Quaternion(saveData.cameraRotationX, saveData.cameraRotationY, saveData.cameraRotationZ, saveData.cameraRotationW);
 
-        DiasablePckable(saveData.pickabelsIDs);
         DiasablePckable(saveData.pickabelsIDs);
 
         foreach (var item in saveData.inventory)
@@ -307,7 +313,7 @@ public class SavingSystem : MonoBehaviour
 
     private List<string> FindAllPickable()
     {
-        List<string> pickable = _allPicable;
+        List<string> pickable = new List<string>();
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
         int interactionLayer = LayerMask.NameToLayer("Interaction");
         foreach (GameObject obj in allObjects)
@@ -317,11 +323,10 @@ public class SavingSystem : MonoBehaviour
                 PickItem pickItem = obj.GetComponent<PickItem>();
                 if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
                 {
-                    pickable.Remove(pickItem.ID);
+                    pickable.Add(pickItem.ID); // Dodaj ID aktywnych przedmiotów
                 }
             }
         }
-
         return pickable;
     }
 
@@ -336,13 +341,9 @@ public class SavingSystem : MonoBehaviour
                 PickItem pickItem = obj.GetComponent<PickItem>();
                 if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
                 {
-                    int index = pickableIDs.IndexOf(pickItem.ID);
-
-                    if(index != -1)
+                    if (!pickableIDs.Contains(pickItem.ID)) // Wy³¹cz przedmioty, których ID nie ma na liœcie
                     {
                         obj.SetActive(false);
-                        pickableIDs.RemoveAt(index);
-
                     }
                 }
             }
@@ -375,5 +376,23 @@ public class SavingSystem : MonoBehaviour
         }
         Debug.LogWarning($"Item with ID {id} not found!");
         return null;
+    }
+
+    private void RefreshPickableList()
+    {
+        _allPicable.Clear();
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        int interactionLayer = LayerMask.NameToLayer("Interaction");
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.layer == interactionLayer)
+            {
+                PickItem pickItem = obj.GetComponent<PickItem>();
+                if (pickItem != null && !string.IsNullOrEmpty(pickItem.ID))
+                {
+                    _allPicable.Add(pickItem.ID);
+                }
+            }
+        }
     }
 }
