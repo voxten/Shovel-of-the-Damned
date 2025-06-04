@@ -15142,9 +15142,6 @@ MonoBehaviour:
   moveableLayer:
     serializedVersion: 2
     m_Bits: 8
-  doorLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &9030751921918768219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15473,7 +15470,6 @@ GameObject:
   - component: {fileID: 4939159873813553669}
   - component: {fileID: 8386393242064508823}
   - component: {fileID: 7256572093675800134}
-  - component: {fileID: 8168140451190602682}
   m_Layer: 5
   m_Name: Load Button
   m_TagString: Untagged
@@ -15553,18 +15549,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8168140451190602682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8520998098250026270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8638c55e92790684081391bd70732234, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8578401347787676093
 GameObject:
   m_ObjectHideFlags: 0

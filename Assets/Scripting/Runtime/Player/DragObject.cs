@@ -11,7 +11,6 @@ public class DragObject : MonoBehaviour
     [SerializeField] private float throwForceMultiplier = 10.0f; // Multiplier for the throw force
     [SerializeField] private float rotationThrowForce = 10.0f; // Multiplier for the rotational throw force
     [SerializeField] private LayerMask moveableLayer; // Layer for interactable objects
-    [SerializeField] private LayerMask doorLayer;
     private Camera _playerCamera;
     private Rigidbody _pickedObject;
     private bool _isDragging;
@@ -52,7 +51,7 @@ public class DragObject : MonoBehaviour
             TryPickObject();
         }
 
-        if (Input.GetMouseButton(0) && _isDragging)
+        if (Input.GetMouseButton(0) && _isDragging && !PauseManager.PauseEvents.GetIsOn())
         {
             // Check if object is still moving
             _isObjectMoving = Vector3.Distance(_pickedObject.position,
@@ -71,10 +70,6 @@ public class DragObject : MonoBehaviour
                 _pickedObject.isKinematic = true;
                 UpdateRotation();
             }
-            else if (_pickedObject.gameObject.layer == LayerMask.NameToLayer("Drawer"))
-            {
-                HandleDoorInteraction();
-            }
             else
             {
                 // Allow normal dragging movement
@@ -84,7 +79,7 @@ public class DragObject : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && _isDragging)
+        if (Input.GetMouseButtonUp(0) && _isDragging && !PauseManager.PauseEvents.GetIsOn())
         {
             DropObject();
         }
@@ -115,7 +110,7 @@ public class DragObject : MonoBehaviour
         Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, pickupRange, moveableLayer | doorLayer))
+        if (Physics.Raycast(ray, out hit, pickupRange, moveableLayer))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
             if (rb != null)
@@ -195,40 +190,6 @@ public class DragObject : MonoBehaviour
         // Apply the new rotation
         Quaternion targetRotation = Quaternion.Euler(_rotationY, _rotationX, _rotationZ);
         _pickedObject.MoveRotation(targetRotation);
-    }
-    
-    private void HandleDoorInteraction()
-    {
-        if (!_isRotatingDoor)
-        {
-            FirstPersonController.PlayerEvents.ToggleMoveCamera(false);
-            _isRotatingDoor = true;
-        }
-
-        HingeJoint hinge = _pickedObject.GetComponent<HingeJoint>();
-        
-        float mouseX = Input.GetAxis("Mouse X");
-        float rotationAmount = mouseX * doorRotationSpeed * Time.deltaTime;
-        
-        if (hinge != null)
-        {
-            JointLimits limits = hinge.limits;
-            float currentAngle = hinge.angle; // Get the current hinge angle
-            
-            // Check if we're at the limits
-            if ((currentAngle <= limits.min && rotationAmount < 0) || 
-                (currentAngle >= limits.max && rotationAmount > 0))
-            {
-                return; // Stop rotating if limit is reached
-            }
-
-            // Apply torque for natural swinging motion
-            _pickedObject.AddTorque(Vector3.up * rotationAmount * 15f, ForceMode.Impulse);
-        }
-        else
-        {
-            _pickedObject.AddTorque(Vector3.up * rotationAmount * 15f, ForceMode.Impulse);
-        }
     }
     
     private bool GetDragging()
