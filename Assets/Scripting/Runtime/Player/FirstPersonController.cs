@@ -62,8 +62,10 @@ namespace StarterAssets
 		public float GroundedRadius = 0.5f;
 		[Tooltip("What layers the character uses as ground")]
 		public LayerMask GroundLayers;
+        [Tooltip("What layers the character uses as ceiling")]
+        public LayerMask CeilingLayers;
 
-		[Header("Cinemachine")]
+        [Header("Cinemachine")]
 		[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
 		public GameObject CinemachineCameraTarget;
 		[Tooltip("How far in degrees can you move the camera up")]
@@ -448,7 +450,7 @@ namespace StarterAssets
             Vector3 rayStart = transform.position + Vector3.up * (crouchHeight + 0.05f); // start minimalnie nad crouchem
 
             // Strzel promieniem w górę
-            return !Physics.Raycast(rayStart, Vector3.up, rayDistance, GroundLayers, QueryTriggerInteraction.Ignore);
+            return !Physics.Raycast(rayStart, Vector3.up, rayDistance, CeilingLayers, QueryTriggerInteraction.Ignore);
         }
     }
 }
