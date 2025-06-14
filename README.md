@@ -2,7 +2,7 @@
  
 Build of the game: 
 
-[Mega.nz](https://mega.nz/file/9RdTEYxS#xbyvpNBJeTOCfRKtQlVB4C4Kliqnb9lRmSQZEf_Y9OY)
+[Mega.nz](https://mega.nz/file/BV8FSaxA#3-o2FAO63bJtIMN-MvEP18COszXhEAIUr29TlLJAZgs)
 
-[Google Drive](https://drive.google.com/file/d/1DHZXv9SOp3e_VdiMGbi2Yz0Jlo5ML3yf/view?usp=sharing )
+[Google Drive](https://drive.google.com/file/d/1FAhwO4S7esg7A-oONOgmkiStOpNyZZXi/view?usp=sharing)
 
