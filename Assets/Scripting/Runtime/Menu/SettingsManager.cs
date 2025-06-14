@@ -313,7 +313,7 @@ public class SettingsManager : MonoBehaviour
             sfxSlider.value = PlayerPrefs.GetFloat("SfxVolume");
 
         if (PlayerPrefs.HasKey("Fov"))
-            sfxSlider.value = PlayerPrefs.GetFloat("Fov");
+            fovSlider.value = PlayerPrefs.GetFloat("Fov");
 
         _currentMode = (ScreenMode)PlayerPrefs.GetInt("ScreenMode", (int)ScreenMode.Fullscreen);
         ApplyDisplayMode();
