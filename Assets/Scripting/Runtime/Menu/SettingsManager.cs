@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using System.Linq;
 using System.IO;
+using Unity.Cinemachine;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider masterSlider, musicSlider, sfxSlider;
     [SerializeField] private TMP_Text masterLabel, musicLabel, sfxLabel;
+
+    [Header("FOV Settings")]
+    [SerializeField] private Slider fovSlider;
+    [SerializeField] private TMP_Text fovLabel;
+    [SerializeField] private CinemachineCamera[] cameras;
 
     [Header("Display Mode Settings")]
     [SerializeField] private TMP_Text displayModeText;
@@ -69,6 +75,7 @@ public class SettingsManager : MonoBehaviour
         masterSlider.onValueChanged.AddListener(_ => SetMasterVolume());
         musicSlider.onValueChanged.AddListener(_ => SetMusicVolume());
         sfxSlider.onValueChanged.AddListener(_ => SetSfxVolume());
+        fovSlider.onValueChanged.AddListener(_ => SetFov());
 
         prevResolutionButton.onClick.AddListener(PreviousResolution);
         nextResolutionButton.onClick.AddListener(NextResolution);
@@ -283,6 +290,16 @@ public class SettingsManager : MonoBehaviour
         audioMixer.SetFloat("SFX", sfxSlider.value);
         PlayerPrefs.SetFloat("SfxVolume", sfxSlider.value);
     }
+
+    private void SetFov()
+    {
+        fovLabel.text = Mathf.RoundToInt(fovSlider.value).ToString();
+        foreach (var camera in cameras)
+        {
+            camera.Lens.FieldOfView = fovSlider.value;
+        }
+        PlayerPrefs.SetFloat("Fov", fovSlider.value);
+    }
     
     private void LoadSettings()
     {
@@ -294,13 +311,17 @@ public class SettingsManager : MonoBehaviour
         
         if (PlayerPrefs.HasKey("SfxVolume"))
             sfxSlider.value = PlayerPrefs.GetFloat("SfxVolume");
-        
+
+        if (PlayerPrefs.HasKey("Fov"))
+            sfxSlider.value = PlayerPrefs.GetFloat("Fov");
+
         _currentMode = (ScreenMode)PlayerPrefs.GetInt("ScreenMode", (int)ScreenMode.Fullscreen);
         ApplyDisplayMode();
         
         SetMasterVolume();
         SetMusicVolume();
         SetSfxVolume();
+        SetFov();
     }
 
     private void LoadResolutionAndRefreshRate()
