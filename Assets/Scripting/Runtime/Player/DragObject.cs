@@ -118,7 +118,6 @@ public class DragObject : MonoBehaviour
                 InteractionSystem.InteractionEvents.DisableInteractionIcon();
                 _pickedObject = rb;
                 _pickedObject.useGravity = false;
-                _pickedObject.maxLinearVelocity = 3;
                 _isDragging = true;
 
                 // Capture initial rotation
@@ -141,17 +140,18 @@ public class DragObject : MonoBehaviour
                 Destroy(outline);
             }
 
-            // Apply throw force
-            Vector3 throwForce = _mouseDelta * throwForceMultiplier;
-            //pickedObject.linearVelocity = playerCamera.transform.forward * throwForce.z;
-
+            // Apply throw torque
             _pickedObject.AddTorque(_playerCamera.transform.right * -_mouseDelta.y * rotationThrowForce);
             _pickedObject.AddTorque(_playerCamera.transform.up * -_mouseDelta.x * rotationThrowForce);
 
             _pickedObject.useGravity = true;
-            _pickedObject.isKinematic = false; // Ensure physics interactions are restored
+            _pickedObject.isKinematic = false;
             FirstPersonController.PlayerEvents.ToggleMoveCamera(true);
-            _pickedObject.maxLinearVelocity = 0.7f;
+            //_pickedObject.maxLinearVelocity = 0.7f;
+
+            // 💥 Add extra downward force to simulate stronger gravity
+            //_pickedObject.AddForce(Vector3.down * 1000f, ForceMode.Force); // Adjust 30f as needed
+
             _pickedObject = null;
             _isRotatingDoor = false;
         }
@@ -159,6 +159,7 @@ public class DragObject : MonoBehaviour
         _isDragging = false;
         DragEvents.ObjectDropped?.Invoke();
     }
+
 
     private void MoveObject()
     {

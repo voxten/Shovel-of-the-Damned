@@ -4098,6 +4098,9 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 128
+  CeilingLayers:
+    serializedVersion: 2
+    m_Bits: 4096
   CinemachineCameraTarget: {fileID: 3390675509230573948}
   TopClamp: 90
   BottomClamp: -90
@@ -15383,7 +15386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupRange: 2
-  moveForce: 4000
+  moveForce: 1000
   rotationSpeed: 300
   doorRotationSpeed: 50
   throwForceMultiplier: 10
